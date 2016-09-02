@@ -1,0 +1,1 @@
+web:    java -jar target/edmond-bus-tracker-1.0-SNAPSHOT.war
