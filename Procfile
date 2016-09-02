@@ -1,1 +1,1 @@
-web:    java -jar target/edmond-bus-tracker-1.0-SNAPSHOT.war
+web:    java $JAVA_OPTS -jar target/endorsed/webapp-runner.jar --port $PORT target/*.war
