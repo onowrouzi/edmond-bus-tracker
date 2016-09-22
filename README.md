@@ -16,5 +16,7 @@ This is a capstone project for Computer Science and Software Engineering.
 
 #IMPORTANT: DO NOT PUSH TO MASTER.
 
+Project hosted on Heroku at [https://uco-edmond-bus.herokuapp.com/](https://uco-edmond-bus.herokuapp.com/)
+
 
 
