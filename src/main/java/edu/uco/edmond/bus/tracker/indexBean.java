@@ -11,6 +11,7 @@ public class indexBean {
     private String message = "Hello Team UCO!";
     
     public String getMessage(){
+        //UserService userService = new UserService(db.getDatabase());
         return message;
     }
     

@@ -1,44 +1,73 @@
 
 package edu.uco.edmond.bus.tracker;
 
+import com.google.gson.Gson;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
+@Path("userservice")
 public class UserService {
+    
+    //public User test = new User("test", "test", "test");
+    Gson gson = new Gson();
+    DBConnect db;
     Connection database;
     boolean upToDate;
     List<User> users; //may change to hashset to make sure a user is not duplicated in db.
     
-    public UserService(Connection database){
-        //establishes a new datbase connection
-        this.database = database;
-        upToDate = false;
-        users = new ArrayList<>();
+    public UserService()
+    {
+        db = new DBConnect();
+        this.database = db.getDatabase();
+        this.upToDate = false;
+        this.users = new ArrayList<>();
     }
     
-    public List<User> getUsers() throws SQLException{
-        
-        if(upToDate)
-            return users;
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("users")
+    public String getUsers() throws SQLException {
         
         Statement stmt = database.createStatement();
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM tblusers");
         
         while(rs.next()){
-            User user = new User(rs.getString("username"), rs.getString("password"), rs.getString("type"));
+            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("usertype"));
             users.add(user);
         }
         
-        database.close();
-        
         upToDate = true;
         
-        return users;
+        return gson.toJson(users);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/{id}")
+    public String getUser(@PathParam("id") int id) throws SQLException {
+        if(!upToDate)
+            getUsers();
+        
+        for(User user : users)
+        {
+            if(user.getId() == id)
+            {
+                return gson.toJson(user); //user found
+            }
+        }
+        
+        //no user found
+        return gson.toJson(null);
     }
     
     public User administratorLogin(String username, String password) throws SQLException
