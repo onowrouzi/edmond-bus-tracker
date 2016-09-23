@@ -121,7 +121,7 @@ public class UserService {
     {
         
     }
-    
+    /*
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -164,7 +164,7 @@ public class UserService {
     {
         return null;
     }
-    
+    */
     public User delete(String username, String password)
     {
         return null;
