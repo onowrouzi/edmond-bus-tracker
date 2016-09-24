@@ -21,28 +21,32 @@ import javax.ws.rs.core.MediaType;
 @Path("userservice")
 public class UserService {
     
-    final public String TABLENAME = "tblusers";
     Gson gson = new Gson();
-    Connection database;
+    //Connection database;
     List<User> users;
     
-    public UserService() throws SQLException
+    public UserService() //throws SQLException
     {
-        this.database = new DBConnect().getDatabase();
+        //this.database = new DBConnect().getDatabase();
         this.users = new ArrayList<>();
         getAllUsers();
     }
     
-    private void getAllUsers() throws SQLException
+    private void getAllUsers() //throws SQLException
     {
-        Statement stmt = database.createStatement();
+        User user = new User(1,"test","test","administrator");
+        users.add(user);
+        User user2 = new User(1,"test","test","administrator");
+        users.add(user2);
+        
+        /*Statement stmt = database.createStatement();
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM tblusers");
 
         while(rs.next()){
             User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("usertype"));
             users.add(user);
-        }
+        }*/
     }
     
     public User find(int id)
