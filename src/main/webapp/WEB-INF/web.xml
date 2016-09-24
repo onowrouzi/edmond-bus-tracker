@@ -19,7 +19,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/createRoute.xhtml</welcome-file>
+        <welcome-file>createRoute.xhtml</welcome-file>
     </welcome-file-list>    
     <servlet>
         <servlet-name>Jersey Web Application</servlet-name>
