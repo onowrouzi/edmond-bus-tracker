@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Edmond Bus Tracker</title>
+        <style>
+            .panel-body{
+                min-height:100vh;
+                background-color: #337ab7;
+                border-top: 1px solid white !important;
+                padding: 0;
+            }
+            #j_idt5 {
+                padding: 0;
+            }
+            .panel-title-link{
+                font-size: 40px;
+                text-decoration: none !important;
+            }
+            .panel-heading a:after {
+                color: white;
+            }
+            .panel-link{
+                font-size: 20px;
+                border-bottom: 1px solid white;
+            }
+            .panel-link a{
+                color: white;
+                margin: 10px 0;
+            }
+            .panel-link a:hover{
+                background-color: #337ab7 !important;
+            }
+            #user-table {
+                margin-top: 70px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <b:column span="3">
+            <b:panel look="primary" title="Edmond Bus">
+                <b:listLinks>
+                    <b:navLink href="userManagement.xhtml" class="panel-link" value="User Management" icon="user" iconAlign="left"/>
+                    <b:navLink href="routeManagement.xhtml" class="panel-link" value="Route Management" icon="road" iconAlign="left"/>
+                    <b:navLink href="sendNotification.xhtml" class="panel-link" value="Notification Mangagement" icon="bell" iconAlign="left"/>
+                </b:listLinks>
+            </b:panel>
+        </b:column>
+        <b:column span="9">
+            <div id="user-table">
+                <b:dataTable>
+                    <b:dataTableColumn></b:dataTableColumn>
+                    <b:dataTableColumn></b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <b:button value="Edit" look="primary"></b:button>
+                    </b:dataTableColumn>
+                </b:dataTable>
+            </div>
+            <br/>
+            <b:button value="Add" look="default" class="pull-right"></b:button>
+        </b:column>
+    </h:body>
+</html>
