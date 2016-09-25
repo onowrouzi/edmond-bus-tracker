@@ -26,10 +26,10 @@
             .panel-link{
                 font-size: 2vw;
                 border-bottom: 1px solid white;
+                padding: 20px 10px;
             }
             .panel-link a{
                 color: white;
-                margin: 10px 0;
             }
             .panel-link a:hover{
                 background-color: #337ab7 !important;
@@ -47,15 +47,21 @@
         <b:column span="3" class="col-xs-3">
             <b:panel look="primary" title="Edmond Bus">
                 <b:listLinks>
-                    <b:navLink href="userManagement.xhtml" class="panel-link" value="User Management">
-                        <b:image class="pull-right" value="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-id-48.png"/>
-                    </b:navLink>
-                    <b:navLink href="routeManagement.xhtml" class="panel-link" value="Route Management">
-                        <b:image class="pull-right" style="width:48px; height: auto" value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/schooolbus-48.png"/>
-                    </b:navLink>
-                    <b:navLink href="sendNotification.xhtml" class="panel-link" value="Notification Mangagement">
-                        <b:image class="pull-right" value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/chat-48.png"/>
-                    </b:navLink>
+                    <b:row class="panel-link">
+                        <b:navLink class="col-xs-9" span="9" href="userManagement.xhtml" value="User Management"/>
+                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3"
+                            value="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-id-512.png"/>
+                    </b:row>
+                    <b:row class="panel-link">
+                        <b:navLink class="col-xs-9" span="9" href="routeManagement.xhtml" value="Route Management"/>
+                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3" 
+                            value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/schooolbus-512.png"/>
+                    </b:row>
+                    <b:row class="panel-link">
+                        <b:navLink class="col-xs-9" span="9" href="sendNotification.xhtml" value="Notification Mangagement"/>
+                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3" 
+                            value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/chat-48.png"/>
+                    </b:row>
                 </b:listLinks>
             </b:panel>
         </b:column>
