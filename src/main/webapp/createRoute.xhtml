@@ -38,15 +38,24 @@
                 width:100%; 
                 border: 1px solid black;
             }
+            .panel-heading a:after { 
+                display: none !important;
+            }
         </style>
     </h:head>
     <h:body>
         <b:column span="3" class="col-xs-3">
             <b:panel look="primary" title="Edmond Bus">
                 <b:listLinks>
-                    <b:navLink href="userManagement.xhtml" class="panel-link" value="User Management" icon="user" iconAlign="left"/>
-                    <b:navLink href="routeManagement.xhtml" class="panel-link" value="Route Management" icon="road" iconAlign="left"/>
-                    <b:navLink href="sendNotification.xhtml" class="panel-link" value="Notification Mangagement" icon="bell" iconAlign="left"/>
+                    <b:navLink href="userManagement.xhtml" class="panel-link" value="User Management">
+                        <b:image class="pull-right" value="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-id-48.png"/>
+                    </b:navLink>
+                    <b:navLink href="routeManagement.xhtml" class="panel-link" value="Route Management">
+                        <b:image class="pull-right" style="width:48px; height: auto" value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/schooolbus-48.png"/>
+                    </b:navLink>
+                    <b:navLink href="sendNotification.xhtml" class="panel-link" value="Notification Mangagement">
+                        <b:image class="pull-right" value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/chat-48.png"/>
+                    </b:navLink>
                 </b:listLinks>
             </b:panel>
         </b:column>
