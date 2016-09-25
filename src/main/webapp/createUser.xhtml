@@ -17,14 +17,14 @@
                 padding: 0;
             }
             .panel-title-link{
-                font-size: 40px;
+                font-size: 3vw;
                 text-decoration: none !important;
             }
             .panel-heading a:after {
                 color: white;
             }
             .panel-link{
-                font-size: 20px;
+                font-size: 2vw;
                 border-bottom: 1px solid white;
             }
             .panel-link a{
@@ -34,9 +34,6 @@
             .panel-link a:hover{
                 background-color: #337ab7 !important;
             }
-            #user-header{
-                margin-top: 70px;
-            }
             #user-form{
                 background-color: #337ab7;
                 padding: 60px;
@@ -45,13 +42,13 @@
                 color: white;
             }
             #user-form > button{
-                width: 30%;
-                margin-left: 35%;
+                width: 50%;
+                margin-left: 25%;
             }
         </style>
     </h:head>
     <h:body>
-        <b:column span="3">
+        <b:column span="3" class="col-xs-3">
             <b:panel look="primary" title="Edmond Bus">
                 <b:listLinks>
                     <b:navLink href="userManagement.xhtml" class="panel-link" value="User Management" icon="user" iconAlign="left"/>
@@ -60,31 +57,28 @@
                 </b:listLinks>
             </b:panel>
         </b:column>
-        <b:column span="2"></b:column>
-        <b:column span="5">
+        <b:column span="2" class="visible-md visible-lg"></b:column>
+        <b:column span="5" class="col-xs-9">
             <h1 id="user-header">Add User</h1>
             <h:form id="user-form">
                 <br/><br/>
                 <label>Name</label>
                 <br/>
                 <b:inputText></b:inputText>
-                <br/>
                 <b:selectOneMenu>
                     <f:selectItem itemLabel="Select Role" itemValue=""></f:selectItem>
                 </b:selectOneMenu>
-                <br/>
                 <label>Password</label>
                 <br/>
                 <b:inputSecret></b:inputSecret>
-                <br/>
                 <label>Confirm Password</label>
                 <br/>
                 <b:inputSecret></b:inputSecret>
-                <br/><br/>
+                <br/>
                 <b:button value="Add" look="default"></b:button>
                 <br/><br/>
             </h:form>
         </b:column>
-        <b:column span="2"></b:column>
+        <b:column class="col-xs-2 visible-md visible-lg"></b:column>
     </h:body>
 </html>

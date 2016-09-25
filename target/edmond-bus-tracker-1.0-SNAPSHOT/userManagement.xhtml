@@ -17,14 +17,14 @@
                 padding: 0;
             }
             .panel-title-link{
-                font-size: 40px;
+                font-size: 3vw;
                 text-decoration: none !important;
             }
             .panel-heading a:after {
                 color: white;
             }
             .panel-link{
-                font-size: 20px;
+                font-size: 2vw;
                 border-bottom: 1px solid white;
             }
             .panel-link a{
@@ -35,12 +35,12 @@
                 background-color: #337ab7 !important;
             }
             #user-table {
-                margin-top: 70px;
+                margin-top: 40px;
             }
         </style>
     </h:head>
     <h:body>
-        <b:column span="3">
+        <b:column span="3" class="col-xs-3">
             <b:panel look="primary" title="Edmond Bus">
                 <b:listLinks>
                     <b:navLink href="userManagement.xhtml" class="panel-link" value="User Management" icon="user" iconAlign="left"/>
@@ -49,7 +49,7 @@
                 </b:listLinks>
             </b:panel>
         </b:column>
-        <b:column span="9">
+        <b:column span="9" class="col-xs-8">
             <div id="user-table">
                 <b:dataTable>
                     <b:dataTableColumn></b:dataTableColumn>
