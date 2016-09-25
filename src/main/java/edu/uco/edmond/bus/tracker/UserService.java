@@ -3,6 +3,7 @@ package edu.uco.edmond.bus.tracker;
 
 import com.google.gson.Gson;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,30 +23,28 @@ import javax.ws.rs.core.MediaType;
 public class UserService {
     
     Gson gson = new Gson();
-    //Connection database;
+    Connection database;
     List<User> users;
     
-    public UserService() //throws SQLException
+    public UserService() throws SQLException
     {
-        //this.database = new DBConnect().getDatabase();
+        DBConnect db = new DBConnect();
+        database = db.getDatabase();
+        boolean test = db.isConnected();
         this.users = new ArrayList<>();
         getAllUsers();
     }
     
-    private void getAllUsers() //throws SQLException
+    private void getAllUsers() throws SQLException
     {
-        User user1 = new User(1,"testclient", "test", "client");
-        User user2 = new User(2,"testadmin","test","administrator");
-        users.add(user1);
-        users.add(user2);
-        /*Statement stmt = database.createStatement();
+        Statement stmt = database.createStatement();
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM tblusers");
 
         while(rs.next()){
             User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("usertype"));
             users.add(user);
-        }*/
+        }
     }
     
     public User find(int id)
