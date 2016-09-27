@@ -1,6 +1,9 @@
 
 package edu.uco.edmond.bus.tracker;
 import edu.uco.edmond.bus.tracker.Dto;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Favorite {
     
@@ -12,6 +15,8 @@ public class Favorite {
     private Dto dto;
     private BusStop busStop;
     
+    public static String[] possibleTypes = {"BusStop"};
+    
     public Favorite(int id, int userId, int favoriteId, String type)
     {
         this.id = id;
@@ -22,6 +27,11 @@ public class Favorite {
             this.type = dto;
         else if("BusStop".equals(type))
             this.type = busStop;
+    }
+    
+    public int getId()
+    {
+        return id;
     }
     
     public int getUserId()
@@ -37,5 +47,13 @@ public class Favorite {
     public Dto getType()
     {
         return type;
+    }
+    
+    public String getTypeToString()
+    {
+        if(type == dto)
+            return "";
+        else
+            return "BusStop";
     }
 }

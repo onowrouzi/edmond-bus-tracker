@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(edu.uco.edmond.bus.tracker.BusService.class);
+        resources.add(edu.uco.edmond.bus.tracker.FavoriteService.class);
         resources.add(edu.uco.edmond.bus.tracker.UserService.class);
     }
     
