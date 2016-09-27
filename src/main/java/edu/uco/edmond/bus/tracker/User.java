@@ -1,6 +1,6 @@
 package edu.uco.edmond.bus.tracker;
 
-public class User {
+public class User extends Dto{
     private int id;
     private String username;
     private String password;

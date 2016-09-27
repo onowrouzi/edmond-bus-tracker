@@ -16,22 +16,24 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("userservice")
-public class UserService {
+public class UserService extends Service{
     
-    Gson gson = new Gson();
-    Connection database;
-    List<User> users;
+    private List<User> users;
     
     public UserService() throws SQLException
     {
-        database = new DBConnect().getDatabase();
         this.users = new ArrayList<>();
         getAllUsers();
     }
     
+    public List<User> users()
+    {
+        return users;
+    }
+    
     private void getAllUsers() throws SQLException
     {
-        Statement stmt = database.createStatement();
+        Statement stmt = getDatabase().createStatement();
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM tblusers");
 
@@ -92,16 +94,16 @@ public class UserService {
     @Path("users")
     public String getUsers(){
         if(users.isEmpty())
-            return gson.toJson("No users currently registered."); // no users in system
+            return getGson().toJson("No users currently registered."); // no users in system
         
-        return gson.toJson(users);
+        return getGson().toJson(users);
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/{id}")
     public String getUser(@PathParam("id") int id) throws SQLException {
-        return gson.toJson(find(id));
+        return getGson().toJson(find(id));
     }
     
     @GET
@@ -113,26 +115,20 @@ public class UserService {
         
         if(user != null)
             if("Administrator".equals(user.getType()))
-                return gson.toJson(user); //admin found
+                return getGson().toJson(user); //admin found
             else
-                return gson.toJson(null); //user is only allowed on mobile --send message to client code
+                return getGson().toJson(null); //user is only allowed on mobile --send message to client code
         
-        return gson.toJson(null); //user not found
+        return getGson().toJson(null); //user not found
     }
-    
-    
+     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/{username}/{password}")//talk about using optional params ?isadmin=false
     public String clientLogin(@PathParam("username") String username, @PathParam("password") String password) throws SQLException
     {
         //admin should be able to login to both mobile and web systems
-        return gson.toJson(find(username, password));
-    }
-    
-    public void logout()
-    {
-        
+        return getGson().toJson(find(username, password));
     }
     
     @GET
@@ -143,10 +139,10 @@ public class UserService {
         User User = find(username);
         
         if(User != null)
-            return gson.toJson(null); //send error message on client --user exists
+            return getGson().toJson(null); //send error message on client --user exists
         
         try{
-            PreparedStatement stmt = database.prepareStatement("INSERT INTO tblusers (username, password, usertype) VALUES(?,?,?)");
+            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblusers (username, password, usertype) VALUES(?,?,?)");
             stmt.setString(1, username);
             stmt.setString(2, password);
             stmt.setString(3, type);
@@ -156,7 +152,7 @@ public class UserService {
             stmt.close();
 
             //get id of new user
-            PreparedStatement stmt2 = database.prepareStatement("SELECT id FROM tblusers WHERE username=?");
+            PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tblusers WHERE username=?");
             stmt2.setString(1, username);
 
             ResultSet rs = stmt2.executeQuery();
@@ -170,10 +166,10 @@ public class UserService {
             stmt2.close();
             
         }catch(SQLException s){
-            return gson.toJson(s.toString()); //SQL failed
+            return getGson().toJson(s.toString()); //SQL failed
         }
         
-        return gson.toJson(User);
+        return getGson().toJson(User);
     }
     
     @GET
@@ -192,10 +188,10 @@ public class UserService {
         User User = find(username);
         
         if(User == null)
-            return gson.toJson(null); //send error message on client --user does not exist
+            return getGson().toJson(null); //send error message on client --user does not exist
         
         try{
-            PreparedStatement stmt = database.prepareStatement("DELETE FROM tblusers WHERE id=?");
+            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblusers WHERE id=?");
             stmt.setInt(1, User.getId());
 
             int count = stmt.executeUpdate();
@@ -203,11 +199,11 @@ public class UserService {
             stmt.close();
             
         }catch(SQLException s){
-            return gson.toJson(s.toString());
+            return getGson().toJson(s.toString());
         }
         
         users.remove(User);
         
-        return gson.toJson(User);
+        return getGson().toJson(User);
     }
 }
