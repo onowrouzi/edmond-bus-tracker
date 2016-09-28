@@ -84,17 +84,17 @@
             <br />
             <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{createRouteView.draggableModel}" style="width:100%;height:400px">
                 <p:ajax event="markerDrag" listener="#{createRouteView.onMarkerDrag}"/>
+                <p:ajax event="overlaySelect" listener="#{createRouteView.onMarkerDragStart}" />
             </p:gmap>
             <br></br>
-        </b:column>
-        
-        <b:column span="9" class="col-xs-9">
             <h:form>
                 <b:row>
                     <ui:repeat var="r" value="#{createRouteView.route.routes}">
                     <label>Stop Name</label>
                     <br />
-                    <b:inputText span="6" value="#{r.stopName}"></b:inputText>
+                    <b:inputText value="#{r.stopName}">
+                        <p:ajax event="keyRaise" listener="#{createRouteView.nameChange()}"></p:ajax>
+                    </b:inputText>
                     <b:commandButton look="danger" action='#{createRouteView.removeStop(r.stopOnRoute)}' value="Remove Stop"></b:commandButton>
                 </ui:repeat>
                 </b:row>
@@ -104,7 +104,7 @@
                 </b:row>
             </h:form>
             <br />
-        </b:column>    
+        </b:column>   
         
     </h:body>
     <script src="http://maps.google.com/maps/api/js?key=AIzaSyCmNdJLmB7CNcPci9axxj1K3pWwzFZpnsw" type="text/javascript" ></script>
