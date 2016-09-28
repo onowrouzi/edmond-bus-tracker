@@ -147,7 +147,7 @@ public class FavoriteService extends Service {
             //get id of new favorite
             PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tblfavorites WHERE userId=? AND favoriteId=?");
             stmt2.setInt(1, userId);
-            stmt2.setInt(1, favoriteId);
+            stmt2.setInt(2, favoriteId);
 
             ResultSet rs = stmt2.executeQuery();
             
