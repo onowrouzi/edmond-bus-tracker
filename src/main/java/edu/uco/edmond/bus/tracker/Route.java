@@ -9,7 +9,7 @@ public class Route {
     private String routeName;
     private String identifier; // used to identify the route when performing bulk operations
     
-    public void init() {}
+    public Route() {}
 
     public ArrayList<RouteStop> getRoutes() {
         return routes;

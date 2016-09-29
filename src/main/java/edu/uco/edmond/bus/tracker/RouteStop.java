@@ -12,8 +12,7 @@ public class RouteStop {
     
     private boolean isBeingDrug = false;
     
-    public void init() {
-        
+    public RouteStop() {
     }
 
     public String getStopName() {
@@ -54,5 +53,13 @@ public class RouteStop {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+    
+    public double getStopLat() {
+        return this.location.getLat();
+    }
+    
+     public double getStopLng() {
+        return this.location.getLng();
     }
 }
