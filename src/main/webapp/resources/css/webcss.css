@@ -1,0 +1,123 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 26, 2016, 7:12:06 PM
+    Author     : kathleencao
+*/
+
+.body, .p, .input, .textarea, .td, .select {
+    font-family:Arial;
+    font-size: 10pt;
+}
+
+.textarea {
+    scrollbar-track-color: #E4EDF1; 
+    scrollbar-face-color: #CCDDE6; 
+    scrollbar-highlight-color: #E4EDF1;
+    scrollbar-3dlight-color: #E4EDF1; 
+    scrollbar-shadow-color: #E4EDF1; 
+    scrollbar-darkshadow-color: #E4EDF1; 
+    scrollbar-arrow-color: #3498DB;
+}
+
+.panel-body {
+    min-height:100vh;
+    background-color: #2980B9;
+    border-top: 1px solid white !important;
+    padding: 0;
+}
+
+.dataTable1 {
+    border-top: 1px solid #aaaaaa;
+    border-left: 1px solid #aaaaaa;
+    border-right: 1px solid #aaaaaa;
+    border-bottom: 1px solid #aaaaaa;
+}
+.body-heading {
+    color: #2C3E50;
+    font-family: verdana;
+    font-weight: bold;
+    font-size: 55px;
+}
+
+#j_idt5 {
+    padding: 0;
+}
+
+.panel-title-link {
+    font-size: 3vw;
+    text-decoration: none !important;
+}
+
+.panel-heading a:after {
+    color: white;
+}
+
+.panel-link {
+    font-size: 2vw;
+    border-bottom: 1px solid white;
+    padding: 20px 10px;
+}
+           
+.panel-link a {
+    color: white;
+}
+
+.panel-link a:hover {
+    background-color: #2980B9 !important;
+}
+
+.panel-heading a:after { 
+   display: none !important;
+}
+           
+#route-table {
+    margin-top: 40px;
+}
+
+#user-form {
+    background-color: #2980B9;
+    padding: 60px;
+}
+            
+#user-form > label {
+    color: white;
+}
+
+#user-form > button {
+    width: 50%;
+    margin-left: 25%;
+}
+
+#user-table {
+    margin-top: 40px;
+}
+
+.panel-heading a:after { 
+    display: none !important;
+}
+
+.link-icon {
+    width: 3vw;
+    height: auto;
+}
+canvas {
+    width:100%; 
+    border: 1px solid black;
+}
+            
+#notification-form {
+    background-color: #2980B9;
+    padding: 20px;
+}
+
+#notification-form > label {
+    color: white;
+}
+
+#notification-form > button, #notification-form > select {
+    width: 100%;
+}
