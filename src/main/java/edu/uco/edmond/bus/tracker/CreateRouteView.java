@@ -1,14 +1,12 @@
 package edu.uco.edmond.bus.tracker;
 
 import java.io.Serializable;
+import java.util.UUID;
 import javax.annotation.PostConstruct; 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
   
 import org.primefaces.event.map.MarkerDragEvent;
-import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -23,9 +21,9 @@ public class CreateRouteView implements Serializable {
     
     private Route route = new Route();
     
-    private double defaultLat = 35.6526783;
-    private double defaultLng = -97.4781833;
-    private String defaultStopName = "New Stop";
+    private final double defaultLat = 35.6526783;
+    private final double defaultLng = -97.4781833;
+    private final String defaultStopName = "New Stop";
     
     private int currentRouteOrderNumber = 1;
         
@@ -40,20 +38,21 @@ public class CreateRouteView implements Serializable {
       
     public void onMarkerDrag(MarkerDragEvent event) {
         marker = event.getMarker();
-        System.out.println(marker.getUUID());
+        System.out.println(marker.getTitle());
         
         // if we want to create a growl alert
         //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Dragged", "Lat:" + marker.getLatlng().getLat() + ", Lng:" + marker.getLatlng().getLng()));
     }
     
     public void addRoute() {
+        String tempUuid = UUID.randomUUID().toString();
         RouteStop routeStop = new RouteStop();
         LatLng coords = new LatLng(defaultLat, defaultLng);
-        this.addMarker(coords);
+        this.addMarker(coords, tempUuid);
         routeStop.setStopOnRoute(currentRouteOrderNumber++);
-        this.verifyDefaultStopName();
         routeStop.setStopName(defaultStopName);
         routeStop.setLocation(coords);
+        routeStop.setIdentifier(tempUuid);
         this.route.addRoute(routeStop);
     }
 //
@@ -70,10 +69,6 @@ public class CreateRouteView implements Serializable {
 //        System.out.println(markerBeingDrug.getTitle() + "AYyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 //    }
     
-    public void onDragEnd() {
-        System.out.println("here i am");
-    }
-    
     public void save() {
         // save logic
     }
@@ -86,25 +81,9 @@ public class CreateRouteView implements Serializable {
         this.route = route;
     }
     
-    private void addMarker(LatLng coords) {
-        Marker newMarker = new Marker(coords, defaultStopName);
+    private void addMarker(LatLng coords, String name) {
+        Marker newMarker = new Marker(coords, name);
         newMarker.setDraggable(true);
         this.draggableModel.addOverlay(newMarker);
-    }
-    
-    private void checkDefaultName(String nameToTest) {
-        
-        String defaultNameRegex = "[0-8]";
-        String characterToTest = nameToTest.substring(0, nameToTest.length() - 1);
-        
-        if (characterToTest.matches(defaultNameRegex)) {
-            // if not 9
-                // convert to int
-                // increment
-                // remove old number from 
-        }
-        else {
-            // add number to the end of name
-        }
     }
 }

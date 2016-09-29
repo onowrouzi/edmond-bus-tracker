@@ -8,6 +8,7 @@ public class RouteStop {
     private LatLng location;
     // the number of what stop this is on the route in order
     private int stopOnRoute;
+    private String identifier; // used to identify the route when performing bulk operations
     
     private boolean isBeingDrug = false;
     
@@ -45,5 +46,13 @@ public class RouteStop {
 
     public void setIsBeingDrug(boolean isBeingDrug) {
         this.isBeingDrug = isBeingDrug;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 }
