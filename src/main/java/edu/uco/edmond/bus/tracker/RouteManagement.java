@@ -1,5 +1,6 @@
 package edu.uco.edmond.bus.tracker;
 
+import com.eclipsesource.json.Json;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,6 +14,10 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
+import org.primefaces.model.map.LatLng;
 
 @ManagedBean
 @ViewScoped
@@ -50,7 +55,30 @@ public class RouteManagement implements Serializable {
             
             //print result
             System.out.println(response.toString());
-            
+            JSONArray jsonarray;
+            try {
+                jsonarray = new JSONArray(response.toString());
+                for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject jsonobject;
+                try {
+                    jsonobject = jsonarray.getJSONObject(i);
+                    String id = jsonobject.getString("id");
+                    String name = jsonobject.getString("name");
+                    Double lat = jsonobject.getDouble("latitude");
+                    Double lng = jsonobject.getDouble("longitude");
+                    System.out.println(name);
+                    RouteStop temp = new RouteStop();
+                    temp.setStopName(name);
+                    temp.setLocation(new LatLng(lat, lng));
+                    stops.add(temp);
+                } catch (JSONException ex) {
+                    Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            } catch (JSONException ex) {
+                Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
         }

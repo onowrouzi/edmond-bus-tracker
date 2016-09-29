@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import static java.lang.System.out;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -86,6 +87,7 @@ public class CreateRouteView implements Serializable {
     public void save() {
         
         for (RouteStop r : this.route.getRoutes()) {
+            System.out.println(r.getStopName());
             DataOutputStream wr = null;
             try {
                 String routeStopName = r.getStopName();
@@ -118,11 +120,7 @@ public class CreateRouteView implements Serializable {
             } catch (IOException ex) {
                 Logger.getLogger(CreateRouteView.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
-                try {
-                    wr.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(CreateRouteView.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
             }
         }
     }
