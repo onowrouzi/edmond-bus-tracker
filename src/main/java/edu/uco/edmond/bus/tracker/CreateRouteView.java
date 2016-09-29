@@ -1,7 +1,9 @@
 package edu.uco.edmond.bus.tracker;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -33,7 +35,7 @@ public class CreateRouteView implements Serializable {
     
     private final double defaultLat = 35.6526783;
     private final double defaultLng = -97.4781833;
-    private final String defaultStopName = "New Stop";
+    private final String defaultStopName = "Route";
         
     private int currentRouteOrderNumber = 1;
     
@@ -95,12 +97,24 @@ public class CreateRouteView implements Serializable {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-                connection.setRequestProperty("Accept-Language", "en-US");
-                connection.setUseCaches(false);
-                connection.setDoOutput(true);
-                wr = new DataOutputStream(connection.getOutputStream());
-                wr.flush();
-                wr.close();
+                
+                int responseCode = connection.getResponseCode();
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " + responseCode);
+
+		BufferedReader in = new BufferedReader(
+		        new InputStreamReader(connection.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+
+		//print result
+		System.out.println(response.toString());
+ 
             } catch (IOException ex) {
                 Logger.getLogger(CreateRouteView.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
