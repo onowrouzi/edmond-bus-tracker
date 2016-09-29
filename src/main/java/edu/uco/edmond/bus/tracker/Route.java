@@ -7,6 +7,7 @@ public class Route {
     private ArrayList<RouteStop> routes = new ArrayList<>();
     private User driver;
     private String routeName;
+    private String identifier; // used to identify the route when performing bulk operations
     
     public void init() {}
 
@@ -40,6 +41,14 @@ public class Route {
     
     public void removeStop(int stopNumber) {
         this.routes.remove(stopNumber);
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
 }
