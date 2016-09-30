@@ -2,48 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <style>
-            .panel-body{
-                min-height:100vh;
-                background-color: #337ab7;
-                border-top: 1px solid white !important;
-                padding: 0;
-            }
-            #j_idt5 {
-                padding: 0;
-            }
-            .panel-title-link{
-                font-size: 3vw;
-                text-decoration: none !important;
-            }
-            .panel-heading a:after {
-                color: white;
-            }
-            .panel-link{
-                font-size: 2vw;
-                border-bottom: 1px solid white;
-                padding: 20px 10px;
-            }
-            .panel-link a{
-                color: white;
-            }
-            .panel-link a:hover{
-                background-color: #337ab7 !important;
-            }
-            .panel-heading a:after { 
-                display: none !important;
-            }
-            #route-table {
-                margin-top: 40px;
-            }
-        </style>
+        <h:outputStylesheet library="css" name="webcss.css" />
     </h:head>
     <h:body>
         <b:column span="3" class="col-xs-3">
             <b:panel look="primary" title="Edmond Bus">
+                <ui:repeat var="r" value="#{routeManagement.getStops()}"></ui:repeat>
                 <b:listLinks>
                     <b:row class="panel-link">
                         <b:navLink class="col-xs-9" span="9" href="userManagement.xhtml" value="User Management"/>
@@ -65,12 +33,10 @@
         </b:column>
         <b:column span="9" class="col-xs-9">
             <div id="route-table">
-                <b:dataTable>
-                    <b:dataTableColumn></b:dataTableColumn>
-                    <b:dataTableColumn></b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <b:button value="Edit" look="primary"></b:button>
-                    </b:dataTableColumn>
+                <b:dataTable value="#{routeManagement.getStops()}" var="r">
+                    <b:dataTableColumn>#{r.getStopName()}</b:dataTableColumn>
+                    <b:dataTableColumn>#{r.getStopLat()}</b:dataTableColumn>
+                    <b:dataTableColumn>#{r.getStopLng()}</b:dataTableColumn>
                 </b:dataTable>
             </div>
             <b:button value="Add" look="default" class="pull-right" outcome="createRoute"></b:button>
