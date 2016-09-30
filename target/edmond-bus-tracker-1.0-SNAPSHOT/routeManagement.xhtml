@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
         <style>
@@ -44,6 +45,7 @@
     <h:body>
         <b:column span="3" class="col-xs-3">
             <b:panel look="primary" title="Edmond Bus">
+                <ui:repeat var="r" value="#{routeManagement.getStops()}"></ui:repeat>
                 <b:listLinks>
                     <b:row class="panel-link">
                         <b:navLink class="col-xs-9" span="9" href="userManagement.xhtml" value="User Management"/>
@@ -65,9 +67,9 @@
         </b:column>
         <b:column span="9" class="col-xs-9">
             <div id="route-table">
-                <b:dataTable>
-                    <b:dataTableColumn></b:dataTableColumn>
-                    <b:dataTableColumn></b:dataTableColumn>
+                <b:dataTable value="#{routeManagement.getStops()}" var="r">
+                    <b:dataTableColumn>#{r.getStopName}</b:dataTableColumn>
+                    <b:dataTableColumn>#{r.getStopLatLng}</b:dataTableColumn>
                     <b:dataTableColumn>
                         <b:button value="Edit" look="primary"></b:button>
                     </b:dataTableColumn>
