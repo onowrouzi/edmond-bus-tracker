@@ -5,55 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <style>
-            .panel-body{
-                min-height:100vh;
-                background-color: #337ab7;
-                border-top: 1px solid white !important;
-                padding: 0;
-            }
-            #j_idt5 {
-                padding: 0;
-            }
-            .panel-title-link{
-                font-size: 3vw;
-                text-decoration: none !important;
-            }
-            .panel-heading a:after {
-                color: white;
-            }
-            .panel-link{
-                font-size: 2vw;
-                border-bottom: 1px solid white;
-                padding: 20px 10px;
-            }
-            .panel-link a{
-                color: white;
-            }
-            .panel-link a:hover{
-                background-color: #337ab7 !important;
-            }
-            .link-icon{
-                width: 3vw;
-                height: auto;
-            }
-            canvas{
-                width:100%; 
-                border: 1px solid black;
-            }
-            .panel-heading a:after { 
-                display: none !important;
-            }#notification-form{
-                background-color: #337ab7;
-                padding: 20px;
-            }
-            #notification-form > label{
-                color: white;
-            }
-            #notification-form > button, #notification-form > select{
-                width: 100%;
-            }
-        </style>
+        <h:outputStylesheet library="css" name="webcss.css" />
     </h:head>
     <h:body>
         <b:column span="3" class="col-xs-3">
