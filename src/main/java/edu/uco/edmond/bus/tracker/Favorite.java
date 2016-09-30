@@ -10,10 +10,7 @@ public class Favorite {
     private int id;
     private int userId;
     private int favoriteId;
-    private Dto type;
-    
-    private Dto dto;
-    private BusStop busStop;
+    private String type;
     
     public static String[] possibleTypes = {"BusStop"};
     
@@ -22,11 +19,7 @@ public class Favorite {
         this.id = id;
         this.userId = userId;
         this.favoriteId = favoriteId;
-        
-        if("".equals(type))
-            this.type = dto;
-        else if("BusStop".equals(type))
-            this.type = busStop;
+        this.type = type;
     }
     
     public int getId()
@@ -44,16 +37,8 @@ public class Favorite {
         return favoriteId;
     }
     
-    public Dto getType()
+    public String getType()
     {
         return type;
-    }
-    
-    public String getTypeToString()
-    {
-        if(type == dto)
-            return "";
-        else
-            return "BusStop";
     }
 }
