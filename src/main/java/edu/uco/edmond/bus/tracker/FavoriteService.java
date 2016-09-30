@@ -131,7 +131,7 @@ public class FavoriteService extends Service {
             return getGson().toJson(null); //no user found
         
         for(Favorite favorite : usersFavorite.favorites())
-            if(favorite.getTypeToString().equals(type) && favorite.getFavoriteId() == favoriteId)
+            if(favorite.getType().equals(type) && favorite.getFavoriteId() == favoriteId)
                 return getGson().toJson(null); //favorite already exists for this user
         
         try{
