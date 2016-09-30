@@ -136,9 +136,9 @@ public class UserService extends Service{
     @Path("users/create/{username}/{password}/{type}")
     public String register(@PathParam("username") String username, @PathParam("password") String password, @PathParam("type") String type)
     {
-        User User = find(username);
+        User user = find(username);
         
-        if(User != null)
+        if(user != null)
             return getGson().toJson(null); //send error message on client --user exists
         
         try{
@@ -160,8 +160,8 @@ public class UserService extends Service{
             rs.first();
 
             int id = rs.getInt("id");
-            User = new User(id,username,password,type);
-            users.add(User);  
+            user = new User(id,username,password,type);
+            users.add(user);  
             
             stmt2.close();
             
@@ -169,30 +169,24 @@ public class UserService extends Service{
             return getGson().toJson(s.toString()); //SQL failed
         }
         
-        return getGson().toJson(User);
+        return getGson().toJson(user);
     }
     
+    //TODO change route to oldusername/newusername/newpassword, update mobile client as well
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/edit/{username}/{oldPassword}/{newPassword}")
-    public User edit(@PathParam("username") String username, @PathParam("oldPassword")String oldPassword, @PathParam("newPassword") String newPassword)
+    public String edit(@PathParam("username") String username, @PathParam("oldPassword")String oldPassword, @PathParam("newPassword") String newPassword)
     {
-        return null;
-    }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/delete/{username}")
-    public String delete(@PathParam("username") String username)
-    {
-        User User = find(username);
+        User user = find(username);
         
-        if(User == null)
-            return getGson().toJson(null); //send error message on client --user does not exist
+        if(user == null)
+            return getGson().toJson(null); //send error message on client --user does not exist, due to the way the client is set up this should never happen
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblusers WHERE id=?");
-            stmt.setInt(1, User.getId());
+            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tblusers SET password=? WHERE id=?");
+            stmt.setString(1, newPassword);
+            stmt.setInt(2, user.getId());
 
             int count = stmt.executeUpdate();
             
@@ -202,8 +196,35 @@ public class UserService extends Service{
             return getGson().toJson(s.toString());
         }
         
-        users.remove(User);
+        user.setPassword(newPassword); //update instance
         
-        return getGson().toJson(User);
+        return getGson().toJson(user);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/delete/{username}")
+    public String delete(@PathParam("username") String username)
+    {
+        User user = find(username);
+        
+        if(user == null)
+            return getGson().toJson(null); //send error message on client --user does not exist
+        
+        try{
+            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblusers WHERE id=?");
+            stmt.setInt(1, user.getId());
+
+            int count = stmt.executeUpdate();
+            
+            stmt.close();
+            
+        }catch(SQLException s){
+            return getGson().toJson(s.toString());
+        }
+        
+        users.remove(user);
+        
+        return getGson().toJson(user);
     }
 }
