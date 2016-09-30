@@ -40,7 +40,7 @@ public class CreateRouteView implements Serializable {
         
     private int currentRouteOrderNumber = 1;
     
-    public String mapKey = "http://maps.google.com/maps/api/js?key=" + System.getenv("MAP_API");
+    public String mapKey = "https://maps.google.com/maps/api/js?key=" + System.getenv("MAP_API");
         
     HttpURLConnection connection = null;
     
@@ -155,7 +155,6 @@ public class CreateRouteView implements Serializable {
     }
     
     public String getMapKey() {
-        return "http://maps.google.com/maps/api/js?key=AIzaSyDKLZuNqtEa-sc6hfNy9Rf3YUPE68WNnj0";
+        return this.mapKey;
     }
-
 }
