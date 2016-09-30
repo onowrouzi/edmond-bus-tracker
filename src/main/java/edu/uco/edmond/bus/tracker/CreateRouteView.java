@@ -40,6 +40,8 @@ public class CreateRouteView implements Serializable {
         
     private int currentRouteOrderNumber = 1;
     
+    public String mapKey = "https://maps.google.com/maps/api/js?key=" + System.getenv("MAP_API");
+        
     HttpURLConnection connection = null;
     
     // temp since we don't have users implemented yet
@@ -151,5 +153,8 @@ public class CreateRouteView implements Serializable {
     public void setPossibleDrivers(ArrayList<User> possibleDrivers) {
         this.possibleDrivers = possibleDrivers;
     }
-
+    
+    public String getMapKey() {
+        return this.mapKey;
+    }
 }
