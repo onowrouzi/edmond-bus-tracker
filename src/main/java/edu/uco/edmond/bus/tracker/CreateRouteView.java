@@ -1,5 +1,6 @@
 package edu.uco.edmond.bus.tracker;
 
+import edu.uco.edmond.bus.tracker.Dtos.User;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;

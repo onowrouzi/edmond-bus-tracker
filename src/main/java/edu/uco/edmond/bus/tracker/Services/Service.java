@@ -1,7 +1,8 @@
 
-package edu.uco.edmond.bus.tracker;
+package edu.uco.edmond.bus.tracker.Services;
 
 import com.google.gson.Gson;
+import edu.uco.edmond.bus.tracker.DBConnect;
 import java.sql.Connection;
 import java.sql.SQLException;
 

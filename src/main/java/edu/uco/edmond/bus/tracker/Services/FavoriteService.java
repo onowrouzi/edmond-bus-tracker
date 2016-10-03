@@ -1,6 +1,10 @@
 
-package edu.uco.edmond.bus.tracker;
+package edu.uco.edmond.bus.tracker.Services;
 
+import edu.uco.edmond.bus.tracker.Dtos.Favorite;
+import edu.uco.edmond.bus.tracker.Services.UserService;
+import edu.uco.edmond.bus.tracker.Dtos.User;
+import edu.uco.edmond.bus.tracker.Support.UsersFavorites;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
