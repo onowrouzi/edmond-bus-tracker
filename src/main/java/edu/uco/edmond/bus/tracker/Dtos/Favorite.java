@@ -1,6 +1,6 @@
 
-package edu.uco.edmond.bus.tracker;
-import edu.uco.edmond.bus.tracker.Dto;
+package edu.uco.edmond.bus.tracker.Dtos;
+import edu.uco.edmond.bus.tracker.Dtos.Dto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -1,6 +1,7 @@
 
-package edu.uco.edmond.bus.tracker;
+package edu.uco.edmond.bus.tracker.Services;
 
+import edu.uco.edmond.bus.tracker.Dtos.BusStop;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

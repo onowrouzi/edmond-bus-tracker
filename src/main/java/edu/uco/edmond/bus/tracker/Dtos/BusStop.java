@@ -1,5 +1,5 @@
 
-package edu.uco.edmond.bus.tracker;
+package edu.uco.edmond.bus.tracker.Dtos;
 
 public class BusStop extends Dto{
     
