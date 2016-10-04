@@ -1,5 +1,6 @@
 package edu.uco.edmond.bus.tracker;
 
+import edu.uco.edmond.bus.tracker.Dtos.User;
 import java.util.ArrayList;
 
 public class Route {

@@ -1,4 +1,4 @@
-package edu.uco.edmond.bus.tracker;
+package edu.uco.edmond.bus.tracker.Dtos;
 
 public class User extends Dto{
     private int id;
