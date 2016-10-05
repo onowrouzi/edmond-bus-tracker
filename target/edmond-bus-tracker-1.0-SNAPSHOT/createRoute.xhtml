@@ -8,64 +8,31 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <style>
-            .panel-body{
-                min-height:100vh;
-                background-color: #337ab7;
-                border-top: 1px solid white !important;
-                padding: 0;
-            }
-            #j_idt5 {
-                padding: 0;
-            }
-            .panel-title-link{
-                font-size: 3vw;
-                text-decoration: none !important;
-            }
-            .panel-heading a:after {
-                color: white;
-            }
-            .panel-link{
-                font-size: 2vw;
-                border-bottom: 1px solid white;
-            }
-            .panel-link a{
-                color: white;
-                margin: 10px 0;
-            }
-            .panel-link a:hover{
-                background-color: #337ab7 !important;
-            }
-            canvas{
-                width:100%; 
-                border: 1px solid black;
-            }
-            .panel-heading a:after { 
-                display: none !important;
-            }
-            #map {
-                height: 400px;
-                width: 100%;
-            }
-        </style>
+        <h:outputStylesheet library="css" name="webcss.css" />
     </h:head>
     <h:body>
         <b:column span="3" class="col-xs-3">
             <b:panel look="primary" title="Edmond Bus">
                 <b:listLinks>
-                    <b:navLink href="userManagement.xhtml" class="panel-link" value="User Management">
-                        <b:image class="pull-right" value="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-id-48.png"/>
-                    </b:navLink>
-                    <b:navLink href="routeManagement.xhtml" class="panel-link" value="Route Management">
-                        <b:image class="pull-right" style="width:48px; height: auto" value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/schooolbus-48.png"/>
-                    </b:navLink>
-                    <b:navLink href="sendNotification.xhtml" class="panel-link" value="Notification Mangagement">
-                        <b:image class="pull-right" value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/chat-48.png"/>
-                    </b:navLink>
+                    <b:row class="panel-link">
+                        <b:navLink class="col-xs-9" span="9" href="userManagement.xhtml" value="User Management"/>
+                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3"
+                            value="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-id-512.png"/>
+                    </b:row>
+                    <b:row class="panel-link">
+                        <b:navLink class="col-xs-9" span="9" href="routeManagement.xhtml" value="Route Management"/>
+                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3"
+                            value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/schooolbus-512.png"/>
+                    </b:row>
+                    <b:row class="panel-link">
+                        <b:navLink class="col-xs-9" span="9" href="sendNotification.xhtml" value="Notification Mangagement"/>
+                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3"
+                            value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/chat-48.png"/>
+                    </b:row>
                 </b:listLinks>
             </b:panel>
         </b:column>
-        
+
         <b:column span="4" class="col-xs-9">
             <h:form>
                 <h1 class="text-center">#{indexBean.message}</h1>
@@ -76,7 +43,7 @@
                 <b:commandButton action="#{createRouteView.save()}" look="default" value="Save" />
             </h:form>
         </b:column>
-        
+
         <b:column span="5" class="col-xs-9">
             <br />
             <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{createRouteView.draggableModel}" style="width:100%;height:400px">
@@ -88,8 +55,7 @@
                     <ui:repeat var="r" value="#{createRouteView.route.routes}">
                     <label>Stop Name</label>
                     <br />
-                    <b:inputText value="#{r.stopName}">
-                    </b:inputText>
+                    <b:inputText value="#{r.stopName}"></b:inputText>
                 </ui:repeat>
                 </b:row>
                 <br />
@@ -98,9 +64,8 @@
                 </b:row>
             </h:form>
             <br />
-        </b:column>   
-        
-    </h:body>
-    <script src="http://maps.google.com/maps/api/js?key=" type="text/javascript" ></script>
-</html>
+        </b:column>
 
+    </h:body>
+    <script src="#{createRouteView.mapKey}" type="text/javascript" ></script>
+</html>
