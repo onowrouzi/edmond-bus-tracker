@@ -2,36 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
         <h:outputStylesheet library="css" name="webcss.css" />
     </h:head>
     <h:body>
         <b:column span="3" class="col-xs-3">
-           <b:panel look="primary" title="Edmond Bus">
-                <b:listLinks>
-                    <b:row class="panel-link">
-                        <b:navLink href="userManagement.xhtml" 
-                            icon="user" iconAlign="left" value="User Management"/>
-                    </b:row>
-                    <b:row class="panel-link">
-                        <b:navLink href="routeManagement.xhtml" 
-                            icon="arrow-right" iconAlign="left" value="Route Management"/>
-                    </b:row>
-                    <b:row class="panel-link">
-                        <b:navLink href="sendNotification.xhtml" 
-                            icon="comment" iconAlign="left" value="Send Notification"/>
-                    </b:row>
-                    <b:row class="panel-link">
-                        <b:navLink href="stopManagement.xhtml" 
-                            icon="remove-circle" iconAlign="left" value="Stop Management"/>
-                    </b:row>
-                    <b:row class="panel-link">
-                        <b:navLink href="busManagement.xhtml" 
-                            icon="road" iconAlign="left" value="Bus Management"/>
-                    </b:row>
-                </b:listLinks>
+            <ui:include src="sidebar.xhtml"/>
             </b:panel>
         </b:column>
         <b:column span="2" class="visible-md visible-lg"></b:column>
