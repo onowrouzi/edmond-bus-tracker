@@ -11,7 +11,6 @@
     <h:body>
         <b:column span="3" class="col-xs-3">
             <b:panel look="primary" title="Edmond Bus">
-                <ui:repeat var="r" value="#{routeManagement.getStops()}"></ui:repeat>
                 <b:listLinks>
                     <b:row class="panel-link">
                         <b:navLink class="col-xs-9" span="9" href="userManagement.xhtml" value="User Management"/>
@@ -20,13 +19,23 @@
                     </b:row>
                     <b:row class="panel-link">
                         <b:navLink class="col-xs-9" span="9" href="routeManagement.xhtml" value="Route Management"/>
-                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3" 
-                            value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/schooolbus-512.png"/>
+                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3"
+                            value="https://cdn2.iconfinder.com/data/icons/free-basic-icon-set-2/300/12-128.png"/>
                     </b:row>
                     <b:row class="panel-link">
                         <b:navLink class="col-xs-9" span="9" href="sendNotification.xhtml" value="Notification Mangagement"/>
-                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3" 
+                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3"
                             value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/chat-48.png"/>
+                    </b:row>
+                    <b:row class="panel-link">
+                        <b:navLink class="col-xs-9" span="9" href="stopManagement.xhtml" value="Stop Mangagement"/>
+                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3"
+                            value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/stop-128.png"/>
+                    </b:row>
+                    <b:row class="panel-link">
+                        <b:navLink class="col-xs-9" span="9" href="busManagement.xhtml" value="Bus Mangagement"/>
+                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3"
+                            value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/schooolbus-512.png"/>
                     </b:row>
                 </b:listLinks>
             </b:panel>
