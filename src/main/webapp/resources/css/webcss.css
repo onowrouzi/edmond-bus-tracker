@@ -67,7 +67,8 @@ and open the template in the editor.
 }
 
 .panel-link a:hover {
-    background-color: #DDD !important;
+    background-color: #2980B9 !important;
+    color: #DDD !important;
 }
 
 .panel-heading a:after { 
@@ -94,19 +95,6 @@ and open the template in the editor.
 
 #user-table {
     margin-top: 40px;
-}
-
-.panel-heading a:after { 
-    display: none !important;
-}
-
-.link-icon {
-    width: 3vw;
-    height: auto;
-}
-canvas {
-    width:100%; 
-    border: 1px solid black;
 }
             
 #notification-form {
