@@ -12,4 +12,10 @@
 hs_err_pid*
 
 # anything built when running the application
-target/*
+*/target/*
+*/target/**
+
+.project
+.settings/
+.classpath
+target/
