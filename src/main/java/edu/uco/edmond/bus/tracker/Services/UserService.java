@@ -71,7 +71,26 @@ public class UserService extends Service{
         
         //no user found
         return null;
-    }   
+    }
+    
+    public List<User> findGroupUsers(String userType)
+    {
+        List<User> groupUsers = new ArrayList<>();
+        for(User user : users)
+        {
+            if(user.getType().equals(userType))
+            {
+                // add user to list
+                groupUsers.add(user);
+            }
+        }
+        
+        if (groupUsers.isEmpty()) {
+            return null;
+        } else {
+            return groupUsers;
+        }
+    }
         
     public User find(String username, String password)
     {
@@ -109,13 +128,24 @@ public class UserService extends Service{
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/usertype/{type}")
+    public String getGroupUsers(@PathParam("type") String userType) throws SQLException {
+        List<User> groupUsers = findGroupUsers(userType);
+        if (groupUsers.isEmpty())
+            return getGson().toJson("No users currently registered.");
+        
+        return getGson().toJson(groupUsers);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("users/administrator/{username}/{password}") //talk about using optional params ?isadmin=true
     public String administratorLogin(@PathParam("username") String username, @PathParam("password") String password) throws SQLException
     {
         User user = find(username, password);
         
         if(user != null)
-            if("Administrator".equals(user.getType()))
+            if("admin".equals(user.getType()))
                 return getGson().toJson(user); //admin found
             else
                 return getGson().toJson(null); //user is only allowed on mobile --send message to client code

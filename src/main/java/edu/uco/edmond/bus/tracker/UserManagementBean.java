@@ -1,0 +1,192 @@
+package edu.uco.edmond.bus.tracker;
+
+import edu.uco.edmond.bus.tracker.Dtos.User;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
+
+@Named
+@RequestScoped
+public class UserManagementBean implements Serializable {
+    
+    private ArrayList<User> admins = new ArrayList<>();
+    private ArrayList<User> clients = new ArrayList<>();
+    private ArrayList<User> drivers = new ArrayList<>();
+    
+    private String username;
+    private String password;
+    private String type;
+    
+    @PostConstruct
+    public void init() {
+        try {
+            loadUserGroups("admin", admins);
+            //loadUserGroups("clients", clients);
+            //loadUserGroups("drivers", drivers);
+        } catch (Exception ex) {
+            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void loadUserGroups(String userType, ArrayList<User> users) {
+        try {
+            String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/usertype/" + userType;
+            //String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/usertype/" + userType;
+            
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            
+            //print result
+            System.out.println(response.toString());
+            JSONArray jsonarray;
+            try {
+                jsonarray = new JSONArray(response.toString());
+                for (int i = 0; i < jsonarray.length(); i++) {
+                    JSONObject jsonobject;
+                    try {
+                        jsonobject = jsonarray.getJSONObject(i);
+                        String id = jsonobject.getString("id");
+                        String name = jsonobject.getString("username");
+                        String usertype = jsonobject.getString("type");
+                        System.out.println(name);
+                        User user = new User(Integer.valueOf(id), name, "", usertype);
+                        users.add(user);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (JSONException ex) {
+                Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public String deleteUser(String username) {
+        try {
+            String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/delete/" + username;
+            //String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/delete/" + username;
+            
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            
+            //print result
+            System.out.println(response.toString());
+            JSONArray jsonarray;
+            try {
+                jsonarray = new JSONArray(response.toString());
+                for (int i = 0; i < jsonarray.length(); i++) {
+                    JSONObject jsonobject;
+                    try {
+                        jsonobject = jsonarray.getJSONObject(i);
+                        String id = jsonobject.getString("id");
+                        String name = jsonobject.getString("username");
+                        String usertype = jsonobject.getString("type");
+                        System.out.println(name);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (JSONException ex) {
+                Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null; // refresh page
+    }
+    
+    public ArrayList<User> getAdmins() {
+        return this.admins;
+    }
+    
+    public ArrayList<User> getClients() {
+        return this.clients;
+    }
+    
+    public ArrayList<User> getDrivers() {
+        return this.drivers;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public void setType(String type) {
+        this.type = type;
+    }
+    
+    
+}

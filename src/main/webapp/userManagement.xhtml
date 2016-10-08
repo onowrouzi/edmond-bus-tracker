@@ -14,11 +14,19 @@
         </b:column>
         <b:column span="9" class="col-xs-8">
             <div id="user-table">
-                <b:dataTable>
-                    <b:dataTableColumn></b:dataTableColumn>
-                    <b:dataTableColumn></b:dataTableColumn>
+                <b:dataTable value="#{userManagementBean.admins}" var="user">
                     <b:dataTableColumn>
-                        <b:button value="Edit" look="primary"></b:button>
+                        <f:facet name="header">Username</f:facet>
+                        <h:outputText value="#{user.username}" />
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">Type</f:facet>
+                        <h:outputText value="#{user.usertype}" />
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">Options</f:facet>
+                        
+                        <b:commandButton value="Delete" look="danger" action="#{userManagementBean.deleteUser(user.username)}"></b:commandButton>
                     </b:dataTableColumn>
                 </b:dataTable>
             </div>
