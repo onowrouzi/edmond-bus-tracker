@@ -36,10 +36,11 @@ public class UserService extends Service{
     {
         Statement stmt = getDatabase().createStatement();
         
-        ResultSet rs = stmt.executeQuery("SELECT * FROM tblusers");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM tbluser");
 
         while(rs.next()){
-            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("usertype"));
+            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("role"),
+                rs.getString("fistname"), rs.getString("lastname"), rs.getString("email"));
             users.add(user);
         }
         
@@ -71,7 +72,26 @@ public class UserService extends Service{
         
         //no user found
         return null;
-    }   
+    }
+    
+    public List<User> findGroupUsers(String userType)
+    {
+        List<User> groupUsers = new ArrayList<>();
+        for(User user : users)
+        {
+            if(user.getType().equals(userType))
+            {
+                // add user to list
+                groupUsers.add(user);
+            }
+        }
+        
+        if (groupUsers.isEmpty()) {
+            return null;
+        } else {
+            return groupUsers;
+        }
+    }
         
     public User find(String username, String password)
     {
@@ -109,13 +129,24 @@ public class UserService extends Service{
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/usertype/{type}")
+    public String getGroupUsers(@PathParam("type") String userType) throws SQLException {
+        List<User> groupUsers = findGroupUsers(userType);
+        if (groupUsers == null || groupUsers.isEmpty())
+            return getGson().toJson("No users currently registered.");
+        
+        return getGson().toJson(groupUsers);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("users/administrator/{username}/{password}") //talk about using optional params ?isadmin=true
     public String administratorLogin(@PathParam("username") String username, @PathParam("password") String password) throws SQLException
     {
         User user = find(username, password);
         
         if(user != null)
-            if("Administrator".equals(user.getType()))
+            if("admin".equals(user.getType()))
                 return getGson().toJson(user); //admin found
             else
                 return getGson().toJson(null); //user is only allowed on mobile --send message to client code
@@ -134,8 +165,9 @@ public class UserService extends Service{
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/create/{username}/{password}/{type}")
-    public String register(@PathParam("username") String username, @PathParam("password") String password, @PathParam("type") String type)
+    @Path("users/create/{username}/{password}/{type}/{firstname}/{lastname}/{email}")
+    public String register(@PathParam("username") String username, @PathParam("password") String password, @PathParam("type") String type,
+            @PathParam("firstname") String firstname, @PathParam("lastname") String lastname, @PathParam("email") String email)
     {
         User user = find(username);
         
@@ -143,17 +175,20 @@ public class UserService extends Service{
             return getGson().toJson(null); //send error message on client --user exists
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblusers (username, password, usertype) VALUES(?,?,?)");
+            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tbluser (username, password, role, firstname, lastname, email) VALUES(?,?,?,?,?,?)");
             stmt.setString(1, username);
             stmt.setString(2, password);
             stmt.setString(3, type);
+            stmt.setString(4, firstname);
+            stmt.setString(5, lastname);
+            stmt.setString(6, email);
 
             int count = stmt.executeUpdate();
             
             stmt.close();
 
             //get id of new user
-            PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tblusers WHERE username=?");
+            PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tbluser WHERE username=?");
             stmt2.setString(1, username);
 
             ResultSet rs = stmt2.executeQuery();
@@ -161,7 +196,7 @@ public class UserService extends Service{
             rs.first();
 
             int id = rs.getInt("id");
-            user = new User(id,username,password,type);
+            user = new User(id,username,password,type,firstname,lastname,email);
             users.add(user);  
             
             stmt2.close();
@@ -185,7 +220,7 @@ public class UserService extends Service{
             return getGson().toJson(null); //send error message on client --user does not exist, due to the way the client is set up this should never happen
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tblusers SET password=? WHERE id=?");
+            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tbluser SET password=? WHERE id=?");
             stmt.setString(1, newPassword);
             stmt.setInt(2, user.getId());
 
@@ -213,7 +248,25 @@ public class UserService extends Service{
             return getGson().toJson(null); //send error message on client --user does not exist
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblusers WHERE id=?");
+            PreparedStatement stmt;
+            
+            // check if user is admin or not
+            // in order to delete the proper data
+            if (user.getType().equals("admin")) {
+                stmt = getDatabase().prepareStatement("DELETE FROM tblnotifications WHERE sentby=?");
+                stmt.setString(1, username);
+                
+                int count = stmt.executeUpdate();
+                stmt.close();
+            } else { // delete user data
+                stmt = getDatabase().prepareStatement("DELETE FROM tblusernotifications WHERE sentby=?");
+                stmt.setString(1, username);
+                
+                int count = stmt.executeUpdate();
+                stmt.close();
+            }
+            
+            stmt = getDatabase().prepareStatement("DELETE FROM tbluser WHERE id=?");
             stmt.setInt(1, user.getId());
 
             int count = stmt.executeUpdate();
