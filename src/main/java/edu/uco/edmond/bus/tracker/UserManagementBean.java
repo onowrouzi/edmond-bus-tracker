@@ -12,18 +12,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 
-@Named
+@ManagedBean
 @RequestScoped
 public class UserManagementBean implements Serializable {
-    
     private ArrayList<User> admins = new ArrayList<>();
-    private ArrayList<User> clients = new ArrayList<>();
-    private ArrayList<User> drivers = new ArrayList<>();
     
     private String username;
     private String password;
@@ -33,8 +30,6 @@ public class UserManagementBean implements Serializable {
     public void init() {
         try {
             loadUserGroups("admin", admins);
-            //loadUserGroups("clients", clients);
-            //loadUserGroups("drivers", drivers);
         } catch (Exception ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -68,29 +63,30 @@ public class UserManagementBean implements Serializable {
             }
             in.close();
             
-            //print result
-            System.out.println(response.toString());
-            JSONArray jsonarray;
-            try {
-                jsonarray = new JSONArray(response.toString());
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    JSONObject jsonobject;
-                    try {
-                        jsonobject = jsonarray.getJSONObject(i);
-                        String id = jsonobject.getString("id");
-                        String name = jsonobject.getString("username");
-                        String usertype = jsonobject.getString("type");
-                        System.out.println(name);
-                        User user = new User(Integer.valueOf(id), name, "", usertype);
-                        users.add(user);
-                    } catch (JSONException ex) {
-                        Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+            if (response.toString().replace("\"", "").equals("No users currently registered.")) {
+                admins = new ArrayList<>(); // show empty list
+            } else {
+                JSONArray jsonarray;
+                try {
+                    jsonarray = new JSONArray(response.toString());
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        JSONObject jsonobject;
+                        try {
+                            jsonobject = jsonarray.getJSONObject(i);
+                            String id = jsonobject.getString("id");
+                            String name = jsonobject.getString("username");
+                            String usertype = jsonobject.getString("type");
+                            System.out.println(name);
+                            User user = new User(Integer.valueOf(id), name, "", usertype);
+                            users.add(user);
+                        } catch (JSONException ex) {
+                            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
+                } catch (JSONException ex) {
+                    Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (JSONException ex) {
-                Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -123,9 +119,7 @@ public class UserManagementBean implements Serializable {
                 response.append(inputLine);
             }
             in.close();
-            
-            //print result
-            System.out.println(response.toString());
+
             JSONArray jsonarray;
             try {
                 jsonarray = new JSONArray(response.toString());
@@ -137,6 +131,8 @@ public class UserManagementBean implements Serializable {
                         String name = jsonobject.getString("username");
                         String usertype = jsonobject.getString("type");
                         System.out.println(name);
+                        User user = new User(Integer.getInteger(id), name, "", usertype);
+                        admins.remove(user); // remove user from memory
                     } catch (JSONException ex) {
                         Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -149,19 +145,13 @@ public class UserManagementBean implements Serializable {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return null; // refresh page
+        loadUserGroups("admin", admins);
+        
+        return "userManagement";
     }
     
     public ArrayList<User> getAdmins() {
         return this.admins;
-    }
-    
-    public ArrayList<User> getClients() {
-        return this.clients;
-    }
-    
-    public ArrayList<User> getDrivers() {
-        return this.drivers;
     }
     
     public String getUsername() {

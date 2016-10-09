@@ -131,7 +131,7 @@ public class UserService extends Service{
     @Path("users/usertype/{type}")
     public String getGroupUsers(@PathParam("type") String userType) throws SQLException {
         List<User> groupUsers = findGroupUsers(userType);
-        if (groupUsers.isEmpty())
+        if (groupUsers == null || groupUsers.isEmpty())
             return getGson().toJson("No users currently registered.");
         
         return getGson().toJson(groupUsers);
@@ -243,7 +243,25 @@ public class UserService extends Service{
             return getGson().toJson(null); //send error message on client --user does not exist
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblusers WHERE id=?");
+            PreparedStatement stmt;
+            
+            // check if user is admin or not
+            // in order to delete the proper data
+            if (user.getType().equals("admin")) {
+                stmt = getDatabase().prepareStatement("DELETE FROM tblnotifications WHERE sentby=?");
+                stmt.setString(1, username);
+                
+                int count = stmt.executeUpdate();
+                stmt.close();
+            } else { // delete user data
+                stmt = getDatabase().prepareStatement("DELETE FROM tblusernotifications WHERE sentby=?");
+                stmt.setString(1, username);
+                
+                int count = stmt.executeUpdate();
+                stmt.close();
+            }
+            
+            stmt = getDatabase().prepareStatement("DELETE FROM tbluser WHERE id=?");
             stmt.setInt(1, user.getId());
 
             int count = stmt.executeUpdate();
