@@ -27,7 +27,7 @@ and open the template in the editor.
     min-height:100vh;
     background-color: #2980B9;
     border-top: 1px solid white !important;
-    padding: 0;
+    padding: 0 !important;
 }
 
 .dataTable1 {
@@ -59,7 +59,7 @@ and open the template in the editor.
 .panel-link {
     font-size: 2vw;
     border-bottom: 1px solid white;
-    padding: 20px 10px;
+    padding: 20px 0;
 }
            
 .panel-link a {
@@ -68,6 +68,7 @@ and open the template in the editor.
 
 .panel-link a:hover {
     background-color: #2980B9 !important;
+    color: #DDD !important;
 }
 
 .panel-heading a:after { 
@@ -94,19 +95,6 @@ and open the template in the editor.
 
 #user-table {
     margin-top: 40px;
-}
-
-.panel-heading a:after { 
-    display: none !important;
-}
-
-.link-icon {
-    width: 3vw;
-    height: auto;
-}
-canvas {
-    width:100%; 
-    border: 1px solid black;
 }
             
 #notification-form {

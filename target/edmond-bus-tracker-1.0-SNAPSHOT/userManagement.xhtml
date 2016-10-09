@@ -2,32 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
         <h:outputStylesheet library="css" name="webcss.css" />
     </h:head>
     <h:body>
         <b:column span="3" class="col-xs-3">
-            <b:panel look="primary" title="Edmond Bus">
-                <b:listLinks>
-                    <b:row class="panel-link">
-                        <b:navLink class="col-xs-9" span="9" href="userManagement.xhtml" value="User Management"/>
-                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3"
-                            value="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-id-512.png"/>
-                    </b:row>
-                    <b:row class="panel-link">
-                        <b:navLink class="col-xs-9" span="9" href="routeManagement.xhtml" value="Route Management"/>
-                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3" 
-                            value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/schooolbus-512.png"/>
-                    </b:row>
-                    <b:row class="panel-link">
-                        <b:navLink class="col-xs-9" span="9" href="sendNotification.xhtml" value="Notification Mangagement"/>
-                        <b:image class="col-sm-3 hidden-xs img-resposive" span="3" 
-                            value="https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/chat-48.png"/>
-                    </b:row>
-                </b:listLinks>
-            </b:panel>
+           <ui:include src="/sidebar.xhtml"/>
         </b:column>
         <b:column span="9" class="col-xs-8">
             <div id="user-table">
