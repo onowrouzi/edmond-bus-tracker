@@ -1,0 +1,23 @@
+{
+  "name": "edmond-bus-tracker",
+  "scripts": {
+  },
+  "env": {
+    "MAP_API": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "cleardb"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/java"
+    }
+  ]
+}
