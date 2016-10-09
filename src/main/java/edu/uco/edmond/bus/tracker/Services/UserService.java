@@ -36,10 +36,10 @@ public class UserService extends Service{
     {
         Statement stmt = getDatabase().createStatement();
         
-        ResultSet rs = stmt.executeQuery("SELECT * FROM tblusers");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM tbluser");
 
         while(rs.next()){
-            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("usertype"));
+            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("role"));
             users.add(user);
         }
         
