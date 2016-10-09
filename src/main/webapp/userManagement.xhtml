@@ -13,27 +13,26 @@
            <ui:include src="/sidebar.xhtml"/>
         </b:column>
         <b:column span="9" class="col-xs-8">
-            <h:form id="frmUserTable">
-                <div id="user-table">
-                    <b:dataTable value="#{userManagementBean.admins}" var="user">
-                        <b:dataTableColumn>
-                            <f:facet name="header">Username</f:facet>
-                            <h:outputText value="#{user.username}" />
-                        </b:dataTableColumn>
-                        <b:dataTableColumn>
-                            <f:facet name="header">Type</f:facet>
-                            <h:outputText value="#{user.type}" />
-                        </b:dataTableColumn>
-                        <b:dataTableColumn>
-                            <f:facet name="header">Options</f:facet>
-
-                            <b:commandButton value="Delete" look="danger" action="#{userManagementBean.deleteUser(user.username)}"></b:commandButton>
-                        </b:dataTableColumn>
-                    </b:dataTable>
-                </div>
-                <br/>
-                <b:button value="Add" look="default" class="pull-right" outcome="createUser"></b:button>
-            </h:form>
+            <div id="user-table">
+                <b:dataTable value="#{userManagementBean.admins}" var="user">
+                    <b:dataTableColumn>
+                        <f:facet name="header">Username</f:facet>
+                        <h:outputText value="#{user.username}" />
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">Type</f:facet>
+                        <h:outputText value="#{user.type}" />
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">Options</f:facet>
+                        <b:button value="Delete" look="danger" outcome="deleteUser">
+                            <f:param name="username" value="#{user.username}" />
+                        </b:button>
+                    </b:dataTableColumn>
+                </b:dataTable>
+            </div>
+            <br/>
+            <b:button value="Add" look="default" class="pull-right" outcome="createUser"></b:button>
         </b:column>
     </h:body>
 </html>
