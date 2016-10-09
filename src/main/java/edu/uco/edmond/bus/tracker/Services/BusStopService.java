@@ -14,12 +14,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("busservice")
-public class BusService extends Service{
+@Path("busstopservice")
+public class BusStopService extends Service{
     
     private List<BusStop> busStops;
     
-    public BusService() throws SQLException
+    public BusStopService() throws SQLException
     {
         this.busStops = new ArrayList<>();
         getAllBusStops();
@@ -35,10 +35,10 @@ public class BusService extends Service{
         
         Statement stmt = getDatabase().createStatement();
         
-        ResultSet rs = stmt.executeQuery("SELECT * FROM tblbusstops");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM tblbusstop");
 
         while(rs.next()){
-            BusStop stop = new BusStop(rs.getInt("id"), rs.getString("name"), rs.getString("firstcrossstreet"), rs.getString("secondcrossstreet"), rs.getFloat("latitude"), rs.getFloat("longitude"));
+            BusStop stop = new BusStop(rs.getInt("id"), rs.getString("name"), rs.getFloat("lat"), rs.getFloat("lng"));
             busStops.add(stop);
         }
         
@@ -117,7 +117,7 @@ public class BusService extends Service{
     public String getStop(@PathParam("latitude") float latitude, @PathParam("longitude") float longitude) throws SQLException {
         return getGson().toJson(find(latitude, longitude));
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stops/edit/{oldName}/{newName}/{oldLatitude}/{newLatitude}/{oldLongitude}/{newLongitude}")
@@ -139,7 +139,7 @@ public class BusService extends Service{
             return getGson().toJson(null); //send error message on client --stop exists
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblbusstops (name, latitude, longitude) VALUES(?,?,?)");
+            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblbusstop (name, lat, lng) VALUES(?,?,?)");
             stmt.setString(1, name);
             stmt.setFloat(2, latitude);
             stmt.setFloat(3, longitude);
@@ -149,7 +149,7 @@ public class BusService extends Service{
             stmt.close();
 
             //get id of new stop
-            PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tblbusstops WHERE name=?");
+            PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tblbusstop WHERE name=?");
             stmt2.setString(1, name);
 
             ResultSet rs = stmt2.executeQuery();
@@ -157,7 +157,7 @@ public class BusService extends Service{
             rs.first();
 
             int id = rs.getInt("id");
-            Stop = new BusStop(id,name,"","",latitude,longitude);
+            Stop = new BusStop(id,name,latitude,longitude);
             busStops.add(Stop);  
             
             stmt2.close();
@@ -180,7 +180,7 @@ public class BusService extends Service{
             return getGson().toJson(null); //send error message on client --stop does not exist
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblbusstops WHERE id=?");
+            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblbusstop WHERE id=?");
             stmt.setInt(1, Stop.getId());
 
             int count = stmt.executeUpdate();

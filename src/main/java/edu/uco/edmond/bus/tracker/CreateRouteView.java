@@ -6,9 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import static java.lang.System.out;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -51,8 +49,6 @@ public class CreateRouteView implements Serializable {
     @PostConstruct
     public void init() {
         this.draggableModel = new DefaultMapModel();
-        getPossibleDrivers().add(new User(1, "John Doe", "asdf", "driver"));
-        getPossibleDrivers().add(new User(2, "Jane Doe", "asdf", "driver"));
     }
       
     public MapModel getDraggableModel() {
