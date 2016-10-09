@@ -27,7 +27,7 @@ public class RouteManagement implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/busservice/stops";
+            String url = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops";
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
