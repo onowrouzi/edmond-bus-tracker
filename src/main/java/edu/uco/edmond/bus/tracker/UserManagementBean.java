@@ -76,8 +76,11 @@ public class UserManagementBean implements Serializable {
                             String id = jsonobject.getString("id");
                             String name = jsonobject.getString("username");
                             String usertype = jsonobject.getString("type");
+                            String firstname = jsonobject.getString("firstname");
+                            String lastname = jsonobject.getString("lastname");
+                            String email = jsonobject.getString("email");
                             System.out.println(name);
-                            User user = new User(Integer.valueOf(id), name, "", usertype);
+                            User user = new User(Integer.valueOf(id), name, "", usertype, firstname, lastname, email);
                             users.add(user);
                         } catch (JSONException ex) {
                             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,8 +133,11 @@ public class UserManagementBean implements Serializable {
                         String id = jsonobject.getString("id");
                         String name = jsonobject.getString("username");
                         String usertype = jsonobject.getString("type");
+                        String firstname = jsonobject.getString("firstname");
+                        String lastname = jsonobject.getString("lastname");
+                        String email = jsonobject.getString("email");
                         System.out.println(name);
-                        User user = new User(Integer.getInteger(id), name, "", usertype);
+                        User user = new User(Integer.getInteger(id), name, "", usertype, firstname, lastname, email);
                         admins.remove(user); // remove user from memory
                     } catch (JSONException ex) {
                         Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
