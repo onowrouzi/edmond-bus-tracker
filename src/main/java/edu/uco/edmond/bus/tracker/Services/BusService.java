@@ -38,7 +38,7 @@ public class BusService extends Service{
         ResultSet rs = stmt.executeQuery("SELECT * FROM tblbusstops");
 
         while(rs.next()){
-            BusStop stop = new BusStop(rs.getInt("id"), rs.getString("name"), rs.getString("firstcrossstreet"), rs.getString("secondcrossstreet"), rs.getFloat("latitude"), rs.getFloat("longitude"));
+            BusStop stop = new BusStop(rs.getInt("id"), rs.getString("name"), rs.getFloat("latitude"), rs.getFloat("longitude"));
             busStops.add(stop);
         }
         
@@ -157,7 +157,7 @@ public class BusService extends Service{
             rs.first();
 
             int id = rs.getInt("id");
-            Stop = new BusStop(id,name,"","",latitude,longitude);
+            Stop = new BusStop(id,name,latitude,longitude);
             busStops.add(Stop);  
             
             stmt2.close();
