@@ -39,7 +39,8 @@ public class UserService extends Service{
         ResultSet rs = stmt.executeQuery("SELECT * FROM tbluser");
 
         while(rs.next()){
-            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("role"));
+            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("role"),
+                rs.getString("fistname"), rs.getString("lastname"), rs.getString("email"));
             users.add(user);
         }
         
@@ -164,8 +165,9 @@ public class UserService extends Service{
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/create/{username}/{password}/{type}")
-    public String register(@PathParam("username") String username, @PathParam("password") String password, @PathParam("type") String type)
+    @Path("users/create/{username}/{password}/{type}/{firstname}/{lastname}/{email}")
+    public String register(@PathParam("username") String username, @PathParam("password") String password, @PathParam("type") String type,
+            @PathParam("firstname") String firstname, @PathParam("lastname") String lastname, @PathParam("email") String email)
     {
         User user = find(username);
         
@@ -173,17 +175,20 @@ public class UserService extends Service{
             return getGson().toJson(null); //send error message on client --user exists
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblusers (username, password, usertype) VALUES(?,?,?)");
+            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tbluser (username, password, role, firstname, lastname, email) VALUES(?,?,?,?,?,?)");
             stmt.setString(1, username);
             stmt.setString(2, password);
             stmt.setString(3, type);
+            stmt.setString(4, firstname);
+            stmt.setString(5, lastname);
+            stmt.setString(6, email);
 
             int count = stmt.executeUpdate();
             
             stmt.close();
 
             //get id of new user
-            PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tblusers WHERE username=?");
+            PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tbluser WHERE username=?");
             stmt2.setString(1, username);
 
             ResultSet rs = stmt2.executeQuery();
@@ -191,7 +196,7 @@ public class UserService extends Service{
             rs.first();
 
             int id = rs.getInt("id");
-            user = new User(id,username,password,type);
+            user = new User(id,username,password,type,firstname,lastname,email);
             users.add(user);  
             
             stmt2.close();
@@ -215,7 +220,7 @@ public class UserService extends Service{
             return getGson().toJson(null); //send error message on client --user does not exist, due to the way the client is set up this should never happen
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tblusers SET password=? WHERE id=?");
+            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tbluser SET password=? WHERE id=?");
             stmt.setString(1, newPassword);
             stmt.setInt(2, user.getId());
 
