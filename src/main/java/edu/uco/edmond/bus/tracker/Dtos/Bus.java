@@ -4,10 +4,10 @@ public class Bus extends Dto {
     
     private int id;
     private String name;
-    private User driver;
-    private BusRoute route;
+    private String driver;
+    private String route;
     
-    public Bus(int id, String name, User driver, BusRoute route) {
+    public Bus(int id, String name, String driver, String route) {
         this.id = id;
         this.name = name;
         this.driver = driver;
@@ -22,11 +22,11 @@ public class Bus extends Dto {
         return name;
     }
 
-    public User getDriver() {
+    public String getDriver() {
         return driver;
     }
 
-    public BusRoute getRoute() {
+    public String getRoute() {
         return route;
     }
 }
