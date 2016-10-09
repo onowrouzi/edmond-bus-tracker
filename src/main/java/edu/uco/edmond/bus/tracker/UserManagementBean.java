@@ -37,8 +37,8 @@ public class UserManagementBean implements Serializable {
     
     private void loadUserGroups(String userType, ArrayList<User> users) {
         try {
-            String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/usertype/" + userType;
-            //String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/usertype/" + userType;
+            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/usertype/" + userType;
+            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/usertype/" + userType;
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -94,8 +94,8 @@ public class UserManagementBean implements Serializable {
     
     public String deleteUser(String username) {
         try {
-            String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/delete/" + username;
-            //String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/delete/" + username;
+            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/delete/" + username;
+            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/delete/" + username;
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
