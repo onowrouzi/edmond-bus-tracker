@@ -32,7 +32,6 @@ public class ApplicationConfig extends Application {
         resources.add(edu.uco.edmond.bus.tracker.Services.BusService.class);
         resources.add(edu.uco.edmond.bus.tracker.Services.FavoriteService.class);
         resources.add(edu.uco.edmond.bus.tracker.Services.UserService.class);
-        resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
     }
     
 }
