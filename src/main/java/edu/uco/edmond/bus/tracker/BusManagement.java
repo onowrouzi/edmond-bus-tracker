@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -24,6 +26,7 @@ import org.primefaces.json.JSONObject;
 public class BusManagement implements Serializable {
     
     private ArrayList<Bus> buses = new ArrayList<>();
+    ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
     
     @PostConstruct
     public void init() {
@@ -66,10 +69,9 @@ public class BusManagement implements Serializable {
                     String name = jsonobject.getString("name");
                     String driver = jsonobject.getString("driver");
                     String route = jsonobject.getString("route");
-                    String lastStop = jsonobject.getString("laststop");
-                    Boolean active = false;
-                    if (jsonobject.getInt("active") == 1) active = true;
-                    String lastActive = jsonobject.getString("lastactive");
+                    String lastStop = jsonobject.getString("lastStop");
+                    Boolean active = jsonobject.getBoolean("active");
+                    String lastActive = jsonobject.getString("lastActive");
                     System.out.println(name);
                     Bus temp = new Bus(id, name, driver, route, lastStop, active, lastActive);
                     buses.add(temp);
@@ -88,6 +90,43 @@ public class BusManagement implements Serializable {
     
     public ArrayList<Bus> getBuses() {
         return this.buses;
+    }
+    
+    public String addBus(String name, String driver, String route) throws IOException {
+        
+        try {
+            String url = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses/create/" 
+                    + name + "/" + driver + "/" + route;
+            url = url.replace(" ", "%20");
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("POST");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'POST' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        context.redirect("busManagement.xhtml");
+        return "Bus added!";
     }
     
 }

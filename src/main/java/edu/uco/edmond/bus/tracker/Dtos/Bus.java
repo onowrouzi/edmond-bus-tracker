@@ -14,6 +14,13 @@ public class Bus extends Dto {
     
     public Bus() {}
     
+    public Bus(int id, String name, String driver, String route) {
+        this.id = id;
+        this.name = name;
+        this.driver = driver;
+        this.route = route;
+    }
+    
     public Bus(int id, String name, String driver, String route, 
             String lastStop, Boolean active, String lastActive) {
         this.id = id;
