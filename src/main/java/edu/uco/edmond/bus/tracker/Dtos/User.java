@@ -1,5 +1,10 @@
 package edu.uco.edmond.bus.tracker.Dtos;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+@ManagedBean
+@SessionScoped
 public class User extends Dto{
     private int id;
     private String username;

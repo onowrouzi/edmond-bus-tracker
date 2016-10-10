@@ -166,8 +166,9 @@ public class UserService extends Service{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/create/{username}/{password}/{type}/{firstname}/{lastname}/{email}")
-    public String register(@PathParam("username") String username, @PathParam("password") String password, @PathParam("type") String type,
-            @PathParam("firstname") String firstname, @PathParam("lastname") String lastname, @PathParam("email") String email)
+    public String register(@PathParam("username") String username, @PathParam("password") String password, 
+            @PathParam("type") String type, @PathParam("firstname") String firstname, 
+            @PathParam("lastname") String lastname, @PathParam("email") String email)
     {
         User user = find(username);
         

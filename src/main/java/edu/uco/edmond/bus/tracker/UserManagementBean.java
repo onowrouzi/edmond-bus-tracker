@@ -132,6 +132,48 @@ public class UserManagementBean implements Serializable {
         return "userManagement";
     }
     
+    public String addUser(String username, String role, String password, String confirmPassword,
+                            String firstName, String lastName, String email){
+        
+        if (!password.equals(confirmPassword)){
+            return "Passwords must match!";
+        }
+        
+        try {
+            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/create/" 
+                    + username + "/" + password + "/" + role + "/" + firstName + "/" + lastName + "/" + email;
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        loadUserGroups("admin", admins);
+        
+        return "User was added!";
+    }
+    
     public ArrayList<User> getAdmins() {
         return this.admins;
     }

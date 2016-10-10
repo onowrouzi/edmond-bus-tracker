@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,8 +66,12 @@ public class BusManagement implements Serializable {
                     String name = jsonobject.getString("name");
                     String driver = jsonobject.getString("driver");
                     String route = jsonobject.getString("route");
+                    String lastStop = jsonobject.getString("laststop");
+                    Boolean active = false;
+                    if (jsonobject.getInt("active") == 1) active = true;
+                    String lastActive = jsonobject.getString("lastactive");
                     System.out.println(name);
-                    Bus temp = new Bus(id, name, driver, route);
+                    Bus temp = new Bus(id, name, driver, route, lastStop, active, lastActive);
                     buses.add(temp);
                 } catch (JSONException ex) {
                     Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
