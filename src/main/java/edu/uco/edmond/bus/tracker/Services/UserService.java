@@ -40,7 +40,7 @@ public class UserService extends Service{
 
         while(rs.next()){
             User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("role"),
-                rs.getString("fistname"), rs.getString("lastname"), rs.getString("email"));
+                rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"));
             users.add(user);
         }
         
