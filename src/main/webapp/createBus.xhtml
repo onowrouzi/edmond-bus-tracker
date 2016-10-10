@@ -30,7 +30,7 @@
                 <b:selectOneMenu value="#{route}">
                     <f:selectItem itemLabel="Select Route" itemValue=""></f:selectItem>
                     <f:selectItems value="#{routeManagement.getRoutes()}" var="route"
-                        itemLabel="#{route.routeName}" itemValue="#{route.ruoteName}"/>
+                        itemLabel="#{route.routeName}" itemValue="#{route.routeName}"/>
                 </b:selectOneMenu>
                 <b:commandButton value="Add" look="default" action="#{busManagement.addBus(name, driver, route)}"/>
                 <br/><br/>
