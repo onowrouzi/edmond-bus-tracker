@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -25,6 +27,7 @@ public class UserManagementBean implements Serializable {
     private String username;
     private String password;
     private String type;
+    ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
     
     @PostConstruct
     public void init() {
@@ -133,7 +136,7 @@ public class UserManagementBean implements Serializable {
     }
     
     public String addUser(String username, String role, String password, String confirmPassword,
-                            String firstName, String lastName, String email){
+                            String firstName, String lastName, String email) throws IOException{
         
         if (!password.equals(confirmPassword)){
             return "Passwords must match!";
@@ -170,6 +173,7 @@ public class UserManagementBean implements Serializable {
         }
         
         loadUserGroups("admin", admins);
+        context.redirect("userManagement.xhtml");
         
         return "User was added!";
     }

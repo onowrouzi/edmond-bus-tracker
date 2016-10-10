@@ -20,6 +20,18 @@
                         <h:outputText value="#{user.username}" />
                     </b:dataTableColumn>
                     <b:dataTableColumn>
+                        <f:facet name="header">First Name</f:facet>
+                        <h:outputText value="#{user.firstName}" />
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">Last Name</f:facet>
+                        <h:outputText value="#{user.lastName}" />
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">Email</f:facet>
+                        <h:outputText value="#{user.email}" />
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
                         <f:facet name="header">Type</f:facet>
                         <h:outputText value="#{user.type}" />
                     </b:dataTableColumn>
