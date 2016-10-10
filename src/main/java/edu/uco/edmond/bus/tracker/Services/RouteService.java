@@ -33,7 +33,7 @@ public class RouteService extends Service {
     public RouteService() throws SQLException
     {
         this.routes = new ArrayList<>();
-        getAllBuses();
+        getAllRoutes();
     }
     
     public List<Route> routes()
@@ -41,7 +41,7 @@ public class RouteService extends Service {
         return routes;
     }
     
-    private void getAllBuses() throws SQLException
+    private void getAllRoutes() throws SQLException
     {
         
         Statement stmt = getDatabase().createStatement();
@@ -86,10 +86,10 @@ public class RouteService extends Service {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("routes")
-    public String getBusess()
+    public String getRoutes()
     {
         if(routes.isEmpty())
-            return getGson().toJson("No buses currently registered."); // no buses in system
+            return getGson().toJson("No routes currently registered."); // no routes in system
         
         return getGson().toJson(routes);
     }
@@ -111,7 +111,7 @@ public class RouteService extends Service {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("routes/edit/{oldName}/{newName}")
-    public Bus edit(@PathParam("oldName") String oldName, @PathParam("newName") String newName)
+    public Route edit(@PathParam("oldName") String oldName, @PathParam("newName") String newName)
     {
         return null;
     }
@@ -124,7 +124,7 @@ public class RouteService extends Service {
         Route route = find(name);
         
         if(route != null)
-            return getGson().toJson(null); //send error message on client --bus exists
+            return getGson().toJson(null); //send error message on client --route exists
         
         try{
             try (PreparedStatement stmt = getDatabase()
@@ -166,7 +166,7 @@ public class RouteService extends Service {
         Route route = find(name);
         
         if(route == null)
-            return getGson().toJson(null); //send error message on client --bus does not exist
+            return getGson().toJson(null); //send error message on client --route does not exist
         
         try{
             PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblbusroute WHERE id=?");
