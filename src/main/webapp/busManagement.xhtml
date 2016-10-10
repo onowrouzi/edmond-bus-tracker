@@ -14,10 +14,11 @@
         </b:column>
         <b:column span="9" class="col-xs-8">
             <div id="user-table">
-                <b:dataTable>
-                    <b:dataTableColumn></b:dataTableColumn>
-                    <b:dataTableColumn></b:dataTableColumn>
-                    <b:dataTableColumn>
+                <b:dataTable value="#{busManagement.getBuses()}" var="b">
+                    <b:dataTableColumn label="Name">#{b.getName()}</b:dataTableColumn>
+                    <b:dataTableColumn label="Driver">#{b.getDriver()}</b:dataTableColumn>
+                    <b:dataTableColumn label="Route">#{b.getRoute()}</b:dataTableColumn>
+                    <b:dataTableColumn label="Edit">
                         <b:button value="Edit" look="primary"></b:button>
                     </b:dataTableColumn>
                 </b:dataTable>
