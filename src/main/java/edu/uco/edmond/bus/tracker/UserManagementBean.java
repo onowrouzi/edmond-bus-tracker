@@ -76,8 +76,8 @@ public class UserManagementBean implements Serializable {
                             String id = jsonobject.getString("id");
                             String name = jsonobject.getString("username");
                             String usertype = jsonobject.getString("type");
-                            String firstname = jsonobject.getString("firstname");
-                            String lastname = jsonobject.getString("lastname");
+                            String firstname = jsonobject.getString("firstName");
+                            String lastname = jsonobject.getString("lastName");
                             String email = jsonobject.getString("email");
                             System.out.println(name);
                             User user = new User(Integer.valueOf(id), name, "", usertype, firstname, lastname, email);
@@ -122,30 +122,6 @@ public class UserManagementBean implements Serializable {
                 response.append(inputLine);
             }
             in.close();
-
-            JSONArray jsonarray;
-            try {
-                jsonarray = new JSONArray(response.toString());
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    JSONObject jsonobject;
-                    try {
-                        jsonobject = jsonarray.getJSONObject(i);
-                        String id = jsonobject.getString("id");
-                        String name = jsonobject.getString("username");
-                        String usertype = jsonobject.getString("type");
-                        String firstname = jsonobject.getString("firstname");
-                        String lastname = jsonobject.getString("lastname");
-                        String email = jsonobject.getString("email");
-                        System.out.println(name);
-                        User user = new User(Integer.getInteger(id), name, "", usertype, firstname, lastname, email);
-                        admins.remove(user); // remove user from memory
-                    } catch (JSONException ex) {
-                        Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            } catch (JSONException ex) {
-                Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
 
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
