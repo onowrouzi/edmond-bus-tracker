@@ -76,15 +76,15 @@ public class BusManagement implements Serializable {
                     Bus temp = new Bus(id, name, driver, route, lastStop, active, lastActive);
                     buses.add(temp);
                 } catch (JSONException ex) {
-                    Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             } catch (JSONException ex) {
-                Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -92,7 +92,7 @@ public class BusManagement implements Serializable {
         return this.buses;
     }
     
-    public String addBus(String name, String driver, String route) throws IOException {
+    public void addBus(String name, String driver, String route) throws IOException {
         
         try {
             String url = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses/create/" 
@@ -111,22 +111,27 @@ public class BusManagement implements Serializable {
             System.out.println("\nSending 'POST' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
             
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+            if (responseCode != 200) {
+                System.out.println("CONNECTION ERROR: " + con.getErrorStream());
             }
-            in.close();
+            
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()))) {
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                System.out.println("INPUT STREAM: " + response);
+            }
 
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         context.redirect("busManagement.xhtml");
-        return "Bus added!";
+//        return "busManagement";
     }
     
 }
