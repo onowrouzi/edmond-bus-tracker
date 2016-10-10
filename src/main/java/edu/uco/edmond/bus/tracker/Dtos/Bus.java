@@ -7,6 +7,8 @@ public class Bus extends Dto {
     private String driver;
     private String route;
     
+    public Bus() {}
+    
     public Bus(int id, String name, String driver, String route) {
         this.id = id;
         this.name = name;
