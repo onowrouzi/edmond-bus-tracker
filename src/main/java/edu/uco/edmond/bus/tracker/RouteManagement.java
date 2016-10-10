@@ -71,15 +71,15 @@ public class RouteManagement {
                     Route temp = new Route(id, name);
                     routes.add(temp);
                 } catch (JSONException ex) {
-                    Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             } catch (JSONException ex) {
-                Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -87,7 +87,7 @@ public class RouteManagement {
         return this.routes;
     }
     
-    public void addBus(String name) throws IOException {
+    public void addRoute(String name) throws IOException {
         
         try {
             String url = "https://uco-edmond-bus.herokuapp.com/api/routeservice/routes/create/" + name;

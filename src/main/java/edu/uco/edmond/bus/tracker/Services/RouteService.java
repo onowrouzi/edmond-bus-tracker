@@ -136,7 +136,7 @@ public class RouteService extends Service {
                 int count = stmt.executeUpdate();
             }
 
-            try ( //get id of new stop
+            try ( //get id of new route
                     PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tblbusroute WHERE name=?")) {
                 stmt2.setString(1, name);
                 
