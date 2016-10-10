@@ -14,6 +14,9 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -123,30 +126,21 @@ public class BusService extends Service {
     }
    
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes("text/plain")
     @Path("buses/create/{name}/{driver}/{route}")
-    public String create(@PathParam("name") String name, @PathParam("driver") String driver, 
-            @PathParam("route") String route, @PathParam("active") Boolean isActive, 
-            @PathParam("lastStop") String lastStop )
+    public String create(@PathParam("name") String name, @PathParam("driver") String driver, @PathParam("route") String route)
     {
         Bus bus = find(name);
-        
-        int active = 0;
-        if (isActive) active = 1;
-        Date date = new Date();
-        Timestamp lastActive = new Timestamp(date.getTime());
         
         if(bus != null)
             return getGson().toJson(null); //send error message on client --bus exists
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblbus (name, driver, route) VALUES(?,?,?,?,?,?)");
+            PreparedStatement stmt = getDatabase()
+                .prepareStatement("INSERT INTO tblbus (name, driver, route) VALUES(?,?,?)");
             stmt.setString(1, name);
             stmt.setString(2, driver);
             stmt.setString(3, route);
-            stmt.setInt(4, active);
-            stmt.setString(5, lastStop);
-            stmt.setTimestamp(6, lastActive);
 
             int count = stmt.executeUpdate();
             
@@ -161,7 +155,7 @@ public class BusService extends Service {
             rs.first();
 
             int id = rs.getInt("id");
-            bus = new Bus(id,name,driver,route, lastStop, isActive, lastActive.toString());
+            bus = new Bus(id,name,driver,route);
             buses.add(bus);  
             
             stmt2.close();
