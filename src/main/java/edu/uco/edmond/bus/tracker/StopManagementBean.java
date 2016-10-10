@@ -30,7 +30,7 @@ public class StopManagementBean implements Serializable {
      
     private ArrayList<RouteStop> stops = new ArrayList<>();
     
-    private MapModel draggableModel = new DefaultMapModel();
+    private MapModel draggableModel;
     private Marker marker;
     
     private RouteStop stop = new RouteStop();
@@ -38,13 +38,22 @@ public class StopManagementBean implements Serializable {
     private final double defaultLat = 35.6526783;
     private final double defaultLng = -97.4781833;
             
-    public String mapKey = "https://maps.google.com/maps/api/js?key=" + System.getenv("MAP_API");
+    public String mapKey = "https://maps.google.com/maps/api/js?key=AIzaSyAOm_hMAIA4Naz5-FXN7VTmLdMetew_uUE";// + System.getenv("MAP_API");
         
     HttpURLConnection connection = null;
 
     
     @PostConstruct
     public void init() {
+        
+        this.draggableModel = new DefaultMapModel();
+        
+        Marker newMarker = new Marker(new LatLng(defaultLat, defaultLng), "stop-marker");
+        newMarker.setDraggable(true);
+        this.draggableModel.addOverlay(newMarker);
+        
+        this.getStop().setStopName("Stop Name");
+        this.getStop().setLocation(new LatLng(this.defaultLat, this.defaultLng));
                 
         try {
             String url = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops";
@@ -82,7 +91,7 @@ public class StopManagementBean implements Serializable {
                 try {
                     jsonobject = jsonarray.getJSONObject(i);
                     String id = jsonobject.getString("id");
-                    String name = jsonobject.getString("name");
+                    String name = java.net.URLDecoder.decode(jsonobject.getString("name"), "UTF-8");
                     Double lat = jsonobject.getDouble("latitude");
                     Double lng = jsonobject.getDouble("longitude");
                     System.out.println(name);
@@ -105,13 +114,13 @@ public class StopManagementBean implements Serializable {
     
     public void save() {
         
-        System.out.println(this.stop.getStopName());
+        System.out.println(this.getStop().getStopName());
         DataOutputStream wr = null;
         try {
-            String routeStopName = this.stop.getStopName();
-            String lat = String.valueOf(this.stop.getLocation().getLat());
-            String lng = String.valueOf(this.stop.getLocation().getLng());
-            String route = "https://uco-edmond-bus.herokuapp.com/api/busservice/stops/create/" + routeStopName + "/" + lat + "/" + lng;
+            String routeStopName = this.getStop().getStopName();
+            String lat = String.valueOf(this.getStop().getLocation().getLat());
+            String lng = String.valueOf(this.getStop().getLocation().getLng());
+            String route = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops/create/" + java.net.URLEncoder.encode(routeStopName, "UTF-8") + "/" + lat + "/" + lng;
             System.out.println(route);
             URL url = new URL(route);
             connection = (HttpURLConnection) url.openConnection();
@@ -141,11 +150,11 @@ public class StopManagementBean implements Serializable {
 
         }
     }
-    
+
     public void onMarkerDrag(MarkerDragEvent event) {
         marker = event.getMarker();
         LatLng coords = new LatLng(marker.getLatlng().getLat(), marker.getLatlng().getLng());
-        this.stop.setLocation(coords);
+        this.getStop().setLocation(coords);
     }
     
     
@@ -157,4 +166,15 @@ public class StopManagementBean implements Serializable {
         return this.mapKey;
     }
 
+    public MapModel getDraggableModel() {
+        return draggableModel;
+    }
+
+    public RouteStop getStop() {
+        return stop;
+    }
+
+    public void setStop(RouteStop stop) {
+        this.stop = stop;
+    }
 }
