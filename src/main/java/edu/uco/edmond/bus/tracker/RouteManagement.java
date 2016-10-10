@@ -62,17 +62,17 @@ public class RouteManagement {
             try {
                 jsonarray = new JSONArray(response.toString());
                 for (int i = 0; i < jsonarray.length(); i++) {
-                JSONObject jsonobject;
-                try {
-                    jsonobject = jsonarray.getJSONObject(i);
-                    int id = jsonobject.getInt("id");
-                    String name = jsonobject.getString("name");
-                    System.out.println(name);
-                    Route temp = new Route(id, name);
-                    routes.add(temp);
-                } catch (JSONException ex) {
-                    Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    JSONObject jsonobject;
+                    try {
+                        jsonobject = jsonarray.getJSONObject(i);
+                        int id = jsonobject.getInt("id");
+                        String name = jsonobject.getString("name");
+                        System.out.println(name);
+                        Route temp = new Route(id, name);
+                        routes.add(temp);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
+                    }
             }
             } catch (JSONException ex) {
                 Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
