@@ -6,10 +6,12 @@
 package edu.uco.edmond.bus.tracker.Services;
 
 import edu.uco.edmond.bus.tracker.Dtos.Bus;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -48,7 +50,10 @@ public class BusService extends Service {
         ResultSet rs = stmt.executeQuery("SELECT * FROM tblbus");
 
         while(rs.next()){
-            Bus bus = new Bus(rs.getInt("id"), rs.getString("name"), rs.getString("driver"), rs.getString("route"));
+            Boolean active = false;
+            if (rs.getInt("active") > 0) active = true;
+            Bus bus = new Bus(rs.getInt("id"), rs.getString("name"), rs.getString("driver"), rs.getString("route"),
+                        rs.getString("laststop"), active, rs.getString("lastactive"));
             buses.add(bus);
         }
         
@@ -120,18 +125,28 @@ public class BusService extends Service {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("buses/create/{name}/{driver}/{route}")
-    public String create(@PathParam("name") String name, @PathParam("driver") String driver, @PathParam("route") String route)
+    public String create(@PathParam("name") String name, @PathParam("driver") String driver, 
+            @PathParam("route") String route, @PathParam("active") Boolean isActive, 
+            @PathParam("lastStop") String lastStop )
     {
         Bus bus = find(name);
+        
+        int active = 0;
+        if (isActive) active = 1;
+        Date date = new Date();
+        Timestamp lastActive = new Timestamp(date.getTime());
         
         if(bus != null)
             return getGson().toJson(null); //send error message on client --bus exists
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblbus (name, driver, route) VALUES(?,?,?)");
+            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblbus (name, driver, route) VALUES(?,?,?,?,?,?)");
             stmt.setString(1, name);
             stmt.setString(2, driver);
             stmt.setString(3, route);
+            stmt.setInt(4, active);
+            stmt.setString(5, lastStop);
+            stmt.setTimestamp(6, lastActive);
 
             int count = stmt.executeUpdate();
             
@@ -146,7 +161,7 @@ public class BusService extends Service {
             rs.first();
 
             int id = rs.getInt("id");
-            bus = new Bus(id,name,driver,route);
+            bus = new Bus(id,name,driver,route, lastStop, isActive, lastActive.toString());
             buses.add(bus);  
             
             stmt2.close();

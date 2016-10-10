@@ -18,20 +18,36 @@
             <h1 id="user-header">Add User</h1>
             <h:form id="user-form">
                 <br/><br/>
-                <label>Name</label>
+                <label>User Name</label>
                 <br/>
-                <b:inputText></b:inputText>
-                <b:selectOneMenu>
-                    <f:selectItem itemLabel="Select Role" itemValue=""></f:selectItem>
+                <b:inputText value="#{userName}"></b:inputText>
+                <br/>
+                <label>First Name</label>
+                <br/>
+                <b:inputText value="#{firstName}"></b:inputText>
+                <br/>
+                <label>Last Name</label>
+                <br/>
+                <b:inputText value="#{lastName}"></b:inputText>
+                <br/>
+                <label>Email</label>
+                <br/>
+                <b:inputText value="#{email}"></b:inputText>
+                <b:selectOneMenu value="#{role}">
+                    <f:selectItem itemLabel="Select Role" itemValue=""/>
+                    <f:selectItem itemLabel="User" itemValue="user"/>
+                    <f:selectItem itemLabel="Driver" itemValue="driver"/>
+                    <f:selectItem itemLabel="Administrator" itemValue="admin"/>
                 </b:selectOneMenu>
                 <label>Password</label>
                 <br/>
-                <b:inputSecret></b:inputSecret>
+                <b:inputSecret value="#{password}"></b:inputSecret>
                 <label>Confirm Password</label>
                 <br/>
-                <b:inputSecret></b:inputSecret>
+                <b:inputSecret value="#{confirmPassword}"></b:inputSecret>
                 <br/>
-                <b:button value="Add" look="default"></b:button>
+                <b:commandButton value="Add" look="default" 
+                    action="#{userManagementBean.addUser(userName, role, password, confirmPassword, firstName, lastName, email)}"/>
                 <br/><br/>
             </h:form>
         </b:column>
