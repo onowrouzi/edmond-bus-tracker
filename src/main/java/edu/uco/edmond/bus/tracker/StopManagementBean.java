@@ -21,7 +21,7 @@ import org.primefaces.model.map.LatLng;
 @ViewScoped
 public class StopManagementBean implements Serializable {
      
-     private ArrayList<RouteStop> stops = new ArrayList<>();
+    private ArrayList<RouteStop> stops = new ArrayList<>();
     
     @PostConstruct
     public void init() {
