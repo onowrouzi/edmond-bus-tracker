@@ -39,7 +39,7 @@ public class UserService extends Service{
         ResultSet rs = stmt.executeQuery("SELECT * FROM tbluser");
 
         while(rs.next()){
-            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("role"),
+            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getNString("password"), rs.getString("role"),
                 rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"));
             users.add(user);
         }
