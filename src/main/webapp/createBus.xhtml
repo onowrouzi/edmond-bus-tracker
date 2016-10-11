@@ -29,8 +29,8 @@
                 <br/>
                 <b:selectOneMenu value="#{route}">
                     <f:selectItem itemLabel="Select Route" itemValue=""></f:selectItem>
-                    <f:selectItems value="#{routeManagement.getStops()}" var="route"
-                        itemLabel="#{route.stopName}" itemValue="#{route.stopName}"/>
+                    <f:selectItems value="#{routeManagement.getRoutes()}" var="r"
+                        itemLabel="#{r.getName()}" itemValue="#{r.getName()}"/>
                 </b:selectOneMenu>
                 <b:commandButton value="Add" look="default" action="#{busManagement.addBus(name, driver, route)}"/>
                 <br/><br/>
