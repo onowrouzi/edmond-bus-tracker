@@ -50,7 +50,7 @@ public class RouteStopManagement implements Serializable {
                 response.append(inputLine);
             }
             in.close();
-            
+            con.disconnect();
             //print result
             System.out.println(response.toString());
             JSONArray jsonarray;

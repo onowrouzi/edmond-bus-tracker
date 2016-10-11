@@ -65,6 +65,7 @@ public class UserManagementBean implements Serializable {
                 response.append(inputLine);
             }
             in.close();
+            con.disconnect();
             
             if (response.toString().replace("\"", "").equals("No users currently registered.")) {
                 admins = new ArrayList<>(); // show empty list
@@ -125,7 +126,8 @@ public class UserManagementBean implements Serializable {
                 response.append(inputLine);
             }
             in.close();
-
+            con.disconnect();
+            
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -167,6 +169,7 @@ public class UserManagementBean implements Serializable {
                 response.append(inputLine);
             }
             in.close();
+            con.disconnect();
 
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);

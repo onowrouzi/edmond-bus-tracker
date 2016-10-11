@@ -59,7 +59,7 @@ public class RouteManagement {
                 response.append(inputLine);
             }
             in.close();
-            
+            con.disconnect();
             //print result
             System.out.println(response.toString());
             JSONArray jsonarray;
@@ -123,7 +123,7 @@ public class RouteManagement {
                 }
                 System.out.println("INPUT STREAM: " + response);
             }
-
+            con.disconnect();
         } catch (IOException ex) {
             Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
