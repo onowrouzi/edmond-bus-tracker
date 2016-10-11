@@ -22,6 +22,13 @@ public class Favorite {
         this.name = name;
     }
     
+    public Favorite(int favoriteId, String type, String name)
+    {
+        this.favoriteId = favoriteId;
+        this.type = type;
+        this.name = name;
+    }
+    
     public int getId()
     {
         return id;
@@ -45,5 +52,15 @@ public class Favorite {
     public String getName()
     {
         return name;
+    }
+    
+    @Override
+    public boolean equals(Object other)
+    {
+        if(!(other instanceof Favorite))
+            return false;
+        //type and id match
+        //not a Favorite Object
+        return this.getType().equals(((Favorite)other).getType()) && this.getFavoriteId() == ((Favorite)other).getFavoriteId();
     }
 }
