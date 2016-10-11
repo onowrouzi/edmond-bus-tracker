@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.json.JSONArray;
@@ -24,6 +26,8 @@ import org.primefaces.json.JSONObject;
  *
  * @author omidnowrouzi
  */
+@ManagedBean
+@ViewScoped
 public class RouteManagement {
     private ArrayList<Route> routes = new ArrayList<>();
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
