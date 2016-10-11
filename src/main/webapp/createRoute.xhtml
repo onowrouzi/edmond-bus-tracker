@@ -9,6 +9,9 @@
     <h:head>
         <title>Edmond Bus Tracker</title>
         <h:outputStylesheet library="css" name="webcss.css" />
+        <f:metadata>
+            <f:viewAction action="#{loginBean.doFilter}" />
+        </f:metadata>
     </h:head>
     <h:body>
         <b:column span="3" class="col-xs-3">
@@ -46,7 +49,7 @@
             </h:form>
             <br />
         </b:column>
-
+        <h1>#{sessionScope.username}</h1>
     </h:body>
     <script src="#{createRouteView.mapKey}" type="text/javascript" ></script>
 </html>
