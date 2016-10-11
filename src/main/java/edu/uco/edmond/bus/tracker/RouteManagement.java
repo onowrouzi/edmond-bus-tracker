@@ -66,7 +66,7 @@ public class RouteManagement {
                     try {
                         jsonobject = jsonarray.getJSONObject(i);
                         int id = jsonobject.getInt("id");
-                        String name = jsonobject.getString("name");
+                        String name = jsonobject.getString("routeName");
                         System.out.println(name);
                         Route temp = new Route(id, name);
                         routes.add(temp);
