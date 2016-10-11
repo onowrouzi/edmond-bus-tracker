@@ -37,8 +37,8 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>createRoute.xhtml</welcome-file>
-    </welcome-file-list>    
+        <welcome-file>login.xhtml</welcome-file>
+    </welcome-file-list>
     <servlet>
         <servlet-name>Jersey Web Application</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
