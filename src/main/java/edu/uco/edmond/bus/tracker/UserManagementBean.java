@@ -181,6 +181,47 @@ public class UserManagementBean implements Serializable {
         return "User was added!";
     }
     
+    public String editUser(String username, String password, String confirmPassword) throws IOException{
+        if (!password.equals(confirmPassword) || (password.isEmpty() && confirmPassword.isEmpty())) {
+            return "Passwords must match!";
+        }
+        
+        try {
+            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/edit/" + username + "/" + password + "/" + confirmPassword + "/";
+            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/edit/" + username + "/" + password + "/" + confirmPassword + "/";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        loadUserGroups("admin", admins);
+        context.redirect("userManagement.xhtml");
+        
+        return "User was edited!";
+    }
+    
     public ArrayList<User> getAdmins() {
         return this.admins;
     }
@@ -208,6 +249,5 @@ public class UserManagementBean implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
-    
-    
+
 }

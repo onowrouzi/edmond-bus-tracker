@@ -40,6 +40,9 @@
                         <b:button value="Delete" look="danger" outcome="deleteUser">
                             <f:param name="username" value="#{user.username}" />
                         </b:button>
+                        <b:button value="Edit" style="margin-left: 5px" look="info" outcome="editUser">
+                            <f:param name="username" value="#{user.username}" />
+                        </b:button>
                     </b:dataTableColumn>
                 </b:dataTable>
             </div>
