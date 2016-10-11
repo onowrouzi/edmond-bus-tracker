@@ -134,7 +134,33 @@ public class FavoriteService extends Service {
             return getGson().toJson("No favorites saved for this user");
         
         return getGson().toJson(usersFavorite.favorites());
-    } 
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("favorites/possible/{username}")
+    public String getUsersPossibleFavorites(@PathParam("username") String username)
+    {
+        UsersFavorites usersFavorite = find(username);
+        
+        if(usersFavorite == null)
+            return getGson().toJson(null); //no user found
+        
+        List<Favorite> possibleFavorites = new ArrayList<>();
+        
+        for(Bus bus : busService.buses())
+            possibleFavorites.add(new Favorite(bus.getId(), "Bus", bus.getName()));
+        for(BusStop stop : busStopService.busStops())
+            possibleFavorites.add(new Favorite(stop.getId(), "Bus Stop", stop.getName()));
+        
+        for(Favorite impossible : usersFavorite.favorites())
+            possibleFavorites.remove(impossible);
+            
+        if(possibleFavorites.isEmpty())
+            return getGson().toJson("No possible favorites available for this user");
+                
+        return getGson().toJson(possibleFavorites);
+    }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
