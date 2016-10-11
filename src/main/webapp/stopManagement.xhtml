@@ -13,13 +13,11 @@
            <ui:include src="/sidebar.xhtml"/>
         </b:column>
         <b:column span="9" class="col-xs-8">
-            <div id="user-table">
-                <b:dataTable>
-                    <b:dataTableColumn></b:dataTableColumn>
-                    <b:dataTableColumn></b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <b:button value="Edit" look="primary"></b:button>
-                    </b:dataTableColumn>
+            <div id="route-table">
+                <b:dataTable value="#{routeStopManagement.getStops()}" var="r">
+                    <b:dataTableColumn>#{r.getStopName()}</b:dataTableColumn>
+                    <b:dataTableColumn>#{r.getStopLat()}</b:dataTableColumn>
+                    <b:dataTableColumn>#{r.getStopLng()}</b:dataTableColumn>
                 </b:dataTable>
             </div>
             <br/>

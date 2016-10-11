@@ -126,7 +126,7 @@ public class BusService extends Service {
     }
    
     @POST
-    @Consumes("text/plain")
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("buses/create/{name}/{driver}/{route}")
     public String create(@PathParam("name") String name, @PathParam("driver") String driver, @PathParam("route") String route)
     {
@@ -136,29 +136,31 @@ public class BusService extends Service {
             return getGson().toJson(null); //send error message on client --bus exists
         
         try{
-            PreparedStatement stmt = getDatabase()
-                .prepareStatement("INSERT INTO tblbus (name, driver, route) VALUES(?,?,?)");
-            stmt.setString(1, name);
-            stmt.setString(2, driver);
-            stmt.setString(3, route);
+            try (PreparedStatement stmt = getDatabase()
+                    .prepareStatement("INSERT INTO tblbus (name, driver, route) VALUES(?,?,?)")) {
+                stmt.setString(1, name);
+                stmt.setString(2, driver);
+                stmt.setString(3, route);
+                
+                System.out.println("STATEMENT 1: " + stmt);
+                
+                int count = stmt.executeUpdate();
+            }
 
-            int count = stmt.executeUpdate();
-            
-            stmt.close();
-
-            //get id of new stop
-            PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tblbus WHERE name=?");
-            stmt2.setString(1, name);
-
-            ResultSet rs = stmt2.executeQuery();
-            
-            rs.first();
-
-            int id = rs.getInt("id");
-            bus = new Bus(id,name,driver,route);
-            buses.add(bus);  
-            
-            stmt2.close();
+            try ( //get id of new stop
+                    PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tblbus WHERE name=?")) {
+                stmt2.setString(1, name);
+                
+                System.out.println("STATEMENT 2: " + stmt2);
+                
+                ResultSet rs = stmt2.executeQuery();
+                
+                rs.first();
+                
+                int id = rs.getInt("id");
+                bus = new Bus(id,name,driver,route);
+                buses.add(bus);
+            }
             
         }catch(SQLException s){
             return getGson().toJson(s.toString()); //SQL failed
