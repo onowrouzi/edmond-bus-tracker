@@ -63,8 +63,9 @@ public class LoginBean implements Serializable {
                 return "login";
             } 
             
-            HttpSession hs = Util.getSession();
-            hs.setAttribute("username", username);
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            Map<String, Object> sessionMap = externalContext.getSessionMap();
+            sessionMap.put("username", username);
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -73,9 +74,16 @@ public class LoginBean implements Serializable {
     }
     
     public String logout() {
-        HttpSession hs = Util.getSession();
-        hs.invalidate();
-        return "login";
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "login.xhtml?faces-redirect=true";
+    }
+    
+    public void doFilter() throws IOException {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        if (!sessionMap.containsKey("username")) {
+            externalContext.redirect("login.xhtml?faces-redirect=true");
+        }
     }
 
     public String getUsername() {
