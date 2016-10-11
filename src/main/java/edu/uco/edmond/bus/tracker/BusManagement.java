@@ -54,7 +54,9 @@ public class BusManagement implements Serializable {
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
+            
             in.close();
+            con.disconnect();
             
             //print result
             System.out.println(response.toString());
@@ -125,12 +127,14 @@ public class BusManagement implements Serializable {
                 }
                 System.out.println("INPUT STREAM: " + response);
             }
+            
+            con.disconnect();
 
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            context.redirect("busManagement.xhtml");
         }
-        
-        context.redirect("busManagement.xhtml");
 //        return "busManagement";
     }
     

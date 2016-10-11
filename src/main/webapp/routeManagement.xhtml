@@ -15,9 +15,7 @@
         <b:column span="9" class="col-xs-9">
             <div id="route-table">
                 <b:dataTable value="#{routeManagement.getRoutes()}" var="r">
-                    <b:dataTableColumn>#{r.getStopName()}</b:dataTableColumn>
-                    <b:dataTableColumn>#{r.getStopLat()}</b:dataTableColumn>
-                    <b:dataTableColumn>#{r.getStopLng()}</b:dataTableColumn>
+                    <b:dataTableColumn>#{r.getName()}</b:dataTableColumn>
                 </b:dataTable>
             </div>
             <b:button value="Add" look="default" class="pull-right" outcome="createRoute"></b:button>
