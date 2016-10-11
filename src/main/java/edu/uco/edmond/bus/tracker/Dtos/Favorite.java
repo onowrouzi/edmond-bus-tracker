@@ -11,15 +11,15 @@ public class Favorite {
     private int userId;
     private int favoriteId;
     private String type;
+    private String name;
     
-    public static String[] possibleTypes = {"BusStop"};
-    
-    public Favorite(int id, int userId, int favoriteId, String type)
+    public Favorite(int id, int userId, int favoriteId, String type, String name)
     {
         this.id = id;
         this.userId = userId;
         this.favoriteId = favoriteId;
         this.type = type;
+        this.name = name;
     }
     
     public int getId()
@@ -40,5 +40,10 @@ public class Favorite {
     public String getType()
     {
         return type;
+    }
+    
+    public String getName()
+    {
+        return name;
     }
 }

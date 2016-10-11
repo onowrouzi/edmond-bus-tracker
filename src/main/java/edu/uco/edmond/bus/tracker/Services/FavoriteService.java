@@ -1,6 +1,8 @@
 
 package edu.uco.edmond.bus.tracker.Services;
 
+import edu.uco.edmond.bus.tracker.Dtos.Bus;
+import edu.uco.edmond.bus.tracker.Dtos.BusStop;
 import edu.uco.edmond.bus.tracker.Dtos.Favorite;
 import edu.uco.edmond.bus.tracker.Services.UserService;
 import edu.uco.edmond.bus.tracker.Dtos.User;
@@ -11,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -21,6 +25,8 @@ import javax.ws.rs.core.MediaType;
 public class FavoriteService extends Service {
     
     UserService userService;
+    BusService busService;
+    BusStopService busStopService;
     List<Favorite> favorites;
     List<UsersFavorites> usersFavorites;
     
@@ -29,6 +35,8 @@ public class FavoriteService extends Service {
         this.favorites = new ArrayList<>();
         this.usersFavorites = new ArrayList<>();
         userService = new UserService();
+        busService = new BusService();
+        busStopService = new BusStopService();
         getAllFavorites();
         getAllUsersFavorites();
     }
@@ -41,7 +49,7 @@ public class FavoriteService extends Service {
         ResultSet rsBusStop = stmtBusStop.executeQuery("SELECT * FROM tblbusstopfavorites");
 
         while(rsBusStop.next()){
-            Favorite favorite = new Favorite(rsBusStop.getInt("id"), rsBusStop.getInt("userbusstopId"), rsBusStop.getInt("busstopId"), "Bus Stop");
+            Favorite favorite = new Favorite(rsBusStop.getInt("id"), rsBusStop.getInt("userbusstopId"), rsBusStop.getInt("busstopId"), "Bus Stop", rsBusStop.getString("name"));
             favorites.add(favorite);
         }
         
@@ -53,7 +61,7 @@ public class FavoriteService extends Service {
         ResultSet rsBus = stmtBus.executeQuery("SELECT * FROM tblbusfavorites");
 
         while(rsBus.next()){
-            Favorite favorite = new Favorite(rsBus.getInt("id"), rsBus.getInt("userbusId"), rsBus.getInt("busId"), "Bus");
+            Favorite favorite = new Favorite(rsBus.getInt("id"), rsBus.getInt("userbusId"), rsBus.getInt("busId"), "Bus", rsBus.getString("name"));
             favorites.add(favorite);
         }
         
@@ -115,7 +123,8 @@ public class FavoriteService extends Service {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("favorites/{username}")
-    public String getUsersFavorites(@PathParam("username") String username){
+    public String getUsersFavorites(@PathParam("username") String username)
+    {
         UsersFavorites usersFavorite = find(username);
         
         if(usersFavorite == null)
@@ -125,7 +134,7 @@ public class FavoriteService extends Service {
             return getGson().toJson("No favorites saved for this user");
         
         return getGson().toJson(usersFavorite.favorites());
-    }  
+    } 
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -133,6 +142,7 @@ public class FavoriteService extends Service {
     public String createBus(@PathParam("userId") int userId, @PathParam("favoriteId") int favoriteId)
     {  
         UsersFavorites usersFavorite = find(userId);
+        String busName = busService.find(favoriteId).getName();
         
         if(usersFavorite == null)
             return getGson().toJson(null); //no user found
@@ -142,9 +152,10 @@ public class FavoriteService extends Service {
                 return getGson().toJson(null); //favorite already exists for this user
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblbusfavorites (userbusId, busId) VALUES(?,?)");
+            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblbusfavorites (userbusId, busId, name) VALUES(?,?,?)");
             stmt.setInt(1, userId);
             stmt.setInt(2, favoriteId);
+            stmt.setString(3, busName);
 
             int count = stmt.executeUpdate();
             
@@ -160,7 +171,7 @@ public class FavoriteService extends Service {
             rs.first();
 
             int id = rs.getInt("id");
-            Favorite newFavorite = new Favorite(id,userId,favoriteId,"Bus");
+            Favorite newFavorite = new Favorite(id,userId,favoriteId,"Bus",busName);
             usersFavorite.favorites().add(newFavorite);  
             
             stmt2.close();
@@ -178,6 +189,7 @@ public class FavoriteService extends Service {
     public String createBusStop(@PathParam("userId") int userId, @PathParam("favoriteId") int favoriteId)
     {  
         UsersFavorites usersFavorite = find(userId);
+        String busStopName = busStopService.find(favoriteId).getName();
         
         if(usersFavorite == null)
             return getGson().toJson(null); //no user found
@@ -187,9 +199,10 @@ public class FavoriteService extends Service {
                 return getGson().toJson(null); //favorite already exists for this user
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblbusstopfavorites (userbusstopId, busstopId) VALUES(?,?)");
+            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblbusstopfavorites (userbusstopId, busstopId, name) VALUES(?,?,?)");
             stmt.setInt(1, userId);
             stmt.setInt(2, favoriteId);
+            stmt.setString(3, busStopName);
 
             int count = stmt.executeUpdate();
             
@@ -205,7 +218,7 @@ public class FavoriteService extends Service {
             rs.first();
 
             int id = rs.getInt("id");
-            Favorite newFavorite = new Favorite(id,userId,favoriteId,"Bus Stop");
+            Favorite newFavorite = new Favorite(id,userId,favoriteId,"Bus Stop", busStopName);
             usersFavorite.favorites().add(newFavorite);  
             
             stmt2.close();
