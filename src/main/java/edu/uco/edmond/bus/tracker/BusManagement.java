@@ -105,7 +105,7 @@ public class BusManagement implements Serializable {
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
             // optional default is GET
-            con.setRequestMethod("POST");
+            con.setRequestMethod("GET");
             
             //add request header
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -114,7 +114,7 @@ public class BusManagement implements Serializable {
             System.out.println("\nSending 'POST' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
             
-            if (responseCode != 200) {
+            if (responseCode > 400) {
                 System.out.println("CONNECTION ERROR: " + con.getErrorStream());
             }
             
