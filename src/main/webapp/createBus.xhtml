@@ -6,36 +6,36 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <h:outputStylesheet library="css" name="webcss.css" />
     </h:head>
     <h:body>
-        <b:column span="3" class="col-xs-3">
-            <ui:include src="sidebar.xhtml"/>
-        </b:column>
-        <b:column span="2" class="visible-md visible-lg"></b:column>
-        <b:column span="5" class="col-xs-9">
-            <h1 id="user-header">Add Bus</h1>
-            <h:form id="user-form">
-                <br/><br/>
-                <label>Name</label>
-                <br/>
-                <b:inputText value="#{name}"></b:inputText>
-                <br/>
-                <b:selectOneMenu value="#{driver}">
-                    <f:selectItem itemLabel="Select Driver" itemValue=""></f:selectItem>
-                    <f:selectItems value="#{userManagementBean.admins}" var="user" 
-                        itemLabel="#{user.username}" itemValue="#{user.username}"/>
-                </b:selectOneMenu>
-                <br/>
-                <b:selectOneMenu value="#{route}">
-                    <f:selectItem itemLabel="Select Route" itemValue=""></f:selectItem>
-                    <f:selectItems value="#{routeManagement.getRoutes()}" var="r"
-                        itemLabel="#{r.getName()}" itemValue="#{r.getName()}"/>
-                </b:selectOneMenu>
-                <b:commandButton value="Add" look="default" action="#{busManagement.addBus(name, driver, route)}"/>
-                <br/><br/>
-            </h:form>
-        </b:column>
-        <b:column class="col-xs-2 visible-md visible-lg"></b:column>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <b:column span="2" class="visible-md visible-lg"></b:column>
+                <b:column span="5" class="col-xs-9">
+                    <h1 id="user-header">Add Bus</h1>
+                    <h:form id="user-form">
+                        <br/><br/>
+                        <label>Name</label>
+                        <br/>
+                        <b:inputText value="#{name}"></b:inputText>
+                        <br/>
+                        <b:selectOneMenu value="#{driver}">
+                            <f:selectItem itemLabel="Select Driver" itemValue=""></f:selectItem>
+                            <f:selectItems value="#{userManagementBean.admins}" var="user" 
+                                itemLabel="#{user.username}" itemValue="#{user.username}"/>
+                        </b:selectOneMenu>
+                        <br/>
+                        <b:selectOneMenu value="#{route}">
+                            <f:selectItem itemLabel="Select Route" itemValue=""></f:selectItem>
+                            <f:selectItems value="#{routeManagement.getRoutes()}" var="r"
+                                itemLabel="#{r.getName()}" itemValue="#{r.getName()}"/>
+                        </b:selectOneMenu>
+                        <b:commandButton value="Add" look="default" action="#{busManagement.addBus(name, driver, route)}"/>
+                        <br/><br/>
+                    </h:form>
+                </b:column>
+                <b:column class="col-xs-2 visible-md visible-lg"></b:column>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>

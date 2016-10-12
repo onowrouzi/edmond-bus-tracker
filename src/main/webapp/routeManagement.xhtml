@@ -6,19 +6,19 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <h:outputStylesheet library="css" name="webcss.css" />
     </h:head>
     <h:body>
-        <b:column span="3" class="col-xs-3">
-           <ui:include src="/sidebar.xhtml"/>
-        </b:column>
-        <b:column span="9" class="col-xs-9">
-            <div id="route-table">
-                <b:dataTable value="#{routeManagement.getRoutes()}" var="r">
-                    <b:dataTableColumn>#{r.getName()}</b:dataTableColumn>
-                </b:dataTable>
-            </div>
-            <b:button value="Add" look="default" class="pull-right" outcome="createRoute"></b:button>
-        </b:column>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <b:column span="9" class="col-xs-9">
+                    <div id="route-table">
+                        <b:dataTable value="#{routeManagement.getRoutes()}" var="r">
+                            <b:dataTableColumn>#{r.getName()}</b:dataTableColumn>
+                        </b:dataTable>
+                    </div>
+                    <b:button value="Add" look="default" class="pull-right" outcome="createRoute"></b:button>
+                </b:column>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
