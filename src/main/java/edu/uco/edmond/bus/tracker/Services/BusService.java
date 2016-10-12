@@ -131,10 +131,10 @@ public class BusService extends Service {
         driver = driver.replace("%20", " ");
         route = route.replace("%20", " ");
         
-        Bus bus = find(name);
+        Bus bus = new Bus(); //find(name);
         
-        if(bus != null)
-            return getGson().toJson(null); //send error message on client --bus exists
+        //if(bus != null)
+        //    return getGson().toJson(null); //send error message on client --bus exists
         
         try{
             try (PreparedStatement stmt = getDatabase()
