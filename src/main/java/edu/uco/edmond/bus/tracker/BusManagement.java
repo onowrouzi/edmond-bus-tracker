@@ -115,6 +115,14 @@ public class BusManagement implements Serializable {
             System.out.println("Response Code : " + responseCode);
             
             if (responseCode > 400) {
+                BufferedReader err = new BufferedReader(
+                    new InputStreamReader(con.getErrorStream())); 
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                
+                while ((inputLine = err.readLine()) != null) {
+                    response.append(inputLine);
+                }
                 System.out.println("CONNECTION ERROR: " + con.getErrorStream());
             }
             
