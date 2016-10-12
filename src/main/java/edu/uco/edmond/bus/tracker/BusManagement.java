@@ -74,8 +74,10 @@ public class BusManagement implements Serializable {
                     String lastStop = jsonobject.getString("lastStop");
                     Boolean active = jsonobject.getBoolean("active");
                     String lastActive = jsonobject.getString("lastActive");
+                    double lastLongitude = jsonobject.getDouble("lastlong");
+                    double lastLatitude = jsonobject.getDouble("lastlat");
                     System.out.println(name);
-                    Bus temp = new Bus(id, name, driver, route, lastStop, active, lastActive);
+                    Bus temp = new Bus(id, name, driver, route, lastStop, active, lastActive, lastLongitude, lastLatitude);
                     buses.add(temp);
                 } catch (JSONException ex) {
                     Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);

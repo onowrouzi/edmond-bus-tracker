@@ -11,6 +11,8 @@ public class Bus extends Dto {
     private String lastStop;
     private Boolean active;
     private String lastActive;
+    private double lastLongitude;
+    private double lastLatitude;
     
     public Bus() {}
     
@@ -19,10 +21,12 @@ public class Bus extends Dto {
         this.name = name;
         this.driver = driver;
         this.route = route;
+        lastLongitude = 0;
+        lastLatitude = 0;
     }
     
     public Bus(int id, String name, String driver, String route, 
-            String lastStop, Boolean active, String lastActive) {
+            String lastStop, Boolean active, String lastActive, double lastLongitude, double lastLatitude) {
         this.id = id;
         this.name = name;
         this.driver = driver;
@@ -30,6 +34,8 @@ public class Bus extends Dto {
         this.lastStop = lastStop;
         this.active = active;
         this.lastActive = lastActive;
+        this.lastLongitude = lastLongitude;
+        this.lastLatitude = lastLatitude;
     }
 
     public int getId() {
@@ -58,5 +64,15 @@ public class Bus extends Dto {
     
     public String getLastActive(){
         return lastActive;
+    }
+    
+    public double getLastLongitude()
+    {
+        return lastLongitude;
+    }
+    
+    public double getLastLatitude()
+    {
+        return lastLatitude;
     }
 }
