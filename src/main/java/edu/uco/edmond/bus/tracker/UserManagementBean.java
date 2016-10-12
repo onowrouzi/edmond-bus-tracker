@@ -22,7 +22,7 @@ import org.primefaces.json.JSONObject;
 @ManagedBean
 @RequestScoped
 public class UserManagementBean implements Serializable {
-    private ArrayList<User> admins = new ArrayList<>();
+    private ArrayList<User> admins;
     
     private String username;
     private String password;
@@ -32,6 +32,7 @@ public class UserManagementBean implements Serializable {
     @PostConstruct
     public void init() {
         try {
+            admins = new ArrayList<>();
             loadUserGroups("admin", admins);
         } catch (Exception ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,7 +212,8 @@ public class UserManagementBean implements Serializable {
                 response.append(inputLine);
             }
             in.close();
-
+            con.disconnect();
+            
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }

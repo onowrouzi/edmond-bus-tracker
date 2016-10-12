@@ -6,51 +6,53 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <h:outputStylesheet library="css" name="webcss.css" />
+        <f:metadata>
+            <f:viewAction action="#{loginBean.doFilter}" />
+        </f:metadata>
     </h:head>
     <h:body>
-        <b:column span="3" class="col-xs-3">
-           <ui:include src="/sidebar.xhtml"/>
-        </b:column>
-        
-        <b:column span="2" class="visible-md visible-lg"></b:column>
-        <b:column span="5" class="col-xs-9">
-            <h1 id="user-header">Add User</h1>
-            <h:form id="user-form">
-                <br/><br/>
-                <label>User Name</label>
-                <br/>
-                <b:inputText value="#{userName}"></b:inputText>
-                <br/>
-                <label>First Name</label>
-                <br/>
-                <b:inputText value="#{firstName}"></b:inputText>
-                <br/>
-                <label>Last Name</label>
-                <br/>
-                <b:inputText value="#{lastName}"></b:inputText>
-                <br/>
-                <label>Email</label>
-                <br/>
-                <b:inputText value="#{email}"></b:inputText>
-                <b:selectOneMenu value="#{role}">
-                    <f:selectItem itemLabel="Select Role" itemValue=""/>
-                    <f:selectItem itemLabel="User" itemValue="user"/>
-                    <f:selectItem itemLabel="Driver" itemValue="driver"/>
-                    <f:selectItem itemLabel="Administrator" itemValue="admin"/>
-                </b:selectOneMenu>
-                <label>Password</label>
-                <br/>
-                <b:inputSecret value="#{password}"></b:inputSecret>
-                <label>Confirm Password</label>
-                <br/>
-                <b:inputSecret value="#{confirmPassword}"></b:inputSecret>
-                <br/>
-                <b:commandButton value="Add" look="default" 
-                    action="#{userManagementBean.addUser(userName, role, password, confirmPassword, firstName, lastName, email)}"/>
-                <br/><br/>
-            </h:form>
-        </b:column>
-        <b:column class="col-xs-2 visible-md visible-lg"></b:column>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <b:column span="2" class="visible-md visible-lg"></b:column>
+                <b:column span="5" class="col-xs-9">
+                    <h1 id="user-header">Add User</h1>
+                    <h:form id="user-form">
+                        <br/><br/>
+                        <label>User Name</label>
+                        <br/>
+                        <b:inputText value="#{userName}"></b:inputText>
+                        <br/>
+                        <label>First Name</label>
+                        <br/>
+                        <b:inputText value="#{firstName}"></b:inputText>
+                        <br/>
+                        <label>Last Name</label>
+                        <br/>
+                        <b:inputText value="#{lastName}"></b:inputText>
+                        <br/>
+                        <label>Email</label>
+                        <br/>
+                        <b:inputText value="#{email}"></b:inputText>
+                        <b:selectOneMenu value="#{role}">
+                            <f:selectItem itemLabel="Select Role" itemValue=""/>
+                            <f:selectItem itemLabel="User" itemValue="user"/>
+                            <f:selectItem itemLabel="Driver" itemValue="driver"/>
+                            <f:selectItem itemLabel="Administrator" itemValue="admin"/>
+                        </b:selectOneMenu>
+                        <label>Password</label>
+                        <br/>
+                        <b:inputSecret value="#{password}"></b:inputSecret>
+                        <label>Confirm Password</label>
+                        <br/>
+                        <b:inputSecret value="#{confirmPassword}"></b:inputSecret>
+                        <br/>
+                        <b:commandButton value="Add" look="default" 
+                            action="#{userManagementBean.addUser(userName, role, password, confirmPassword, firstName, lastName, email)}"/>
+                        <br/><br/>
+                    </h:form>
+                </b:column>
+                <b:column class="col-xs-2 visible-md visible-lg"></b:column>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>

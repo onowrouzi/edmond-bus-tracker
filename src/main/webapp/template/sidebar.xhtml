@@ -1,0 +1,28 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+    <h:form>
+        <b:panel look="primary" title="Edmond Bus">
+            <b:listLinks>
+                <b:navLink href="userManagement.xhtml" class="panel-link"
+                    icon="user" iconAlign="left" value="User Management"/>
+                <b:navLink href="routeManagement.xhtml" class="panel-link"
+                    icon="arrow-right" iconAlign="left" value="Route Management"/>
+                <b:navLink href="stopManagement.xhtml" class="panel-link"
+                    icon="arrow-right" iconAlign="left" value="Stop Management"/>
+                <b:navLink href="sendNotification.xhtml" class="panel-link"
+                    icon="comment" iconAlign="left" value="Send Notification"/>
+                <b:navLink href="stopManagement.xhtml" class="panel-link"
+                    icon="remove-circle" iconAlign="left" value="Stop Management"/>
+                <b:navLink href="busManagement.xhtml" class="panel-link"
+                    icon="road" iconAlign="left" value="Bus Management"/>
+                <b:navCommandLink action="#{loginBean.logout}" class="panel-link"
+                    icon="user" iconAlign="left" value="Logout"/>
+            </b:listLinks>
+        </b:panel>
+    </h:form>
+</ui:composition>
+    

@@ -6,37 +6,38 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <h:outputStylesheet library="css" name="webcss.css" />
         <f:metadata>
-            <f:viewParam name="username" value="#{userManagementBean.username}"/>
+            <f:viewParam name="username" value="#{userManagementBean.username}" />
+            <f:viewAction action="#{loginBean.doFilter}" />
         </f:metadata>
     </h:head>
     <h:body>
-        <b:column span="3" class="col-xs-3">
-           <ui:include src="/sidebar.xhtml"/>
-        </b:column>
-        <b:column span="2" class="visible-md visible-lg"></b:column>
-        <b:column span="5" class="col-xs-9">
-            <h1 id="user-header">Edit User</h1>
-            <h:form id="user-form">
-                <br/><br/>
-                <label>User Name</label>
-                <br/>
-                <b:inputText value="#{userManagementBean.username}" disabled="true"></b:inputText>
-                <br/>
-                <label>Password</label>
-                <br/>
-                <b:inputSecret id="inputPassword" value="#{password}"></b:inputSecret>
-                <br/>
-                <label>Confirm Password</label>
-                <br/>
-                <b:inputSecret id="inputConfirmPassword" value="#{confirmPassword}"></b:inputSecret>
-                <br/>
-                <b:commandButton value="Edit" look="default" 
-                    action="#{userManagementBean.editUser(userManagementBean.username, password, confirmPassword)}"/>
-                <br/><br/>
-            </h:form>
-        </b:column>
-        <b:column class="col-xs-2 visible-md visible-lg"></b:column>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <b:column span="2" class="visible-md visible-lg"></b:column>
+                <b:column span="5" class="col-xs-9">
+                    <h1 id="user-header">Edit User</h1>
+                    <h:form id="user-form">
+                        <br/><br/>
+                        <label>User Name</label>
+                        <br/>
+                        <b:inputText value="#{userManagementBean.username}" disabled="true"></b:inputText>
+                        <br/>
+                        <label>Password</label>
+                        <br/>
+                        <b:inputSecret id="inputPassword" value="#{password}"></b:inputSecret>
+                        <br/>
+                        <label>Confirm Password</label>
+                        <br/>
+                        <b:inputSecret id="inputConfirmPassword" value="#{confirmPassword}"></b:inputSecret>
+                        <br/>
+                        <b:commandButton value="Edit" look="default" 
+                            action="#{userManagementBean.editUser(userManagementBean.username, password, confirmPassword)}"/>
+                        <br/><br/>
+                    </h:form>
+                </b:column>
+                <b:column class="col-xs-2 visible-md visible-lg"></b:column>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
