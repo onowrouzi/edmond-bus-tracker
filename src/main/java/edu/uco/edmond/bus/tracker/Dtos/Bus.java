@@ -1,7 +1,5 @@
 package edu.uco.edmond.bus.tracker.Dtos;
 
-import java.sql.Date;
-
 public class Bus extends Dto {
     
     private int id;
@@ -11,8 +9,8 @@ public class Bus extends Dto {
     private String lastStop;
     private Boolean active;
     private String lastActive;
-    private double lastLongitude;
-    private double lastLatitude;
+    private double lastLong;
+    private double lastLat;
     
     public Bus() {}
     
@@ -21,12 +19,12 @@ public class Bus extends Dto {
         this.name = name;
         this.driver = driver;
         this.route = route;
-        lastLongitude = 0;
-        lastLatitude = 0;
+        lastLong = 0;
+        lastLat = 0;
     }
     
     public Bus(int id, String name, String driver, String route, 
-            String lastStop, Boolean active, String lastActive, double lastLongitude, double lastLatitude) {
+            String lastStop, Boolean active, String lastActive, double lastLong, double lastLat) {
         this.id = id;
         this.name = name;
         this.driver = driver;
@@ -34,8 +32,8 @@ public class Bus extends Dto {
         this.lastStop = lastStop;
         this.active = active;
         this.lastActive = lastActive;
-        this.lastLongitude = lastLongitude;
-        this.lastLatitude = lastLatitude;
+        this.lastLong = lastLong;
+        this.lastLat = lastLat;
     }
 
     public int getId() {
@@ -68,11 +66,11 @@ public class Bus extends Dto {
     
     public double getLastLongitude()
     {
-        return lastLongitude;
+        return lastLong;
     }
     
     public double getLastLatitude()
     {
-        return lastLatitude;
+        return lastLat;
     }
 }
