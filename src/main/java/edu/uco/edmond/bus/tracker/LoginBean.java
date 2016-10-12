@@ -15,7 +15,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 
 @ManagedBean
 @SessionScoped
@@ -67,7 +66,7 @@ public class LoginBean implements Serializable {
             Map<String, Object> sessionMap = externalContext.getSessionMap();
             sessionMap.put("username", username);
         } catch (IOException ex) {
-            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return "createRoute.xhtml?faces-redirect=true";
