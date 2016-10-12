@@ -8,13 +8,12 @@ import java.sql.SQLException;
 
 public class Service {
     
-    private Connection database;
-    private Gson gson;
+    private static Connection database;
+    private static Gson gson = new Gson();
     
     public Service() throws SQLException
     {
-        database = new DBConnect().getDatabase();
-        gson = new Gson();
+        database = DBConnect.getDatabase();
     }
     
     public Connection getDatabase()
