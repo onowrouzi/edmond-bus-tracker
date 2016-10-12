@@ -6,6 +6,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
+        <f:metadata>
+            <f:viewAction action="#{loginBean.doFilter}" />
+        </f:metadata>
     </h:head>
     <h:body>
         <ui:composition template="/template/layout.xhtml">
