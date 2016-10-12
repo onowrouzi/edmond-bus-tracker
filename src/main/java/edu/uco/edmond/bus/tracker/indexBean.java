@@ -7,7 +7,6 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class indexBean {
-    DBConnect db = new DBConnect();
     private String message = "Hello Team UCO!";
     
     public String getMessage(){
