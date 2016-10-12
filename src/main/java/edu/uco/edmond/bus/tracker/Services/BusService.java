@@ -53,7 +53,7 @@ public class BusService extends Service {
             Boolean active = false;
             if (rs.getInt("active") > 0) active = true;
             Bus bus = new Bus(rs.getInt("id"), rs.getString("name"), rs.getString("driver"), rs.getString("route"),
-                        rs.getString("laststop"), active, rs.getString("lastactive"), rs.getDouble("lastlong"), rs.getDouble("lastlat"));
+                        rs.getString("laststop"), active, rs.getString("lastactive"), rs.getDouble("lastLong"), rs.getDouble("lastLat"));
             buses.add(bus);
         }
         
