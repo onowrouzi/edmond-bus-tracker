@@ -69,13 +69,13 @@ public class BusManagement implements Serializable {
                     jsonobject = jsonarray.getJSONObject(i);
                     int id = jsonobject.getInt("id");
                     String name = jsonobject.getString("name");
-                    String driver = jsonobject.getString("driver") != null ? jsonobject.getString("driver") : "none";
+                    String driver = jsonobject.has("driver") ? jsonobject.getString("driver") : "none";
                     String route = jsonobject.getString("route");
                     String lastStop = jsonobject.getString("lastStop");
                     Boolean active = jsonobject.getBoolean("active");
                     String lastActive = jsonobject.getString("lastActive");
-                    double lastLong = jsonobject.getDouble("lastlong");
-                    double lastLat = jsonobject.getDouble("lastlat");
+                    double lastLong = jsonobject.getDouble("lastLong");
+                    double lastLat = jsonobject.getDouble("lastLat");
                     System.out.println(name);
                     Bus temp = new Bus(id, name, driver, route, lastStop, active, lastActive, lastLong, lastLat);
                     buses.add(temp);
