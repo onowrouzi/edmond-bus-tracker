@@ -249,13 +249,44 @@ public class UserService extends Service{
             return getGson().toJson(null); //send error message on client --user does not exist
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tbluser WHERE id=?");
+            PreparedStatement stmt;
+            if (user.getType().equals("driver")) {
+                stmt = getDatabase().prepareStatement("UPDATE tblbus SET driver = NULL WHERE driver=?");
+                stmt.setString(1, user.getUsername());
+                
+                int count = stmt.executeUpdate();
+                stmt.close();
+                
+                stmt = getDatabase().prepareStatement("DELETE FROM tblbusfavorites WHERE userbusId=?");
+                stmt.setInt(1, user.getId());
+                
+                count = stmt.executeUpdate();
+                stmt.close();
+            } else if (user.getType().equals("user")) {
+                stmt = getDatabase().prepareStatement("DELETE FROM tblbusstopfavorites WHERE userbusstopId=?");
+                stmt.setInt(1, user.getId());
+                
+                int count = stmt.executeUpdate();
+                stmt.close();
+                
+                stmt = getDatabase().prepareStatement("DELETE FROM tblbusfavorites WHERE userbusId=?");
+                stmt.setInt(1, user.getId());
+                
+                count = stmt.executeUpdate();
+                stmt.close();
+                
+                stmt = getDatabase().prepareStatement("DELETE FROM tbluserroute WHERE username=?");
+                stmt.setString(1, user.getUsername());
+                
+                count = stmt.executeUpdate();
+                stmt.close();
+            }
+                    
+            stmt = getDatabase().prepareStatement("DELETE FROM tbluser WHERE id=?");
             stmt.setInt(1, user.getId());
 
             int count = stmt.executeUpdate();
-            
             stmt.close();
-            
         }catch(SQLException s){
             return getGson().toJson(s.toString());
         }
