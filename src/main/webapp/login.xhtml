@@ -10,15 +10,21 @@
         <h:outputStylesheet library="css" name="webcss.css" />
     </h:head>
     <h:body>
-        <h:form>
-            <label>Username</label>
-            <h:inputText value="#{loginBean.username}" />
-            <br/>
-            <label>Password</label>
-            <br/>
-            <h:inputSecret value="#{loginBean.password}" />
-            <br/>
-            <h:commandButton value="login" action="#{loginBean.login}" />
-        </h:form>
+        <div class="container">
+            <br/><br/>
+            <h:form id="login-form" class="login-padding">
+                <h1 id="user-header" style="text-align: center">Login</h1>
+                <br/><br/>
+                <label>Username</label>
+                <br/>
+                <b:inputText value="#{loginBean.username}" />
+                <br/>
+                <label>Password</label>
+                <br/>
+                <b:inputSecret value="#{loginBean.password}" />
+                <br/>
+                <b:commandButton value="Login" action="#{loginBean.login}" />
+            </h:form>
+        </div>
     </h:body>
 </html>

@@ -69,6 +69,7 @@ and open the template in the editor.
 .panel-link a:hover {
     background-color: #2980B9 !important;
     color: #DDD !important;
+    cursor: pointer;
 }
 
 .panel-heading a:after { 
@@ -108,4 +109,27 @@ and open the template in the editor.
 
 #notification-form > button, #notification-form > select {
     width: 100%;
+}
+
+p.hidden {
+    visibility: hidden;
+}
+
+.login-padding {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-padding > h1 {
+    color: white;
+}
+
+#login-form {
+    background-color: #2980B9;
+    padding: 60px;
+    width: 400px;
+}
+            
+#login-form > label {
+    color: white;
 }
