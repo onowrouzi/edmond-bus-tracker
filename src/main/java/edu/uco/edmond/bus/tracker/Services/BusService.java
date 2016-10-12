@@ -122,7 +122,7 @@ public class BusService extends Service {
         return null;
     }
    
-    @POST
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("buses/create/{name}/{driver}/{route}")
     public String create(@PathParam("name") String name, @PathParam("driver") String driver, @PathParam("route") String route)
