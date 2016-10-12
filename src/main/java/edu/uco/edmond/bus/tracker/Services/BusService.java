@@ -127,6 +127,10 @@ public class BusService extends Service {
     @Path("buses/create/{name}/{driver}/{route}")
     public String create(@PathParam("name") String name, @PathParam("driver") String driver, @PathParam("route") String route)
     {
+        name = name.replace("%20", " ");
+        driver = driver.replace("%20", " ");
+        route = route.replace("%20", " ");
+        
         Bus bus = find(name);
         
         if(bus != null)
