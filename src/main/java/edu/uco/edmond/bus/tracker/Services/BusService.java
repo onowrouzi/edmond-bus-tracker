@@ -55,7 +55,8 @@ public class BusService extends Service {
         while(rs.next()){
             Boolean active = false;
             if (rs.getInt("active") > 0) active = true;
-            Bus bus = new Bus(rs.getInt("id"), rs.getString("name"), rs.getString("driver"), rs.getString("route"),
+            String driver = rs.getString("driver") == null ? "none" : rs.getString("driver");
+            Bus bus = new Bus(rs.getInt("id"), rs.getString("name"), driver, rs.getString("route"),
                         rs.getString("laststop"), active, rs.getString("lastactive"), rs.getDouble("lastlong"), rs.getDouble("lastlat"));
             buses.add(bus);
         }
