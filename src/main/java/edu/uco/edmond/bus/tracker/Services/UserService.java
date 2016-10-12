@@ -250,30 +250,43 @@ public class UserService extends Service{
         
         try{
             PreparedStatement stmt;
-            
-            // check if user is admin or not
-            // in order to delete the proper data
-            if (user.getType().equals("admin")) {
-                stmt = getDatabase().prepareStatement("DELETE FROM tblnotifications WHERE sentby=?");
-                stmt.setString(1, username);
+            if (user.getType().equals("driver")) {
+                stmt = getDatabase().prepareStatement("UPDATE tblbus SET driver = NULL WHERE driver=?");
+                stmt.setString(1, user.getUsername());
                 
                 int count = stmt.executeUpdate();
                 stmt.close();
-            } else { // delete user data
-                stmt = getDatabase().prepareStatement("DELETE FROM tblusernotifications WHERE sentby=?");
-                stmt.setString(1, username);
+                
+                stmt = getDatabase().prepareStatement("DELETE FROM tblbusfavorites WHERE userbusId=?");
+                stmt.setInt(1, user.getId());
+                
+                count = stmt.executeUpdate();
+                stmt.close();
+            } else if (user.getType().equals("user")) {
+                stmt = getDatabase().prepareStatement("DELETE FROM tblbusstopfavorites WHERE userbusstopId=?");
+                stmt.setInt(1, user.getId());
                 
                 int count = stmt.executeUpdate();
+                stmt.close();
+                
+                stmt = getDatabase().prepareStatement("DELETE FROM tblbusfavorites WHERE userbusId=?");
+                stmt.setInt(1, user.getId());
+                
+                count = stmt.executeUpdate();
+                stmt.close();
+                
+                stmt = getDatabase().prepareStatement("DELETE FROM tbluserroute WHERE username=?");
+                stmt.setString(1, user.getUsername());
+                
+                count = stmt.executeUpdate();
                 stmt.close();
             }
-            
+                    
             stmt = getDatabase().prepareStatement("DELETE FROM tbluser WHERE id=?");
             stmt.setInt(1, user.getId());
 
             int count = stmt.executeUpdate();
-            
             stmt.close();
-            
         }catch(SQLException s){
             return getGson().toJson(s.toString());
         }

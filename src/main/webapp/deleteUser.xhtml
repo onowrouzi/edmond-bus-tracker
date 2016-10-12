@@ -5,23 +5,24 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>User Management - Edmond Bus Tracker</title>
-        <h:outputStylesheet library="css" name="webcss.css" />
+        <title>Edmond Bus Tracker</title>
         <f:metadata>
-            <f:viewParam name="username" value="#{userManagementBean.username}"/>
+            <f:viewParam name="username" value="#{userManagementBean.username}" />
+            <f:viewAction action="#{loginBean.doFilter}" />
         </f:metadata>
     </h:head>
     <h:body>
-        <b:column span="3" class="col-xs-3">
-           <ui:include src="/sidebar.xhtml"/>
-        </b:column>
-        <b:column span="9" class="col-xs-8">
-            <h:form id="frmDeleteUser">
-                <h1>Delete User</h1>
-                <h2>Are you sure you want to delete #{param.username}?</h2>
-                <br/>
-                <b:commandButton value="Delete" look="danger" action="#{userManagementBean.deleteUser(userManagementBean.username)}" />
-            </h:form>
-        </b:column>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <b:column span="9" class="col-xs-8">
+                    <h:form id="frmDeleteUser">
+                        <h1>Delete User</h1>
+                        <h2>Are you sure you want to delete #{param.username}?</h2>
+                        <br/>
+                        <b:commandButton value="Delete" look="danger" action="#{userManagementBean.deleteUser(userManagementBean.username)}" />
+                    </h:form>
+                </b:column>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>

@@ -6,28 +6,31 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <h:outputStylesheet library="css" name="webcss.css" />
+        <f:metadata>
+            <f:viewAction action="#{loginBean.doFilter}" />
+        </f:metadata>
     </h:head>
     <h:body>
-        <b:column span="3" class="col-xs-3">
-            <ui:include src="sidebar.xhtml"/>
-        </b:column>
-        <b:column span="9" class="col-xs-8">
-            <div id="user-table">
-                <b:dataTable value="#{busManagement.getBuses()}" var="b">
-                    <b:dataTableColumn label="Name">#{b.getName()}</b:dataTableColumn>
-                    <b:dataTableColumn label="Driver">#{b.getDriver()}</b:dataTableColumn>
-                    <b:dataTableColumn label="Route">#{b.getRoute()}</b:dataTableColumn>
-                    <b:dataTableColumn label="Last Stop">#{b.getLastStop()}</b:dataTableColumn>
-                    <b:dataTableColumn label="Last Active">#{b.getLastActive()}</b:dataTableColumn>
-                    <b:dataTableColumn label="Active">#{b.getActive()}</b:dataTableColumn>
-                    <b:dataTableColumn label="Edit">
-                        <b:button value="Edit" look="primary"></b:button>
-                    </b:dataTableColumn>
-                </b:dataTable>
-            </div>
-            <br/>
-            <b:button value="Add" look="default" class="pull-right" outcome="createBus"></b:button>
-        </b:column>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <b:column span="9" class="col-xs-8">
+                    <div id="user-table">
+                        <b:dataTable value="#{busManagement.getBuses()}" var="b">
+                            <b:dataTableColumn label="Name">#{b.getName()}</b:dataTableColumn>
+                            <b:dataTableColumn label="Driver">#{b.getDriver()}</b:dataTableColumn>
+                            <b:dataTableColumn label="Route">#{b.getRoute()}</b:dataTableColumn>
+                            <b:dataTableColumn label="Last Stop">#{b.getLastStop()}</b:dataTableColumn>
+                            <b:dataTableColumn label="Last Active">#{b.getLastActive()}</b:dataTableColumn>
+                            <b:dataTableColumn label="Active">#{b.getActive()}</b:dataTableColumn>
+                            <b:dataTableColumn label="Edit">
+                                <b:button value="Edit" look="primary"></b:button>
+                            </b:dataTableColumn>
+                        </b:dataTable>
+                    </div>
+                    <br/>
+                    <b:button value="Add" look="default" class="pull-right" outcome="createBus"></b:button>
+                </b:column>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
