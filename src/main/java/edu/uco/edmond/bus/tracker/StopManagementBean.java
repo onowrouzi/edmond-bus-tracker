@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.event.map.MarkerDragEvent;
 import org.primefaces.json.JSONArray;
@@ -25,7 +26,7 @@ import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
 @ManagedBean
-@ViewScoped
+@RequestScoped
 public class StopManagementBean implements Serializable {
      
     private ArrayList<RouteStop> stops = new ArrayList<>();
@@ -33,7 +34,7 @@ public class StopManagementBean implements Serializable {
     private MapModel draggableModel;
     private Marker marker;
     
-    private RouteStop stop = new RouteStop();
+    public RouteStop stop = new RouteStop();
     
     private final double defaultLat = 35.6526783;
     private final double defaultLng = -97.4781833;
@@ -68,8 +69,6 @@ public class StopManagementBean implements Serializable {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
             
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
@@ -82,7 +81,6 @@ public class StopManagementBean implements Serializable {
             in.close();
             
             //print result
-            System.out.println(response.toString());
             JSONArray jsonarray;
             try {
                 jsonarray = new JSONArray(response.toString());
@@ -94,7 +92,6 @@ public class StopManagementBean implements Serializable {
                     String name = java.net.URLDecoder.decode(jsonobject.getString("name"), "UTF-8");
                     Double lat = jsonobject.getDouble("latitude");
                     Double lng = jsonobject.getDouble("longitude");
-                    System.out.println(name);
                     RouteStop temp = new RouteStop();
                     temp.setStopName(name);
                     temp.setLocation(new LatLng(lat, lng));
@@ -114,22 +111,18 @@ public class StopManagementBean implements Serializable {
     
     public void save() {
         
-        System.out.println(this.getStop().getStopName());
         DataOutputStream wr = null;
         try {
             String routeStopName = this.getStop().getStopName();
             String lat = String.valueOf(this.getStop().getLocation().getLat());
             String lng = String.valueOf(this.getStop().getLocation().getLng());
             String route = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops/create/" + java.net.URLEncoder.encode(routeStopName, "UTF-8") + "/" + lat + "/" + lng;
-            System.out.println(route);
             URL url = new URL(route);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 
             int responseCode = connection.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(connection.getInputStream()));
@@ -142,13 +135,44 @@ public class StopManagementBean implements Serializable {
             in.close();
 
             //print result
-            System.out.println(response.toString());
-
         } catch (IOException ex) {
             Logger.getLogger(CreateRouteView.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
 
         }
+    }
+    
+    public String delete(String stopName) {
+        try {
+            String url = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops/delete/" + java.net.URLEncoder.encode(stopName, "UTF-8");
+            
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return "stopManagement";
     }
 
     public void onMarkerDrag(MarkerDragEvent event) {
