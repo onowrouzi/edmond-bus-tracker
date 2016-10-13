@@ -6,40 +6,43 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Stop Management - Edmond Bus Tracker</title>
-        <h:outputStylesheet library="css" name="webcss.css" />
+        <f:metadata>
+            <f:viewAction action="#{loginBean.doFilter}" />
+        </f:metadata>
     </h:head>
     <h:body>
-        <b:column span="3" class="col-xs-3">
-           <ui:include src="/sidebar.xhtml"/>
-        </b:column>
-        <b:column span="9" class="col-xs-9">
-            <div id="stop-table">
-                <b:dataTable value="#{stopManagementBean.getStops()}" var="r">
-                    <b:dataTableColumn>
-                        <f:facet name="header">Name</f:facet>
-                        #{r.getStopName()}
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">Latitude</f:facet>
-                        #{r.getStopLat()}
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">Longitude</f:facet>
-                        #{r.getStopLng()}
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">Edit</f:facet>
-                        <b:button value="Edit" look="default" class="pull-right" outcome="editStop"></b:button>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn>
-                        <f:facet name="header">Delete</f:facet>
-                        <b:button value="Delete" look="default" class="pull-right" outcome="deleteStop">
-                            <f:param name="stopname" value="#{r.getStopName()}" />
-                        </b:button>
-                    </b:dataTableColumn>
-                </b:dataTable>
-            </div>
-            <b:button value="Add" look="default" class="pull-right" outcome="createStop"></b:button>
-        </b:column>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <b:column span="9" class="col-xs-9">
+                    <div id="stop-table">
+                        <b:dataTable value="#{stopManagementBean.getStops()}" var="r">
+                            <b:dataTableColumn>
+                                <f:facet name="header">Name</f:facet>
+                                    #{r.getStopName()}
+                            </b:dataTableColumn>
+                            <b:dataTableColumn>
+                                <f:facet name="header">Latitude</f:facet>
+                                    #{r.getStopLat()}
+                            </b:dataTableColumn>
+                            <b:dataTableColumn>
+                                <f:facet name="header">Longitude</f:facet>
+                                    #{r.getStopLng()}
+                            </b:dataTableColumn>
+                            <b:dataTableColumn>
+                                <f:facet name="header">Edit</f:facet>
+                                <b:button value="Edit" look="default" class="pull-right" outcome="editStop"></b:button>
+                            </b:dataTableColumn>
+                            <b:dataTableColumn>
+                                <f:facet name="header">Delete</f:facet>
+                                <b:button value="Delete" look="default" class="pull-right" outcome="deleteStop">
+                                    <f:param name="stopname" value="#{r.getStopName()}" />
+                                </b:button>
+                            </b:dataTableColumn>
+                        </b:dataTable>
+                    </div>
+                    <b:button value="Add" look="default" class="pull-right" outcome="createStop"></b:button>
+                </b:column>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>

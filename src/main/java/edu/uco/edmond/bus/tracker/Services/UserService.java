@@ -39,7 +39,7 @@ public class UserService extends Service{
         ResultSet rs = stmt.executeQuery("SELECT * FROM tbluser");
 
         while(rs.next()){
-            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("role"),
+            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getNString("password"), rs.getString("role"),
                 rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"));
             users.add(user);
         }
@@ -166,8 +166,9 @@ public class UserService extends Service{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/create/{username}/{password}/{type}/{firstname}/{lastname}/{email}")
-    public String register(@PathParam("username") String username, @PathParam("password") String password, @PathParam("type") String type,
-            @PathParam("firstname") String firstname, @PathParam("lastname") String lastname, @PathParam("email") String email)
+    public String register(@PathParam("username") String username, @PathParam("password") String password, 
+            @PathParam("type") String type, @PathParam("firstname") String firstname, 
+            @PathParam("lastname") String lastname, @PathParam("email") String email)
     {
         User user = find(username);
         
@@ -249,30 +250,43 @@ public class UserService extends Service{
         
         try{
             PreparedStatement stmt;
-            
-            // check if user is admin or not
-            // in order to delete the proper data
-            if (user.getType().equals("admin")) {
-                stmt = getDatabase().prepareStatement("DELETE FROM tblnotifications WHERE sentby=?");
-                stmt.setString(1, username);
+            if (user.getType().equals("driver")) {
+                stmt = getDatabase().prepareStatement("UPDATE tblbus SET driver = NULL WHERE driver=?");
+                stmt.setString(1, user.getUsername());
                 
                 int count = stmt.executeUpdate();
                 stmt.close();
-            } else { // delete user data
-                stmt = getDatabase().prepareStatement("DELETE FROM tblusernotifications WHERE sentby=?");
-                stmt.setString(1, username);
+                
+                stmt = getDatabase().prepareStatement("DELETE FROM tblbusfavorites WHERE userbusId=?");
+                stmt.setInt(1, user.getId());
+                
+                count = stmt.executeUpdate();
+                stmt.close();
+            } else if (user.getType().equals("user")) {
+                stmt = getDatabase().prepareStatement("DELETE FROM tblbusstopfavorites WHERE userbusstopId=?");
+                stmt.setInt(1, user.getId());
                 
                 int count = stmt.executeUpdate();
+                stmt.close();
+                
+                stmt = getDatabase().prepareStatement("DELETE FROM tblbusfavorites WHERE userbusId=?");
+                stmt.setInt(1, user.getId());
+                
+                count = stmt.executeUpdate();
+                stmt.close();
+                
+                stmt = getDatabase().prepareStatement("DELETE FROM tbluserroute WHERE username=?");
+                stmt.setString(1, user.getUsername());
+                
+                count = stmt.executeUpdate();
                 stmt.close();
             }
-            
+                    
             stmt = getDatabase().prepareStatement("DELETE FROM tbluser WHERE id=?");
             stmt.setInt(1, user.getId());
 
             int count = stmt.executeUpdate();
-            
             stmt.close();
-            
         }catch(SQLException s){
             return getGson().toJson(s.toString());
         }
