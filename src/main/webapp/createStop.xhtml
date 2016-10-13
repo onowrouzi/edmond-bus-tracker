@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -36,3 +37,48 @@
     </h:body>
     <script src="#{stopManagementBean.mapKey}" type="text/javascript" ></script>
 </html>
+=======
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Edmond Bus Tracker</title>
+        <!--<f:metadata>
+            <f:viewAction action="#{loginBean.doFilter}" />
+        </f:metadata>-->
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <div class="col-md-2 visible-md visible-lg"></div>
+                <div class="col-md-5 col-xs-9">
+                    <h1 id="user-header">Add User</h1>
+                    <h:form id="user-form">
+                        <br/>
+                        <label>Name</label>
+                        <br/>
+                        <h:inputText class="form-control"/>
+                        <br/>
+                        <h:selectOneMenu class="form-control">
+                            <f:selectItem itemLabel="Select Role" itemValue=""></f:selectItem>
+                        </h:selectOneMenu>
+                        <br/>
+                        <label>Password</label>
+                        <br/>
+                        <h:inputSecret class="form-control"/>
+                        <br/>
+                        <label>Confirm Password</label>
+                        <br/>
+                        <h:inputSecret class="form-control"/>
+                        <br/>
+                        <h:button value="Add" class="btn btn-default"/>
+                        <br/><br/>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+>>>>>>> master

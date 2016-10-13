@@ -26,8 +26,7 @@ and open the template in the editor.
 .panel-body {
     min-height:100vh;
     background-color: #2980B9;
-    border-top: 1px solid white !important;
-    padding: 0 !important;
+    border-top: 1px solid white;
 }
 
 .dataTable1 {
@@ -59,7 +58,7 @@ and open the template in the editor.
 .panel-link {
     font-size: 2vw;
     border-bottom: 1px solid white;
-    padding: 20px 0;
+    padding: 20px 0 20px 10px;
 }
            
 .panel-link a {
@@ -74,6 +73,19 @@ and open the template in the editor.
 
 .panel-heading a:after { 
    display: none !important;
+}
+
+table {
+    width: 100%;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid black;
+}
+
+select {
+    height: 40px !important;
 }
            
 #route-table {
