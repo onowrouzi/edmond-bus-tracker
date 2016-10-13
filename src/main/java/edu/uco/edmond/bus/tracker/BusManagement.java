@@ -138,7 +138,7 @@ public class BusManagement implements Serializable {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             context.redirect("busManagement.xhtml");
         }
