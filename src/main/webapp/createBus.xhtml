@@ -1,43 +1,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <f:metadata>
+        <!--<f:metadata>
             <f:viewAction action="#{loginBean.doFilter}" />
-        </f:metadata>
+        </f:metadata>-->
     </h:head>
     <h:body>
         <ui:composition template="/template/layout.xhtml">
             <ui:define name="content">
-                <b:column span="2" class="visible-md visible-lg"></b:column>
-                <b:column span="5" class="col-xs-9">
-                    <h1 id="user-header">Add Bus</h1>
-                    <h:form id="user-form">
-                        <br/><br/>
-                        <label>Name</label>
-                        <br/>
-                        <b:inputText value="#{name}"></b:inputText>
-                        <br/>
-                        <b:selectOneMenu value="#{driver}">
-                            <f:selectItem itemLabel="Select Driver" itemValue=""></f:selectItem>
-                            <f:selectItems value="#{userManagementBean.admins}" var="user" 
-                                itemLabel="#{user.username}" itemValue="#{user.username}"/>
-                        </b:selectOneMenu>
-                        <br/>
-                        <b:selectOneMenu value="#{route}">
-                            <f:selectItem itemLabel="Select Route" itemValue=""></f:selectItem>
-                            <f:selectItems value="#{routeManagement.getRoutes()}" var="r"
-                                itemLabel="#{r.getName()}" itemValue="#{r.getName()}"/>
-                        </b:selectOneMenu>
-                        <b:commandButton value="Add" look="default" action="#{busManagement.addBus(name, driver, route)}"/>
-                        <br/><br/>
-                    </h:form>
-                </b:column>
-                <b:column class="col-xs-2 visible-md visible-lg"></b:column>
+                <div class="row">
+                    <div class="col-xs-7 col-xs-offset-1">
+                        <h1 id="user-header">Add Bus</h1>
+                        <div class="row">
+                            <h:form class="col-xs-9" id="user-form">
+                                <br/>
+                                <label>Name</label>
+                                <br/>
+                                <h:inputText class="form-control" value="#{name}"/>
+                                <br/>
+                                <h:selectOneMenu class="form-control" value="#{driver}">
+                                    <f:selectItem itemLabel="Select Driver" itemValue=""></f:selectItem>
+                                    <f:selectItems value="#{userManagementBean.admins}" var="user" 
+                                        itemLabel="#{user.username}" itemValue="#{user.username}"/>
+                                </h:selectOneMenu>
+                                <br/>
+                                <h:selectOneMenu class="form-control" value="#{route}">
+                                    <f:selectItem itemLabel="Select Route" itemValue=""></f:selectItem>
+                                    <f:selectItems value="#{routeManagement.getRoutes()}" var="r"
+                                        itemLabel="#{r.getName()}" itemValue="#{r.getName()}"/>
+                                </h:selectOneMenu>
+                                <br/>
+                                <h:commandButton value="Add" class="btn btn-default form-control" action="#{busManagement.addBus(name, driver, route)}"/>
+                                <br/><br/>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2 visible-md visible-lg"></div>
             </ui:define>
         </ui:composition>
     </h:body>
