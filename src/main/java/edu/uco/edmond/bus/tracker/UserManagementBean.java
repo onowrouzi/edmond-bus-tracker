@@ -23,6 +23,8 @@ import org.primefaces.json.JSONObject;
 @RequestScoped
 public class UserManagementBean implements Serializable {
     private ArrayList<User> admins;
+    private ArrayList<User> drivers = new ArrayList<>();
+    private ArrayList<User> rolesType = new ArrayList<>();
     
     private String username;
     private String password;
@@ -34,6 +36,14 @@ public class UserManagementBean implements Serializable {
         try {
             admins = new ArrayList<>();
             loadUserGroups("admin", admins);
+            
+            loadUserGroups("driver", drivers);
+            for(int i = 0; i < admins.size(); i++){
+                rolesType.add(admins.get(i));
+            }
+            for(int i = 0; i < drivers.size(); i++){
+                rolesType.add(drivers.get(i));
+            }    
         } catch (Exception ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -69,7 +79,7 @@ public class UserManagementBean implements Serializable {
             con.disconnect();
             
             if (response.toString().replace("\"", "").equals("No users currently registered.")) {
-                admins = new ArrayList<>(); // show empty list
+                rolesType = new ArrayList<>(); // show empty list
             } else {
                 JSONArray jsonarray;
                 try {
@@ -251,5 +261,12 @@ public class UserManagementBean implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
+    
+    public ArrayList<User> getDrivers() {
+        return this.drivers;
+    }
 
+    public ArrayList<User> getrolesType() {
+        return this.rolesType;
+    }
 }
