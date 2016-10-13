@@ -33,7 +33,9 @@
                     </b:dataTableColumn>
                     <b:dataTableColumn>
                         <f:facet name="header">Delete</f:facet>
-                        <b:button value="Delete" look="default" class="pull-right" outcome="deleteStop"></b:button>
+                        <b:button value="Delete" look="default" class="pull-right" outcome="deleteStop">
+                            <f:param name="stopname" value="#{r.getStopName()}" />
+                        </b:button>
                     </b:dataTableColumn>
                 </b:dataTable>
             </div>
