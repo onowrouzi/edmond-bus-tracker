@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Login - Edmond Bus Tracker</title>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
         <h:outputStylesheet library="css" name="webcss.css" />
+        <h:outputScript library="js" name="bootstrap.min.js" />
     </h:head>
     <h:body>
         <div class="container">
             <br/><br/>
             <h:form id="login-form" class="login-padding">
-                <h1 id="user-header" style="text-align: center">Login</h1>
-                <br/><br/>
+                <h1 id="user-header" class="text-center">Login</h1>
+                <br/>
                 <label>Username</label>
                 <br/>
-                <b:inputText value="#{loginBean.username}" a:autofocus="true" />
+                <h:inputText class="form-control" value="#{loginBean.username}" a:autofocus="true" />
                 <br/>
                 <label>Password</label>
                 <br/>
-                <b:inputSecret value="#{loginBean.password}" />
-                <br/>
-                <b:commandButton value="Login" action="#{loginBean.login}" />
+                <h:inputSecret class="form-control" value="#{loginBean.password}" />
+                <br/><br/>
+                <h:commandButton class="form-control" value="Login" action="#{loginBean.login}" />
             </h:form>
         </div>
     </h:body>

@@ -1,35 +1,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <f:metadata>
+        <!--<f:metadata>
             <f:viewAction action="#{loginBean.doFilter}" />
-        </f:metadata>
+        </f:metadata>-->
     </h:head>
     <h:body>
         <ui:composition template="/template/layout.xhtml">
             <ui:define name="content">
-                <b:column span="9" class="col-xs-8">
+                <div span="9" class="col-xs-8">
                     <div id="user-table">
-                        <b:dataTable value="#{busManagement.getBuses()}" var="b">
-                            <b:dataTableColumn label="Name">#{b.getName()}</b:dataTableColumn>
-                            <b:dataTableColumn label="Driver">#{b.getDriver()}</b:dataTableColumn>
-                            <b:dataTableColumn label="Route">#{b.getRoute()}</b:dataTableColumn>
-                            <b:dataTableColumn label="Last Stop">#{b.getLastStop()}</b:dataTableColumn>
-                            <b:dataTableColumn label="Last Active">#{b.getLastActive()}</b:dataTableColumn>
-                            <b:dataTableColumn label="Active">#{b.getActive()}</b:dataTableColumn>
-                            <b:dataTableColumn label="Edit">
-                                <b:button value="Edit" look="primary"></b:button>
-                            </b:dataTableColumn>
-                        </b:dataTable>
+                        <h:dataTable value="#{busManagement.getBuses()}" var="b">
+                            <h:column class="form-group"> <f:facet name="header">Name</f:facet>#{b.getName()}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Driver</f:facet>#{b.getDriver()}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Route</f:facet>#{b.getRoute()}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Last Stop</f:facet>#{b.getLastStop()}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Last Active</f:facet>#{b.getLastActive()}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Active</f:facet>#{b.getActive()}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Edit</f:facet>
+                                <h:button value="Edit" class="btn btn-primary"/>
+                            </h:column>
+                        </h:dataTable>
                     </div>
                     <br/>
-                    <b:button value="Add" look="default" class="pull-right" outcome="createBus"></b:button>
-                </b:column>
+                    <h:button value="Add" class="btn btn-default pull-right" outcome="createBus"/>
+                </div>
             </ui:define>
         </ui:composition>
     </h:body>
