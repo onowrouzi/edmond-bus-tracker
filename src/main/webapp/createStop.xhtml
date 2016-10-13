@@ -8,30 +8,31 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <h:outputStylesheet library="css" name="webcss.css" />
+        <f:metadata>
+            <f:viewAction action="#{loginBean.doFilter}" />
+        </f:metadata>
     </h:head>
     <h:body>
-        <b:column span="3" class="col-xs-3">
-            <ui:include src="/sidebar.xhtml"/>
-        </b:column>
-        <b:column span="4" class="col-xs-9">
-            <h:form>
-                
-                <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{stopManagementBean.draggableModel}" style="width:100%;height:400px">
-                    <p:ajax event="markerDrag" listener="#{stopManagementBean.onMarkerDrag}"/>
-                </p:gmap>
-                <label>Stop Name</label>
-                <br/>
-                <b:inputText value="#{stopManagementBean.stop.stopName}"></b:inputText>
-                <b:commandButton action="#{stopManagementBean.save()}" look="default" value="Save" />
-            </h:form>
-        </b:column>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <b:column span="4" class="col-xs-9">
+                    <h:form>
+                        <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{stopManagementBean.draggableModel}" style="width:100%;height:400px">
+                            <p:ajax event="markerDrag" listener="#{stopManagementBean.onMarkerDrag}"/>
+                        </p:gmap>
+                        <label>Stop Name</label>
+                        <br/>
+                        <b:inputText value="#{stopManagementBean.stop.stopName}"></b:inputText>
+                        <b:commandButton action="#{stopManagementBean.save()}" look="default" value="Save" />
+                    </h:form>
+                </b:column>
 
-        <b:column span="5" class="col-xs-9">
-            <br />
+                <b:column span="5" class="col-xs-9">
+                    <br />
 
-        </b:column>
-
+                </b:column>
+            </ui:define>
+        </ui:composition>
     </h:body>
     <script src="#{stopManagementBean.mapKey}" type="text/javascript" ></script>
 </html>

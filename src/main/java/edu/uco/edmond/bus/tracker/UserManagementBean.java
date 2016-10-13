@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -20,15 +22,17 @@ import org.primefaces.json.JSONObject;
 @ManagedBean
 @RequestScoped
 public class UserManagementBean implements Serializable {
-    private ArrayList<User> admins = new ArrayList<>();
+    private ArrayList<User> admins;
     
     private String username;
     private String password;
     private String type;
+    ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
     
     @PostConstruct
     public void init() {
         try {
+            admins = new ArrayList<>();
             loadUserGroups("admin", admins);
         } catch (Exception ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,6 +66,7 @@ public class UserManagementBean implements Serializable {
                 response.append(inputLine);
             }
             in.close();
+            con.disconnect();
             
             if (response.toString().replace("\"", "").equals("No users currently registered.")) {
                 admins = new ArrayList<>(); // show empty list
@@ -122,7 +127,8 @@ public class UserManagementBean implements Serializable {
                 response.append(inputLine);
             }
             in.close();
-
+            con.disconnect();
+            
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -130,6 +136,92 @@ public class UserManagementBean implements Serializable {
         loadUserGroups("admin", admins);
         
         return "userManagement";
+    }
+    
+    public String addUser(String username, String role, String password, String confirmPassword,
+                            String firstName, String lastName, String email) throws IOException{
+        
+        if (!password.equals(confirmPassword)){
+            return "Passwords must match!";
+        }
+        
+        try {
+            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/create/" 
+                    + username + "/" + password + "/" + role + "/" + firstName + "/" + lastName + "/" + email;
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            con.disconnect();
+
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        loadUserGroups("admin", admins);
+        context.redirect("userManagement.xhtml");
+        
+        return "User was added!";
+    }
+    
+    public String editUser(String username, String password, String confirmPassword) throws IOException{
+        if (!password.equals(confirmPassword) || (password.isEmpty() && confirmPassword.isEmpty())) {
+            return "Passwords must match!";
+        }
+        
+        try {
+            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/edit/" + username + "/" + password + "/" + confirmPassword + "/";
+            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/edit/" + username + "/" + password + "/" + confirmPassword + "/";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            con.disconnect();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        loadUserGroups("admin", admins);
+        context.redirect("userManagement.xhtml");
+        
+        return "User was edited!";
     }
     
     public ArrayList<User> getAdmins() {
@@ -159,6 +251,5 @@ public class UserManagementBean implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
-    
-    
+
 }

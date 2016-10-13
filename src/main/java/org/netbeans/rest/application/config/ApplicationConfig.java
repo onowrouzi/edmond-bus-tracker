@@ -32,6 +32,7 @@ public class ApplicationConfig extends Application {
         resources.add(edu.uco.edmond.bus.tracker.Services.BusService.class);
         resources.add(edu.uco.edmond.bus.tracker.Services.BusStopService.class);
         resources.add(edu.uco.edmond.bus.tracker.Services.FavoriteService.class);
+        resources.add(edu.uco.edmond.bus.tracker.Services.RouteService.class);
         resources.add(edu.uco.edmond.bus.tracker.Services.UserService.class);
     }
     

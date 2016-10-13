@@ -7,10 +7,16 @@ public class Route {
     
     private ArrayList<RouteStop> routes = new ArrayList<>();
     private User driver;
+    private int id;
     private String routeName;
     private String identifier; // used to identify the route when performing bulk operations
     
     public Route() {}
+    
+    public Route(int id, String routeName) {
+        this.id = id;
+        this.routeName = routeName;
+    }
 
     public ArrayList<RouteStop> getRoutes() {
         return routes;
@@ -50,6 +56,14 @@ public class Route {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.routeName;
     }
 
 }
