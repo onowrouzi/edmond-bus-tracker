@@ -30,6 +30,7 @@ public class LoginBean implements Serializable {
     public String login() {
         try {
             String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/administrator/" + username + "/" + password;
+            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/administrator/" + username + "/" + password;
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -44,23 +45,30 @@ public class LoginBean implements Serializable {
             System.out.println("\nSending 'GET' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
             
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+            // ToDo: Only use this if/else statement during demo 
+            // make better error handling on disconnect
+            if (responseCode != 200) {
+                con.disconnect(); // disconnect on error
+                //return "login"; 
+            } else {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                con.disconnect();
+
+                if (response.toString().equals("null")) {
+                    FacesMessage fm = new FacesMessage("Login Error", "ERROR MSG");
+                    fm.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    FacesContext.getCurrentInstance().addMessage(null, fm);
+                    return "login";
+                } 
             }
-            in.close();
-            con.disconnect();
-            
-            if (response.toString().equals("null")) {
-                FacesMessage fm = new FacesMessage("Login Error", "ERROR MSG");
-                fm.setSeverity(FacesMessage.SEVERITY_ERROR);
-                FacesContext.getCurrentInstance().addMessage(null, fm);
-                return "login";
-            } 
             
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             Map<String, Object> sessionMap = externalContext.getSessionMap();
