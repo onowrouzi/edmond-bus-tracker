@@ -46,6 +46,7 @@ public class BusStopService extends Service{
         }
         
         stmt.close();
+        getDatabase().close();
     }
     
     public BusStop find(int id)

@@ -54,6 +54,7 @@ public class RouteService extends Service {
         }
         
         stmt.close();
+        getDatabase().close();
     }
     
     public Route find(int id)
