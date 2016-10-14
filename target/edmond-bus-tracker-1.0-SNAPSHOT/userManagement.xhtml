@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>User Management - Edmond Bus Tracker</title>
+        <h:outputStylesheet library="css" name="webcss.css" />
+    </h:head>
+    <h:body>
+        <b:column span="3" class="col-xs-3">
+           <ui:include src="/sidebar.xhtml"/>
+        </b:column>
+        <b:column span="9" class="col-xs-8">
+            <div id="user-table">
+                <b:dataTable value="#{userManagementBean.admins}" var="user">
+                    <b:dataTableColumn>
+                        <f:facet name="header">Username</f:facet>
+                        <h:outputText value="#{user.username}" />
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">Type</f:facet>
+                        <h:outputText value="#{user.type}" />
+                    </b:dataTableColumn>
+                    <b:dataTableColumn>
+                        <f:facet name="header">Options</f:facet>
+                        <b:button value="Delete" look="danger" outcome="deleteUser">
+                            <f:param name="username" value="#{user.username}" />
+                        </b:button>
+                    </b:dataTableColumn>
+                </b:dataTable>
+            </div>
+            <br/>
+            <b:button value="Add" look="default" class="pull-right" outcome="createUser"></b:button>
+        </b:column>
+    </h:body>
+</html>
