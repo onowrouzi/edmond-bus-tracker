@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Stop Management - Edmond Bus Tracker</title>
+<!--        <f:metadata>
+            <f:viewAction action="#{loginBean.doFilter}" />
+        </f:metadata>-->
+        <f:metadata>
+            <f:viewParam name="stopname" value="#{stopManagementBean.stop.stopName}"/>
+        </f:metadata>
+    </h:head>
+    <ui:composition template="/template/layout.xhtml">
+        <ui:define name="content">
+            <div class="col-xs-8">
+            <h:form id="frmDeleteStop">
+                <h1>Delete Stop</h1>
+                <h2>Are you sure you want to delete #{param.stopname}?</h2>
+                <br/>
+                <h:commandButton value="Delete" class="btn btn-danger" action="#{stopManagementBean.delete(stopManagementBean.stop.getStopName())}" />
+            </h:form>
+        </div>
+        </ui:define>
+    </ui:composition>
+    </h:body>
+</html>
