@@ -1,52 +1,52 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <f:metadata>
+        <!--<f:metadata>
             <f:viewAction action="#{loginBean.doFilter}" />
-        </f:metadata>
+        </f:metadata>-->
     </h:head>
     <h:body>
         <ui:composition template="/template/layout.xhtml">
             <ui:define name="content">
-                <b:column span="4" class="col-xs-9">
+                <div class="col-md-3">
                     <h:form>
                         <h1 class="text-center">#{indexBean.message}</h1>
                         <br/><br/>
                         <label>Route Name</label>
                         <br/>
-                        <b:inputText></b:inputText>
-                        <b:commandButton action="#{createRouteView.save()}" look="default" value="Save" />
+                        <h:inputText class="form-control"/>
+                        <br/>
+                        <h:commandButton action="#{createRouteView.save()}" class="btn btn-default" value="Save" />
                     </h:form>
-                </b:column>
+                </div>
 
-                <b:column span="5" class="col-xs-9">
+                <div class="col-md-6">
                     <br />
                     <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{createRouteView.draggableModel}" style="width:100%;height:400px">
                         <p:ajax event="markerDrag" listener="#{createRouteView.onMarkerDrag}"/>
                     </p:gmap>
                     <br></br>
                     <h:form>
-                        <b:row>
+                        <div class="row">
                             <ui:repeat var="r" value="#{createRouteView.route.routes}">
                             <label>Stop Name</label>
                             <br />
-                            <b:inputText value="#{r.stopName}"></b:inputText>
+                            <h:inputText value="#{r.stopName}"/>
                         </ui:repeat>
-                        </b:row>
+                        </div>
                         <br />
-                        <b:row>
-                            <b:commandButton action="#{createRouteView.addRoute()}" look="default" value="Add Stop"></b:commandButton>
-                        </b:row>
+                        <div class="row">
+                            <h:commandButton action="#{createRouteView.addRoute()}" class="btn btn-default" value="Add Stop"/>
+                        </div>
                     </h:form>
                     <br />
-                </b:column>
+                </div>
                 <script src="#{createRouteView.mapKey}" type="text/javascript" ></script>
             </ui:define>
         </ui:composition>

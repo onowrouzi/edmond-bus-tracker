@@ -28,6 +28,10 @@ import org.primefaces.model.map.Marker;
 @ViewScoped
 public class CreateRouteView implements Serializable {
     
+    /**
+     * THIS WILL NOT WORK SINCE WE DID THE DATABASE STUFF
+     */
+    
     private MapModel draggableModel;
     private Marker marker;
     
@@ -58,25 +62,12 @@ public class CreateRouteView implements Serializable {
     public void onMarkerDrag(MarkerDragEvent event) {
         marker = event.getMarker();
         LatLng coords = new LatLng(marker.getLatlng().getLat(), marker.getLatlng().getLng());
-        
-        for (RouteStop r : this.route.getRoutes()) {
-            if (r.getIdentifier().equals(marker.getTitle())) {
-                r.setLocation(coords);
-            }
-        }
+
         this.showMessage("Marker Moved","Lat:" + marker.getLatlng().getLat() + ", Lng:" + marker.getLatlng().getLng());
     }
     
     public void addRoute() {
-        String tempUuid = UUID.randomUUID().toString();
-        RouteStop routeStop = new RouteStop();
-        LatLng coords = new LatLng(defaultLat, defaultLng);
-        this.addMarker(coords, tempUuid);
-        routeStop.setStopOnRoute(currentRouteOrderNumber++);
-        routeStop.setStopName(defaultStopName);
-        routeStop.setLocation(coords);
-        routeStop.setIdentifier(tempUuid);
-        this.route.addRoute(routeStop);
+
     }
     
     public void delete() {

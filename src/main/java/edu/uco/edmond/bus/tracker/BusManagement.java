@@ -70,11 +70,11 @@ public class BusManagement implements Serializable {
                     String name = jsonobject.getString("name");
                     String driver = jsonobject.has("driver") ? jsonobject.getString("driver") : "none";
                     String route = jsonobject.getString("route");
-                    String lastStop = jsonobject.getString("lastStop");
+                    String lastStop = jsonobject.has("lastStop") ? jsonobject.getString("lastStop") : "N/A";
                     Boolean active = jsonobject.getBoolean("active");
                     String lastActive = jsonobject.getString("lastActive");
-                    double lastLong = jsonobject.getDouble("lastLong");
-                    double lastLat = jsonobject.getDouble("lastLat");
+                    double lastLong = jsonobject.has("lastLong") ? jsonobject.getDouble("lastLong") : 0;
+                    double lastLat = jsonobject.has("lastLat") ? jsonobject.getDouble("lastLat") : 0;
                     System.out.println(name);
                     Bus temp = new Bus(id, name, driver, route, lastStop, active, lastActive, lastLong, lastLat);
                     buses.add(temp);
@@ -138,7 +138,7 @@ public class BusManagement implements Serializable {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             context.redirect("busManagement.xhtml");
         }
