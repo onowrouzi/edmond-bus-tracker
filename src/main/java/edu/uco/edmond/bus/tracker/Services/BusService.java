@@ -58,6 +58,7 @@ public class BusService extends Service {
         }
         
         stmt.close();
+        getDatabase().close();
     }
     
     public Bus find(int id)
