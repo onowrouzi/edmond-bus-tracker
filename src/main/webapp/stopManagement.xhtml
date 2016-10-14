@@ -1,29 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Edmond Bus Tracker</title>
-        <f:metadata>
+        <title>Stop Management - Edmond Bus Tracker</title>
+        <!-- <f:metadata>
             <f:viewAction action="#{loginBean.doFilter}" />
-        </f:metadata>
+        </f:metadata> -->
     </h:head>
     <h:body>
         <ui:composition template="/template/layout.xhtml">
             <ui:define name="content">
-                <b:column span="9" class="col-xs-8">
-                    <div id="route-table">
-                        <b:dataTable value="#{routeStopManagement.getStops()}" var="r">
-                            <b:dataTableColumn>#{r.getStopName()}</b:dataTableColumn>
-                            <b:dataTableColumn>#{r.getStopLat()}</b:dataTableColumn>
-                            <b:dataTableColumn>#{r.getStopLng()}</b:dataTableColumn>
-                        </b:dataTable>
+                <div class="col-xs-8">
+                    <div id="stop-table">
+                        <h:dataTable value="#{stopManagementBean.getStops()}" var="r">
+                            <h:column>
+                                <f:facet name="header">Name</f:facet>
+                                    #{r.getStopName()}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Latitude</f:facet>
+                                    #{r.getStopLat()}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Longitude</f:facet>
+                                    #{r.getStopLng()}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Delete</f:facet>
+                                <h:button value="Delete" class="btn btn-danger pull-right" outcome="deleteStop">
+                                    <f:param name="stopname" value="#{r.getStopName()}" />
+                                </h:button>
+                            </h:column>
+                        </h:dataTable>
                     </div>
-                    <br/>
-                    <b:button value="Add" look="default" class="pull-right" outcome="createStop"></b:button>
-                </b:column>
+                    <h:button value="Add" class="btn pull-right" outcome="createStop"></h:button>
+                </div>
             </ui:define>
         </ui:composition>
     </h:body>

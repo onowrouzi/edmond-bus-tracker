@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Edmond Bus Tracker</title>
+        <h:outputStylesheet library="css" name="webcss.css" />
+    </h:head>
+    <h:body>
+        <b:column span="3" class="col-xs-3">
+           <ui:include src="/sidebar.xhtml"/>
+        </b:column>
+        
+        <b:column span="2" class="visible-md visible-lg"></b:column>
+        <b:column span="5" class="col-xs-9">
+            <h1 id="user-header">Add User</h1>
+            <h:form id="user-form">
+                <br/><br/>
+                <label>Name</label>
+                <br/>
+                <b:inputText></b:inputText>
+                <b:selectOneMenu>
+                    <f:selectItem itemLabel="Select Role" itemValue=""></f:selectItem>
+                </b:selectOneMenu>
+                <label>Password</label>
+                <br/>
+                <b:inputSecret></b:inputSecret>
+                <label>Confirm Password</label>
+                <br/>
+                <b:inputSecret></b:inputSecret>
+                <br/>
+                <b:button value="Add" look="default"></b:button>
+                <br/><br/>
+            </h:form>
+        </b:column>
+        <b:column class="col-xs-2 visible-md visible-lg"></b:column>
+    </h:body>
+</html>
