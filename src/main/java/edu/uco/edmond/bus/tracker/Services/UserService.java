@@ -45,7 +45,6 @@ public class UserService extends Service{
         }
         
         stmt.close();
-        getDatabase().close();
     }
     
     public User find(int id)
