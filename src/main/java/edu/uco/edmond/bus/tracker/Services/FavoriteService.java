@@ -66,6 +66,7 @@ public class FavoriteService extends Service {
         }
         
         stmtBus.close();
+        getDatabase().close();
     }
     
     private void getAllUsersFavorites()
