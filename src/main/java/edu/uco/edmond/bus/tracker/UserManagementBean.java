@@ -22,7 +22,7 @@ import org.primefaces.json.JSONObject;
 @ManagedBean
 @RequestScoped
 public class UserManagementBean implements Serializable {
-    private ArrayList<User> admins;
+    private ArrayList<User> rolesType;
     
     private String username;
     private String password;
@@ -32,17 +32,18 @@ public class UserManagementBean implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            admins = new ArrayList<>();
-            loadUserGroups("admin", admins);
+            loadUserGroups("admin", "driver");
         } catch (Exception ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private void loadUserGroups(String userType, ArrayList<User> users) {
+    private void loadUserGroups(String userType1, String userType2) {
         try {
-            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/usertype/" + userType;
-            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/usertype/" + userType;
+            rolesType = new ArrayList<>();
+            
+            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/usertype/" + userType1 + "/" + userType2;
+            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/usertype/" + userType1 + "/" + userType2;
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -57,42 +58,46 @@ public class UserManagementBean implements Serializable {
             System.out.println("\nSending 'GET' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
             
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-            con.disconnect();
-            
-            if (response.toString().replace("\"", "").equals("No users currently registered.")) {
-                admins = new ArrayList<>(); // show empty list
+            if (responseCode != 200) {
+                con.disconnect(); // disconnect on error
             } else {
-                JSONArray jsonarray;
-                try {
-                    jsonarray = new JSONArray(response.toString());
-                    for (int i = 0; i < jsonarray.length(); i++) {
-                        JSONObject jsonobject;
-                        try {
-                            jsonobject = jsonarray.getJSONObject(i);
-                            String id = jsonobject.getString("id");
-                            String name = jsonobject.getString("username");
-                            String usertype = jsonobject.getString("type");
-                            String firstname = jsonobject.getString("firstName");
-                            String lastname = jsonobject.getString("lastName");
-                            String email = jsonobject.getString("email");
-                            System.out.println(name);
-                            User user = new User(Integer.valueOf(id), name, "", usertype, firstname, lastname, email);
-                            users.add(user);
-                        } catch (JSONException ex) {
-                            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                con.disconnect();
+
+                if (response.toString().replace("\"", "").equals("No users currently registered.")) {
+                    rolesType = new ArrayList<>(); // show empty list
+                } else {
+                    JSONArray jsonarray;
+                    try {
+                        jsonarray = new JSONArray(response.toString());
+                        for (int i = 0; i < jsonarray.length(); i++) {
+                            JSONObject jsonobject;
+                            try {
+                                jsonobject = jsonarray.getJSONObject(i);
+                                String id = jsonobject.getString("id");
+                                String name = jsonobject.getString("username");
+                                String usertype = jsonobject.getString("type");
+                                String firstname = jsonobject.getString("firstName");
+                                String lastname = jsonobject.getString("lastName");
+                                String email = jsonobject.getString("email");
+                                System.out.println(name);
+                                User user = new User(Integer.valueOf(id), name, "", usertype, firstname, lastname, email);
+                                rolesType.add(user);
+                            } catch (JSONException ex) {
+                                Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
+                    } catch (JSONException ex) {
+                        Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } catch (JSONException ex) {
-                    Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         } catch (IOException ex) {
@@ -100,7 +105,7 @@ public class UserManagementBean implements Serializable {
         }
     }
     
-    public String deleteUser(String username) {
+    public String deleteUser(String username) throws IOException {
         try {
             //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/delete/" + username;
             String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/delete/" + username;
@@ -118,22 +123,25 @@ public class UserManagementBean implements Serializable {
             System.out.println("\nSending 'GET' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
             
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+            if (responseCode != 200) {
+                con.disconnect(); // disconnect on error
+            } else {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                con.disconnect();
             }
-            in.close();
-            con.disconnect();
-            
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        loadUserGroups("admin", admins);
+        loadUserGroups("admin", "driver");
         
         return "userManagement";
     }
@@ -146,6 +154,7 @@ public class UserManagementBean implements Serializable {
         }
         
         try {
+            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/create/"
             String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/create/" 
                     + username + "/" + password + "/" + role + "/" + firstName + "/" + lastName + "/" + email;
             URL obj = new URL(url);
@@ -176,7 +185,6 @@ public class UserManagementBean implements Serializable {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        loadUserGroups("admin", admins);
         context.redirect("userManagement.xhtml");
         
         return "User was added!";
@@ -218,14 +226,9 @@ public class UserManagementBean implements Serializable {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        loadUserGroups("admin", admins);
         context.redirect("userManagement.xhtml");
         
         return "User was edited!";
-    }
-    
-    public ArrayList<User> getAdmins() {
-        return this.admins;
     }
     
     public String getUsername() {
@@ -252,4 +255,7 @@ public class UserManagementBean implements Serializable {
         this.type = type;
     }
 
+    public ArrayList<User> getRolesType() {
+        return this.rolesType;
+    }
 }

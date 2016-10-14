@@ -140,6 +140,27 @@ public class UserService extends Service{
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/usertype/{type1}/{type2}")
+    public String getGroupUsers(@PathParam("type1") String userType1, @PathParam("type2") String userType2) throws SQLException {
+        List<User> groupUsers = findGroupUsers(userType1); // get first group
+        
+        if (groupUsers == null) // check if first group exists
+            groupUsers = findGroupUsers(userType2); // get second group
+        else {
+            List<User> tempList = findGroupUsers(userType2);
+            if (tempList != null) // check if second group exists
+                groupUsers.addAll(tempList); // append second group
+        }
+        
+        // check if any users are found
+        if (groupUsers == null || groupUsers.isEmpty())
+            return getGson().toJson("No users currently registered.");
+        
+        return getGson().toJson(groupUsers);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("users/administrator/{username}/{password}") //talk about using optional params ?isadmin=true
     public String administratorLogin(@PathParam("username") String username, @PathParam("password") String password) throws SQLException
     {
