@@ -39,8 +39,8 @@ public class DBConnect {
         return database;
     }
     
-    public boolean isConnected()
+    public boolean isConnected() throws SQLException
     {
-        return database != null;
+        return (database != null || (!(database.isClosed())));
     }
 }
