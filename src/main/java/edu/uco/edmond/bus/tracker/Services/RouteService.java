@@ -41,20 +41,25 @@ public class RouteService extends Service {
         return routes;
     }
     
-    private void getAllRoutes() throws SQLException
+    private void getAllRoutes()
     {
-        
-        Statement stmt = getDatabase().createStatement();
-        
-        ResultSet rs = stmt.executeQuery("SELECT * FROM tblbusroute");
+        try{
+            Statement stmt = getDatabase().createStatement();
 
-        while(rs.next()){
-            Route route = new Route(rs.getInt("id"), rs.getString("name"));
-            routes.add(route);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tblbusroute");
+
+            while(rs.next()){
+                Route route = new Route(rs.getInt("id"), rs.getString("name"));
+                routes.add(route);
+            }
+
+            stmt.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
+        }catch(SQLException s){
+            System.out.println(s.toString()); //SQL error
         }
-        
-        stmt.close();
-        getDatabase().close();
     }
     
     public Route find(int id)
@@ -98,23 +103,15 @@ public class RouteService extends Service {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("routes/byid/{id}")
-    public String getRoute(@PathParam("id") int id) throws SQLException {
+    public String getRoute(@PathParam("id") int id){
         return getGson().toJson(find(id));
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("routes/{query}")
-    public String getRoute(@PathParam("query") String query) throws SQLException {
+    public String getRoute(@PathParam("query") String query){
         return getGson().toJson(find(query));
-    }
-
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("routes/edit/{oldName}/{newName}")
-    public Route edit(@PathParam("oldName") String oldName, @PathParam("newName") String newName)
-    {
-        return null;
     }
    
     @POST
@@ -152,6 +149,9 @@ public class RouteService extends Service {
                 routes.add(route);
             }
             
+            //Close out current SQL connection
+            getDatabase().close();
+            
         }catch(SQLException s){
             return getGson().toJson(s.toString()); //SQL failed
         }
@@ -177,6 +177,8 @@ public class RouteService extends Service {
             
             stmt.close();
             
+            //Close out current SQL connection
+            getDatabase().close();
         }catch(SQLException s){
             return getGson().toJson(s.toString());
         }

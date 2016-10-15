@@ -41,32 +41,36 @@ public class FavoriteService extends Service {
         getAllUsersFavorites();
     }
     
-    private void getAllFavorites() throws SQLException
+    private void getAllFavorites()
     {
         //Get all Bus Stop Favorites
-        Statement stmtBusStop = getDatabase().createStatement();
-        
-        ResultSet rsBusStop = stmtBusStop.executeQuery("SELECT * FROM tblbusstopfavorites");
+        try{
+            Statement stmtBusStop = getDatabase().createStatement();
 
-        while(rsBusStop.next()){
-            Favorite favorite = new Favorite(rsBusStop.getInt("id"), rsBusStop.getInt("userbusstopId"), rsBusStop.getInt("busstopId"), "Bus Stop", rsBusStop.getString("name"));
-            favorites.add(favorite);
-        }
-        
-        stmtBusStop.close();
-        
-        //Get all Bus Favorites
-        Statement stmtBus = getDatabase().createStatement();
-        
-        ResultSet rsBus = stmtBus.executeQuery("SELECT * FROM tblbusfavorites");
+            ResultSet rsBusStop = stmtBusStop.executeQuery("SELECT * FROM tblbusstopfavorites");
 
-        while(rsBus.next()){
-            Favorite favorite = new Favorite(rsBus.getInt("id"), rsBus.getInt("userbusId"), rsBus.getInt("busId"), "Bus", rsBus.getString("name"));
-            favorites.add(favorite);
+            while(rsBusStop.next()){
+                Favorite favorite = new Favorite(rsBusStop.getInt("id"), rsBusStop.getInt("userbusstopId"), rsBusStop.getInt("busstopId"), "Bus Stop", rsBusStop.getString("name"));
+                favorites.add(favorite);
+            }
+
+            stmtBusStop.close();
+
+            //Get all Bus Favorites
+            Statement stmtBus = getDatabase().createStatement();
+
+            ResultSet rsBus = stmtBus.executeQuery("SELECT * FROM tblbusfavorites");
+
+            while(rsBus.next()){
+                Favorite favorite = new Favorite(rsBus.getInt("id"), rsBus.getInt("userbusId"), rsBus.getInt("busId"), "Bus", rsBus.getString("name"));
+                favorites.add(favorite);
         }
-        
-        stmtBus.close();
-        getDatabase().close();
+            stmtBus.close();
+            getDatabase().close();
+            
+        }catch(SQLException s){
+            System.out.println(s.toString()); //SQL failed
+        }
     }
     
     private void getAllUsersFavorites()
@@ -203,6 +207,9 @@ public class FavoriteService extends Service {
             
             stmt2.close();
             
+            //Close out current SQL connection
+            getDatabase().close();
+            
         }catch(SQLException s){
             return getGson().toJson(s.toString()); //SQL failed
         }
@@ -250,6 +257,9 @@ public class FavoriteService extends Service {
             
             stmt2.close();
             
+            //Close out current SQL connection
+            getDatabase().close();
+            
         }catch(SQLException s){
             return getGson().toJson(s.toString()); //SQL failed
         }
@@ -289,6 +299,9 @@ public class FavoriteService extends Service {
             int count = stmt.executeUpdate();
             stmt.close();
             
+            //Close out current SQL connection
+            getDatabase().close();
+            
         }catch(SQLException s){
             return getGson().toJson(s.toString()); //SQL failed
         }
@@ -327,6 +340,9 @@ public class FavoriteService extends Service {
                 
             int count = stmt.executeUpdate();
             stmt.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
             
         }catch(SQLException s){
             return getGson().toJson(s.toString()); //SQL failed
