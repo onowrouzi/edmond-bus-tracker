@@ -42,23 +42,28 @@ public class BusService extends Service {
         return buses;
     }
     
-    private void getAllBuses() throws SQLException
+    private void getAllBuses()
     {
-        
-        Statement stmt = getDatabase().createStatement();
-        
-        ResultSet rs = stmt.executeQuery("SELECT * FROM tblbus");
+        try{
+            Statement stmt = getDatabase().createStatement();
 
-        while(rs.next()){
-            Boolean active = false;
-            if (rs.getInt("active") > 0) active = true;
-            Bus bus = new Bus(rs.getInt("id"), rs.getString("name"), rs.getString("driver"), rs.getString("route"),
-                        rs.getString("laststop"), active, rs.getString("lastactive"), rs.getDouble("lastLong"), rs.getDouble("lastLat"));
-            buses.add(bus);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tblbus");
+
+            while(rs.next()){
+                Boolean active = false;
+                if (rs.getInt("active") > 0) active = true;
+                Bus bus = new Bus(rs.getInt("id"), rs.getString("name"), rs.getString("driver"), rs.getString("route"),
+                            rs.getString("laststop"), active, rs.getString("lastactive"), rs.getDouble("lastLong"), rs.getDouble("lastLat"));
+                buses.add(bus);
+            }
+
+            stmt.close();
+
+            //Close out current SQL connection
+            getDatabase().close();
+        }catch(SQLException s){
+            System.out.println(s.toString()); //SQL error
         }
-        
-        stmt.close();
-        getDatabase().close();
     }
     
     public Bus find(int id)
@@ -102,25 +107,15 @@ public class BusService extends Service {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("buses/byid/{id}")
-    public String getBus(@PathParam("id") int id) throws SQLException {
+    public String getBus(@PathParam("id") int id){
         return getGson().toJson(find(id));
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("buses/{query}")
-    public String getBus(@PathParam("query") String query) throws SQLException {
+    public String getBus(@PathParam("query") String query){
         return getGson().toJson(find(query));
-    }
-
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("buses/edit/{oldName}/{newName}/{oldDriver}/{newDriver}/{oldRoute}/{newRoute}")
-    public Bus edit(@PathParam("oldName") String oldName, @PathParam("newName") String newName, 
-            @PathParam("oldDriver") String oldDriver, @PathParam("newDriver") String newDriver,
-                @PathParam("oldRoute") String oldRoute, @PathParam("newRoute") String newRoute)
-    {
-        return null;
     }
    
     @GET
@@ -164,6 +159,8 @@ public class BusService extends Service {
                 buses.add(bus);
             }
             
+            //Close out current SQL connection
+            getDatabase().close();
         }catch(SQLException s){
             return getGson().toJson(s.toString()); //SQL failed
         }
@@ -188,6 +185,9 @@ public class BusService extends Service {
             int count = stmt.executeUpdate();
             
             stmt.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
             
         }catch(SQLException s){
             return getGson().toJson(s.toString());
