@@ -8,8 +8,10 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
@@ -23,6 +25,7 @@ import org.primefaces.json.JSONObject;
 @RequestScoped
 public class UserManagementBean implements Serializable {
     private ArrayList<User> rolesType;
+    private List<User> drivers;
     
     private String username;
     private String password;
@@ -33,6 +36,9 @@ public class UserManagementBean implements Serializable {
     public void init() {
         try {
             loadUserGroups("admin", "driver");
+            drivers = rolesType.stream()
+                    .filter(user -> user.getType().equals("driver"))
+                    .collect(Collectors.toList());
         } catch (Exception ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -257,5 +263,9 @@ public class UserManagementBean implements Serializable {
 
     public ArrayList<User> getRolesType() {
         return this.rolesType;
+    }
+
+    public List<User> getDrivers() {
+        return drivers;
     }
 }
