@@ -1,26 +1,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <h:outputStylesheet library="css" name="webcss.css" />
+        <!--<f:metadata>
+            <f:viewAction action="#{loginBean.doFilter}" />
+        </f:metadata>-->
     </h:head>
     <h:body>
-        <b:column span="3" class="col-xs-3">
-           <ui:include src="/sidebar.xhtml"/>
-        </b:column>
-        <b:column span="9" class="col-xs-9">
-            <div id="route-table">
-                <b:dataTable value="#{routeManagement.getStops()}" var="r">
-                    <b:dataTableColumn>#{r.getStopName()}</b:dataTableColumn>
-                    <b:dataTableColumn>#{r.getStopLat()}</b:dataTableColumn>
-                    <b:dataTableColumn>#{r.getStopLng()}</b:dataTableColumn>
-                </b:dataTable>
-            </div>
-            <b:button value="Add" look="default" class="pull-right" outcome="createRoute"></b:button>
-        </b:column>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <div class="col-xs-9">
+                    <div id="route-table">
+                        <h:dataTable value="#{routeManagement.getRoutes()}" var="r">
+                            <h:column> <f:facet name="header">Name</f:facet>#{r.getName()}</h:column>
+                        </h:dataTable>
+                    </div>
+                    <br/>
+                    <h:button value="Add" class="btn btn-default pull-right" outcome="createRoute"/>
+                </div>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>

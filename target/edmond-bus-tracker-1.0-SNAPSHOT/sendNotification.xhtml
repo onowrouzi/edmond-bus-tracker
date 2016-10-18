@@ -1,36 +1,37 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <h:outputStylesheet library="css" name="webcss.css" />
+        <!--<f:metadata>
+            <f:viewAction action="#{loginBean.doFilter}" />
+        </f:metadata>-->
     </h:head>
     <h:body>
-        <b:column span="3" class="col-xs-3">
-           <ui:include src="/sidebar.xhtml"/>
-        </b:column>
-        <b:column span="2" class="visible-md visible-lg"></b:column>
-        <b:column span="5" class="col-xs-9">
-            <h1 id="notification-header">Send Notification</h1>
-            <h:form id="notification-form">
-                <br/><br/><br/>
-                <label>Notification Text</label>
-                <br/>
-                <b:inputTextarea></b:inputTextarea>
-                <br/><br/>
-                <b:selectOneMenu>
-                    <f:selectItem itemLabel="Add Route" itemValue=""></f:selectItem>
-                </b:selectOneMenu>
-                <br/>
-                <b:button value="Additional Route" look="default"></b:button>
-                <br/><br/><br/>
-                <b:button value="Send" look="default"></b:button>
-                <br/><br/><br/>
-            </h:form>
-        </b:column>
-        <b:column span="2" class="visible-md visible-lg"></b:column>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <div class="col-md-2 visible-md visible-lg"></div>
+                <div class="col-md-5 col-xs-9">
+                    <h1 id="notification-header">Send Notification</h1>
+                    <h:form id="notification-form">
+                        <br/>
+                        <label>Notification Text</label>
+                        <br/>
+                        <h:inputTextarea class="form-control"/>
+                        <br/><br/>
+                        <h:selectOneMenu class="form-control">
+                            <f:selectItem itemLabel="Add Route" itemValue=""></f:selectItem>
+                        </h:selectOneMenu>
+                        <br/>
+                        <h:button value="Additional Route" class="btn btn-default form-control"/>
+                        <br/><br/><br/>
+                        <h:button value="Send" class="btn btn-default form-control"/>
+                        <br/><br/><br/>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
