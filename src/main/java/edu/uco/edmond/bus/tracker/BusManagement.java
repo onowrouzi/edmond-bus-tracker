@@ -26,6 +26,7 @@ import org.primefaces.json.JSONObject;
 public class BusManagement implements Serializable {
     
     private ArrayList<Bus> buses = new ArrayList<>();
+    private ArrayList<Bus> filteredBuses = new ArrayList<>();
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
     
     @PostConstruct
@@ -95,6 +96,21 @@ public class BusManagement implements Serializable {
         return this.buses;
     }
     
+    public ArrayList<Bus> getBusesByStatus(int filter) {
+        Boolean active = false;
+        if (filter == -1) {
+            return buses;
+        } else if (filter == 1) {
+            active = true;
+        }
+        ArrayList<Bus> busList = new ArrayList<>();
+        for (Bus bus : buses){
+            if (bus.getActive() == active)
+                busList.add(bus);
+        }
+        return busList;
+    }
+    
     public void addBus(String name, String driver, String route) throws IOException {
         
         try {
@@ -143,6 +159,14 @@ public class BusManagement implements Serializable {
             context.redirect("busManagement.xhtml");
         }
 //        return "busManagement";
+    }
+    
+    public ArrayList<Bus> getFilteredBuses() {
+        return filteredBuses;
+    }
+    
+    public void setFilteredBuses(ArrayList<Bus> filteredBuses) {
+        this.filteredBuses = filteredBuses;
     }
     
 }
