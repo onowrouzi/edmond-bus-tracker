@@ -14,15 +14,20 @@
             <ui:define name="content">
                 <div span="9" class="col-xs-8">
                     <div id="user-table">
-                        <h:dataTable value="#{busManagement.getBuses()}" var="b">
-                            <h:column class="form-group"> <f:facet name="header">Name</f:facet>#{b.getName()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Driver</f:facet>#{b.getDriver()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Route</f:facet>#{b.getRoute()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Last Stop</f:facet>#{b.getLastStop()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Last Active</f:facet>#{b.getLastActive()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Active</f:facet>#{b.getActive()}</h:column>
+                        <h:dataTable value="#{busManagement.buses}" var="b">
+                            <h:column class="form-group"> <f:facet name="header">Name</f:facet>#{b.name}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Driver</f:facet>#{b.driver}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Route</f:facet>#{b.route}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Last Stop</f:facet>#{b.lastStop}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Last Active</f:facet>#{b.lastActive}</h:column>
+                            <h:column class="form-group"> <f:facet name="header">Active</f:facet>#{b.active}</h:column>
                             <h:column class="form-group"> <f:facet name="header">Edit</f:facet>
-                                <h:button value="Edit" class="btn btn-primary"/>
+                                <h:button value="Edit" style="margin-left: 5px" class="btn btn-info" outcome="editBus">
+                                    <f:param name="id" value="#{b.id}" />
+                                    <f:param name="name" value="#{b.name}" />
+                                    <f:param name="driver" value="#{b.driver}" />
+                                    <f:param name="route" value="#{b.route}" />
+                                </h:button>
                             </h:column>
                         </h:dataTable>
                     </div>

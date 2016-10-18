@@ -142,7 +142,59 @@ public class BusManagement implements Serializable {
         } finally {
             context.redirect("busManagement.xhtml");
         }
-//        return "busManagement";
+    }
+    
+    public void editBus(int id, String name, String driver, String route) throws IOException {
+        try {
+            if (driver.isEmpty()) {
+                driver = "none"; // no driver selected
+            }
+            
+            //String url = "http://localhost:8080/edmond-bus-tracker/api/busservice/buses/edit/"
+            String url = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses/edit/" 
+                    + id + "/" + name + "/" + driver + "/" + route;
+            
+            url = url.replace(" ", "%20");
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'POST' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            if (responseCode > 400) {
+                BufferedReader err = new BufferedReader(
+                    new InputStreamReader(con.getErrorStream())); 
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                
+                while ((inputLine = err.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                System.out.println("CONNECTION ERROR: " + con.getErrorStream());
+            }
+            
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()))) {
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                System.out.println("INPUT STREAM: " + response);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            context.redirect("busManagement.xhtml");
+        }
     }
     
 }
