@@ -2,12 +2,15 @@
 package edu.uco.edmond.bus.tracker.Services;
 
 import edu.uco.edmond.bus.tracker.Dtos.BusStop;
+import java.io.UnsupportedEncodingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -30,9 +33,9 @@ public class BusStopService extends Service{
         return busStops;
     }
     
-    private void getAllBusStops() throws SQLException
+    private void getAllBusStops()
     {
-        
+        try{
         Statement stmt = getDatabase().createStatement();
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM tblbusstop");
@@ -43,6 +46,12 @@ public class BusStopService extends Service{
         }
         
         stmt.close();
+        
+        //Close out current SQL connection
+        getDatabase().close();
+        }catch(SQLException s){
+            System.out.println(s.toString()); //SQL error
+        }
     }
     
     public BusStop find(int id)
@@ -100,32 +109,22 @@ public class BusStopService extends Service{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stops/byid/{id}")
-    public String getStop(@PathParam("id") int id) throws SQLException {
+    public String getStop(@PathParam("id") int id){
         return getGson().toJson(find(id));
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stops/{name}")
-    public String getStop(@PathParam("name") String name) throws SQLException {
+    public String getStop(@PathParam("name") String name){
         return getGson().toJson(find(name));
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stops/{latitude}/{longitude}")
-    public String getStop(@PathParam("latitude") float latitude, @PathParam("longitude") float longitude) throws SQLException {
+    public String getStop(@PathParam("latitude") float latitude, @PathParam("longitude") float longitude){
         return getGson().toJson(find(latitude, longitude));
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("stops/edit/{oldName}/{newName}/{oldLatitude}/{newLatitude}/{oldLongitude}/{newLongitude}")
-    public BusStop edit(@PathParam("oldName") String oldName, @PathParam("newName") String newName, 
-            @PathParam("oldLatitude") float oldLatitude, @PathParam("newLatitude") float newLatitude,
-                @PathParam("oldLongitude") float oldLongitude, @PathParam("newLongitude") float newLongitude)
-    {
-        return null;
     }
     
     @GET
@@ -133,6 +132,11 @@ public class BusStopService extends Service{
     @Path("stops/create/{name}/{latitude}/{longitude}")
     public String create(@PathParam("name") String name, @PathParam("latitude") float latitude, @PathParam("longitude") float longitude)
     {
+        try {
+            name = java.net.URLDecoder.decode(name, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(BusStopService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         BusStop Stop = find(name);
         
         if(Stop != null)
@@ -162,6 +166,9 @@ public class BusStopService extends Service{
             
             stmt2.close();
             
+            //Close out current SQL connection
+            getDatabase().close();
+            
         }catch(SQLException s){
             return getGson().toJson(s.toString()); //SQL failed
         }
@@ -174,18 +181,36 @@ public class BusStopService extends Service{
     @Path("stops/delete/{name}")
     public String delete(@PathParam("name") String name)
     {
-        BusStop Stop = find(name);
+        BusStop Stop = null;
+        try {
+            Stop = find(java.net.URLDecoder.decode(name, "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(BusStopService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         if(Stop == null)
             return getGson().toJson(null); //send error message on client --stop does not exist
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblbusstop WHERE id=?");
-            stmt.setInt(1, Stop.getId());
-
-            int count = stmt.executeUpdate();
+            PreparedStatement stmt1 = getDatabase().prepareStatement("UPDATE tblbus SET laststop=null where laststop=?");
+            stmt1.setString(1, Stop.getName());
+            int count = stmt1.executeUpdate();
+            stmt1.close();
+            PreparedStatement stmt2 = getDatabase().prepareStatement("DELETE from tblbusroutestop where stop=?");
+            stmt2.setString(1, Stop.getName());
+            count = stmt2.executeUpdate();
+            stmt2.close();
+            PreparedStatement stmt3 = getDatabase().prepareStatement("DELETE from tblbusstopfavorites where busstopId=?");
+            stmt3.setInt(1, Stop.getId());
+            count = stmt3.executeUpdate();
+            stmt3.close();
+            PreparedStatement stmt4 = getDatabase().prepareStatement("DELETE FROM tblbusstop WHERE id=?");
+            stmt4.setInt(1, Stop.getId());
+            count = stmt4.executeUpdate();
+            stmt4.close();
             
-            stmt.close();
+            //Close out current SQL connection
+            getDatabase().close();
             
         }catch(SQLException s){
             return getGson().toJson(s.toString());
