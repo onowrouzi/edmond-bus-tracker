@@ -197,4 +197,57 @@ public class BusService extends Service {
         
         return getGson().toJson(bus);
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("buses/edit/{id}/{name}/{driver}/{route}")
+    public String edit(@PathParam("id") int id, @PathParam("name") String name, @PathParam("driver") String driver, @PathParam("route") String route)
+    {
+        name = name.replace("%20", " ");
+        driver = driver.replace("%20", " ");
+        route = route.replace("%20", " ");
+        
+        Bus bus;
+        
+        String query = "UPDATE tblbus SET driver=?, name=?, route=? WHERE id=?";
+        if (driver.equals("none")) { // remove old driver
+            query = "UPDATE tblbus SET driver=null, name=?, route=? WHERE id=?";
+        }
+        
+        try {
+            try (PreparedStatement stmt = getDatabase().prepareStatement(query)) {
+                if (driver.equals("none")) { // remove old driver
+                    stmt.setString(1, name);
+                    stmt.setString(2, route);
+                    stmt.setInt(3, id);
+                } else {
+                    stmt.setString(1, driver); // replace driver
+                    stmt.setString(2, name);
+                    stmt.setString(3, route);
+                    stmt.setInt(4, id);
+                }
+                
+                System.out.println("STATEMENT 1: " + stmt);
+                
+                int count = stmt.executeUpdate();
+                
+                // find the old bus
+                bus = buses.stream()
+                    .filter(b -> b.getId() == id)
+                    .findFirst()
+                    .get();
+                
+                buses.remove(bus); // replace old bus
+                bus = new Bus(id, name, driver, route);
+                buses.add(bus); // add new bus
+            }
+            
+            //Close out current SQL connection
+            getDatabase().close();
+        } catch(SQLException s) {
+            return getGson().toJson(s.toString()); //SQL failed
+        }
+        
+        return getGson().toJson(bus); // show new bus info
+    }
 }
