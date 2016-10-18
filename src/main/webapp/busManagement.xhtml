@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Edmond Bus Tracker</title>
         <!--<f:metadata>
@@ -13,19 +14,28 @@
         <ui:composition template="/template/layout.xhtml">
             <ui:define name="content">
                 <div span="9" class="col-xs-8">
-                    <div id="user-table">
-                        <h:dataTable value="#{busManagement.getBuses()}" var="b">
-                            <h:column class="form-group"> <f:facet name="header">Name</f:facet>#{b.getName()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Driver</f:facet>#{b.getDriver()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Route</f:facet>#{b.getRoute()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Last Stop</f:facet>#{b.getLastStop()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Last Active</f:facet>#{b.getLastActive()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Active</f:facet>#{b.getActive()}</h:column>
-                            <h:column class="form-group"> <f:facet name="header">Edit</f:facet>
+                    <h:form id="user-table">
+                        <p:dataTable value="#{busManagement.getBuses()}" var="b" widgetVar="busTable" filteredValue="#{busManagement.filteredBuses}">
+                            <p:column class="form-group"> <f:facet name="header">Name</f:facet>#{b.getName()}</p:column>
+                            <p:column class="form-group"> <f:facet name="header">Driver</f:facet>#{b.getDriver()}</p:column>
+                            <p:column class="form-group"> <f:facet name="header">Route</f:facet>#{b.getRoute()}</p:column>
+                            <p:column class="form-group"> <f:facet name="header">Last Stop</f:facet>#{b.getLastStop()}</p:column>
+                            <p:column class="form-group"> <f:facet name="header">Last Active</f:facet>#{b.getLastActive()}</p:column>
+                            <p:column filterBy="#{b.active}" headerText="Active">
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('busTable').filter()" >
+                                        <f:selectItem itemLabel="Select" noSelectionOption="true" />
+                                        <f:selectItem itemValue="#{true}" itemLabel="True" />
+                                        <f:selectItem itemValue="#{false}" itemLabel="False" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{b.active}" />
+                            </p:column>
+                            <p:column class="form-group"> <f:facet name="header">Edit</f:facet>
                                 <h:button value="Edit" class="btn btn-primary"/>
-                            </h:column>
-                        </h:dataTable>
-                    </div>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
                     <br/>
                     <h:button value="Add" class="btn btn-default pull-right" outcome="createBus"/>
                 </div>
