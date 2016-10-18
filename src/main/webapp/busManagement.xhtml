@@ -32,7 +32,12 @@
                                 <h:outputText value="#{b.active}" />
                             </p:column>
                             <p:column class="form-group"> <f:facet name="header">Edit</f:facet>
-                                <h:button value="Edit" class="btn btn-primary"/>
+                                <h:button value="Edit" style="margin-left: 5px" class="btn btn-info" outcome="editBus">
+                                    <f:param name="id" value="#{b.id}" />
+                                    <f:param name="name" value="#{b.name}" />
+                                    <f:param name="driver" value="#{b.driver}" />
+                                    <f:param name="route" value="#{b.route}" />
+                                </h:button>
                             </p:column>
                         </p:dataTable>
                     </h:form>
