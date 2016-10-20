@@ -64,29 +64,28 @@ public class BusManagement implements Serializable {
             try {
                 jsonarray = new JSONArray(response.toString());
                 for (int i = 0; i < jsonarray.length(); i++) {
-                JSONObject jsonobject;
-                try {
-                    jsonobject = jsonarray.getJSONObject(i);
-                    int id = jsonobject.getInt("id");
-                    String name = jsonobject.getString("name");
-                    String driver = jsonobject.has("driver") ? jsonobject.getString("driver") : "none";
-                    String route = jsonobject.getString("route");
-                    String lastStop = jsonobject.has("lastStop") ? jsonobject.getString("lastStop") : "N/A";
-                    Boolean active = jsonobject.getBoolean("active");
-                    String lastActive = jsonobject.getString("lastActive");
-                    double lastLong = jsonobject.has("lastLong") ? jsonobject.getDouble("lastLong") : 0;
-                    double lastLat = jsonobject.has("lastLat") ? jsonobject.getDouble("lastLat") : 0;
-                    System.out.println(name);
-                    Bus temp = new Bus(id, name, driver, route, lastStop, active, lastActive, lastLong, lastLat);
-                    buses.add(temp);
-                } catch (JSONException ex) {
-                    Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
+                    JSONObject jsonobject;
+                    try {
+                        jsonobject = jsonarray.getJSONObject(i);
+                        int id = jsonobject.getInt("id");
+                        String name = jsonobject.getString("name");
+                        String driver = jsonobject.has("driver") ? jsonobject.getString("driver") : "none";
+                        String route = jsonobject.getString("route");
+                        String lastStop = jsonobject.has("lastStop") ? jsonobject.getString("lastStop") : "N/A";
+                        Boolean active = jsonobject.getBoolean("active");
+                        String lastActive = jsonobject.getString("lastActive");
+                        double lastLong = jsonobject.has("lastLong") ? jsonobject.getDouble("lastLong") : 0;
+                        double lastLat = jsonobject.has("lastLat") ? jsonobject.getDouble("lastLat") : 0;
+                        System.out.println(name);
+                        Bus temp = new Bus(id, name, driver, route, lastStop, active, lastActive, lastLong, lastLat);
+                        buses.add(temp);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
             } catch (JSONException ex) {
                 Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         } catch (IOException ex) {
             Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
