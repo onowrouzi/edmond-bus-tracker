@@ -22,32 +22,34 @@
                         <br/>
                         <h:inputText class="form-control"/>
                         <br/>
-                        <h:commandButton action="#{createRouteView.save()}" class="btn btn-default" value="Save" />
+                        <div class="col-xs-8">
+                            <div id="stop-table">
+                                <h:dataTable value="#{createRouteView.getStops()}" var="r">
+                                    <h:column>
+                                        <f:facet name="header">Name</f:facet>
+                                            #{r.getStopName()}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Add To Route</f:facet>
+                                        <h:commandButton value="Add" class="btn pull-right" action="#{createRouteView.addToRoute(r.getStopName())}"/>
+                                    </h:column>
+                                </h:dataTable>
+                            </div>
+                            <div id="stop-table">
+                                <h:dataTable value="#{createRouteView.getStopsOnRoute()}" var="r">
+                                    <h:column>
+                                        <f:facet name="header">Name</f:facet>
+                                            #{r.getStopName()}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Remove Route</f:facet>
+                                        <h:commandButton value="Remove" class="btn btn-danger pull-right" action="#{createRouteView.removeFromRoute(r.getStopName())}"/>
+                                    </h:column>
+                                </h:dataTable>
+                            </div>
+                        </div>
                     </h:form>
                 </div>
-
-                <div class="col-md-6">
-                    <br />
-                    <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{createRouteView.draggableModel}" style="width:100%;height:400px">
-                        <p:ajax event="markerDrag" listener="#{createRouteView.onMarkerDrag}"/>
-                    </p:gmap>
-                    <br></br>
-                    <h:form>
-                        <div class="row">
-                            <ui:repeat var="r" value="#{createRouteView.route.routes}">
-                            <label>Stop Name</label>
-                            <br />
-                            <h:inputText value="#{r.stopName}"/>
-                        </ui:repeat>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <h:commandButton action="#{createRouteView.addRoute()}" class="btn btn-default" value="Add Stop"/>
-                        </div>
-                    </h:form>
-                    <br />
-                </div>
-                <script src="#{createRouteView.mapKey}" type="text/javascript" ></script>
             </ui:define>
         </ui:composition>
     </h:body>
