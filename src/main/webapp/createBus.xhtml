@@ -24,14 +24,14 @@
                                 <br/>
                                 <h:selectOneMenu class="form-control" value="#{driver}">
                                     <f:selectItem itemLabel="Select Driver" itemValue=""></f:selectItem>
-                                    <f:selectItems value="#{userManagementBean.admins}" var="user" 
+                                    <f:selectItems value="#{userManagementBean.drivers}" var="user" 
                                         itemLabel="#{user.username}" itemValue="#{user.username}"/>
                                 </h:selectOneMenu>
                                 <br/>
                                 <h:selectOneMenu class="form-control" value="#{route}">
                                     <f:selectItem itemLabel="Select Route" itemValue=""></f:selectItem>
-                                    <f:selectItems value="#{routeManagement.getRoutes()}" var="r"
-                                        itemLabel="#{r.getName()}" itemValue="#{r.getName()}"/>
+                                    <f:selectItems value="#{routeManagement.routes}" var="r"
+                                        itemLabel="#{r.name}" itemValue="#{r.name}"/>
                                 </h:selectOneMenu>
                                 <br/>
                                 <h:commandButton value="Add" class="btn btn-default form-control" action="#{busManagement.addBus(name, driver, route)}"/>
