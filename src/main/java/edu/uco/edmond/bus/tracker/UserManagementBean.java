@@ -25,7 +25,9 @@ import org.primefaces.json.JSONObject;
 @RequestScoped
 public class UserManagementBean implements Serializable {
     private ArrayList<User> rolesType;
+    private List<User> users;
     private List<User> drivers;
+    private List<User> admins;
     
     private String username;
     private String password;
@@ -38,6 +40,12 @@ public class UserManagementBean implements Serializable {
             loadUserGroups("admin", "driver");
             drivers = rolesType.stream()
                     .filter(user -> user.getType().equals("driver"))
+                    .collect(Collectors.toList());
+            users = rolesType.stream()
+                    .filter(user -> user.getType().equals("user"))
+                    .collect(Collectors.toList());
+            admins = rolesType.stream()
+                    .filter(user -> user.getType().equals("admin"))
                     .collect(Collectors.toList());
         } catch (Exception ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -267,5 +275,13 @@ public class UserManagementBean implements Serializable {
 
     public List<User> getDrivers() {
         return drivers;
+    }
+    
+    public List<User> getUsers() {
+        return users;
+    }
+    
+    public List<User> getAdmins() {
+        return admins;
     }
 }
