@@ -199,8 +199,8 @@ public class BusManagement implements Serializable {
         try {
             name = name.replace(" ", "%20");
             
-            String url = "http://localhost:8080/edmond-bus-tracker/api/busservice/buses/delete/" + name;
-            //String url = ENV + "/delete/" + name;
+            //String url = "http://localhost:8080/edmond-bus-tracker/api/busservice/buses/delete/" + name;
+            String url = ENV + "/delete/" + name;
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
