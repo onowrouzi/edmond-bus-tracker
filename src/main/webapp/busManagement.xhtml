@@ -33,15 +33,16 @@
                                 </f:facet>
                                 <h:outputText value="#{b.active}" />
                             </p:column>
-                            <p:column class="form-group"> <f:facet name="header">Edit</f:facet>
-                                <div style="text-align: center">
-                                    <h:button value="Edit" class="btn btn-info" outcome="editBus">
-                                        <f:param name="id" value="#{b.id}" />
-                                        <f:param name="name" value="#{b.name}" />
-                                        <f:param name="driver" value="#{b.driver}" />
-                                        <f:param name="route" value="#{b.route}" />
-                                    </h:button>
-                                </div>
+                            <p:column class="form-group"> <f:facet name="header">Options</f:facet>
+                                <h:button value="Delete" class="btn btn-danger" outcome="deleteBus">
+                                    <f:param name="name" value="#{b.name}" />
+                                </h:button>
+                                <h:button value="Edit" class="btn btn-info" outcome="editBus">
+                                    <f:param name="id" value="#{b.id}" />
+                                    <f:param name="name" value="#{b.name}" />
+                                    <f:param name="driver" value="#{b.driver}" />
+                                    <f:param name="route" value="#{b.route}" />
+                                </h:button>
                             </p:column>
                         </p:dataTable>
                     </h:form>

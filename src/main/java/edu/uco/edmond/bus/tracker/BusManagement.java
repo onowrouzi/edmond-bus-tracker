@@ -27,6 +27,7 @@ public class BusManagement implements Serializable {
     
     private ArrayList<Bus> buses = new ArrayList<>();
     private ArrayList<Bus> filteredBuses = new ArrayList<>();
+    private String name;
     private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses";
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
     
@@ -149,7 +150,7 @@ public class BusManagement implements Serializable {
                 driver = "none"; // no driver selected
             }
             
-            String url = ENV + id + "/" + name + "/" + driver + "/" + route;
+            String url = ENV + "/edit/" + id + "/" + name + "/" + driver + "/" + route;
             
             url = url.replace(" ", "%20");
             URL obj = new URL(url);
@@ -162,7 +163,7 @@ public class BusManagement implements Serializable {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'POST' request to URL : " + url);
+            System.out.println("\nSending 'GET' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
             
             if (responseCode > 400) {
@@ -192,6 +193,57 @@ public class BusManagement implements Serializable {
         } finally {
             context.redirect("busManagement.xhtml");
         }
+    }
+    
+    public String deleteBus(String name) throws IOException {
+        try {
+            name = name.replace(" ", "%20");
+            
+            String url = "http://localhost:8080/edmond-bus-tracker/api/busservice/buses/delete/" + name;
+            //String url = ENV + "/delete/" + name;
+            
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            if (responseCode != 200) {
+                con.disconnect(); // disconnect on error
+            } else {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                con.disconnect();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //loadUserGroups("admin", "driver");
+        
+        return "busManagement";
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
     public ArrayList<Bus> getFilteredBuses() {
