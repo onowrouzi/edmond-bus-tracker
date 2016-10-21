@@ -28,13 +28,12 @@ public class BusManagement implements Serializable {
     private ArrayList<Bus> buses = new ArrayList<>();
     private ArrayList<Bus> filteredBuses = new ArrayList<>();
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+    private final String ENV= "https://uco-edmond-bus.herokuapp.com/api/busservice/buses";
     
     @PostConstruct
     public void init() {
         try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses";
-            
-            URL obj = new URL(url);
+            URL obj = new URL(ENV);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
             // optional default is GET
@@ -44,7 +43,7 @@ public class BusManagement implements Serializable {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("\nSending 'GET' request to URL : " + ENV);
             System.out.println("Response Code : " + responseCode);
             
             StringBuffer response;
@@ -90,6 +89,7 @@ public class BusManagement implements Serializable {
         } catch (IOException ex) {
             Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
+        filteredBuses = buses;
     }
     
     public ArrayList<Bus> getBuses() {
@@ -99,8 +99,7 @@ public class BusManagement implements Serializable {
     public void addBus(String name, String driver, String route) throws IOException {
         
         try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses/create/" 
-                    + name + "/" + driver + "/" + route;
+            String url = ENV + "/create/" + name + "/" + driver + "/" + route;
             url = url.replace(" ", "%20");
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -151,9 +150,7 @@ public class BusManagement implements Serializable {
                 driver = "none"; // no driver selected
             }
             
-            //String url = "http://localhost:8080/edmond-bus-tracker/api/busservice/buses/edit/"
-            String url = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses/edit/" 
-                    + id + "/" + name + "/" + driver + "/" + route;
+            String url = ENV + "/edit/" + id + "/" + name + "/" + driver + "/" + route;
             
             url = url.replace(" ", "%20");
             URL obj = new URL(url);
@@ -196,6 +193,46 @@ public class BusManagement implements Serializable {
         } finally {
             context.redirect("busManagement.xhtml");
         }
+    }
+    
+    public String deleteUser(String busname) throws IOException {
+        try {
+            String url = ENV + "/delete/" + busname;
+            
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            if (responseCode != 200) {
+                con.disconnect(); // disconnect on error
+            } else {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                con.disconnect();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        getBuses();
+        
+        return "busManagement";
     }
     
     public ArrayList<Bus> getFilteredBuses() {
