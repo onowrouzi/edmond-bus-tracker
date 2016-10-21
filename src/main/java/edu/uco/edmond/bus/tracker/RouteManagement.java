@@ -30,14 +30,12 @@ import org.primefaces.json.JSONObject;
 @ViewScoped
 public class RouteManagement {
     private ArrayList<Route> routes = new ArrayList<>();
+    private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/routeservice/routes";
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
     @PostConstruct
     public void init() {
-        try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/routeservice/routes";
-
-            URL obj = new URL(url);
+        try {URL obj = new URL(ENV);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
             // optional default is GET
@@ -47,7 +45,7 @@ public class RouteManagement {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("\nSending 'GET' request to URL : " + ENV);
             System.out.println("Response Code : " + responseCode);
 
             BufferedReader in = new BufferedReader(
@@ -91,10 +89,10 @@ public class RouteManagement {
         return this.routes;
     }
 
-    public void addRoute(String name) throws IOException {
+    public String addRoute(String name) throws IOException {
 
         try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/routeservice/routes/create/" + name;
+            String url = ENV + name;
             url = url.replace(" ", "%20");
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -128,8 +126,7 @@ public class RouteManagement {
             Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        context.redirect("routeManagement.xhtml");
-//        return "busManagement";
+        return "routeManagement";
     }
 
 }

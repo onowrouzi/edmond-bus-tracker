@@ -30,19 +30,16 @@ import org.primefaces.model.map.Marker;
 public class StopManagementBean implements Serializable {
      
     private ArrayList<RouteStop> stops = new ArrayList<>();
-    
+    private String ENV = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops";
     private MapModel draggableModel;
     private Marker marker;
-    
-    public RouteStop stop = new RouteStop();
-    
     private final double defaultLat = 35.6526783;
     private final double defaultLng = -97.4781833;
-            
+    
+    public RouteStop stop = new RouteStop();
     public String mapKey = "https://maps.google.com/maps/api/js?key=AIzaSyAOm_hMAIA4Naz5-FXN7VTmLdMetew_uUE";// + System.getenv("MAP_API");
         
     HttpURLConnection connection = null;
-
     
     @PostConstruct
     public void init() {
@@ -57,9 +54,7 @@ public class StopManagementBean implements Serializable {
         this.getStop().setLocation(new LatLng(this.defaultLat, this.defaultLng));
                 
         try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops";
-            
-            URL obj = new URL(url);
+            URL obj = new URL(ENV);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
             // optional default is GET
@@ -116,7 +111,8 @@ public class StopManagementBean implements Serializable {
             String routeStopName = this.getStop().getStopName();
             String lat = String.valueOf(this.getStop().getLocation().getLat());
             String lng = String.valueOf(this.getStop().getLocation().getLng());
-            String route = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops/create/" + java.net.URLEncoder.encode(routeStopName, "UTF-8") + "/" + lat + "/" + lng;
+            String route = ENV + "/create/" + java.net.URLEncoder.encode(routeStopName, "UTF-8") + "/" + lat + "/" + lng;
+            
             URL url = new URL(route);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -144,7 +140,7 @@ public class StopManagementBean implements Serializable {
     
     public String delete(String stopName) {
         try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops/delete/" + java.net.URLEncoder.encode(stopName, "UTF-8");
+            String url = ENV + "/delete/" + java.net.URLEncoder.encode(stopName, "UTF-8");
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -170,7 +166,6 @@ public class StopManagementBean implements Serializable {
         } catch (IOException ex) {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         
         return "stopManagement";
     }

@@ -22,13 +22,12 @@ import org.primefaces.model.map.LatLng;
 public class RouteStopManagement implements Serializable {
     
     private ArrayList<RouteStop> stops = new ArrayList<>();
+    private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops";
     
     @PostConstruct
     public void init() {
         try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops";
-            
-            URL obj = new URL(url);
+            URL obj = new URL(ENV);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
             // optional default is GET
@@ -38,7 +37,7 @@ public class RouteStopManagement implements Serializable {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("\nSending 'GET' request to URL : " + ENV);
             System.out.println("Response Code : " + responseCode);
             
             BufferedReader in = new BufferedReader(

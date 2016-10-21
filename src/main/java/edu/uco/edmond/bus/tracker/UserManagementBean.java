@@ -32,6 +32,7 @@ public class UserManagementBean implements Serializable {
     private String username;
     private String password;
     private String type;
+    private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/userservice/users";
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
     
     @PostConstruct
@@ -56,8 +57,7 @@ public class UserManagementBean implements Serializable {
         try {
             rolesType = new ArrayList<>();
             
-            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/usertype/" + userType1 + "/" + userType2;
-            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/usertype/" + userType1 + "/" + userType2;
+            String url = ENV + "/usertype/" + userType1 + "/" + userType2;
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -121,8 +121,7 @@ public class UserManagementBean implements Serializable {
     
     public String deleteUser(String username) throws IOException {
         try {
-            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/delete/" + username;
-            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/delete/" + username;
+            String url = ENV + "/delete/" + username;
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -168,9 +167,8 @@ public class UserManagementBean implements Serializable {
         }
         
         try {
-            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/create/"
-            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/create/" 
-                    + username + "/" + password + "/" + role + "/" + firstName + "/" + lastName + "/" + email;
+            String url = ENV + "/create/" + username + "/" + password + "/" + role 
+                            + "/" + firstName + "/" + lastName + "/" + email;
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
@@ -210,8 +208,7 @@ public class UserManagementBean implements Serializable {
         }
         
         try {
-            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/edit/" + username + "/" + password + "/" + confirmPassword + "/";
-            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/edit/" + username + "/" + password + "/" + confirmPassword + "/";
+            String url = ENV + "/edit/" + username + "/" + password + "/" + confirmPassword + "/";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
