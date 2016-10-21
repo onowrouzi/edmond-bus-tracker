@@ -27,14 +27,13 @@ public class BusManagement implements Serializable {
     
     private ArrayList<Bus> buses = new ArrayList<>();
     private ArrayList<Bus> filteredBuses = new ArrayList<>();
+    private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses";
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
     
     @PostConstruct
     public void init() {
         try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses";
-            
-            URL obj = new URL(url);
+            URL obj = new URL(ENV);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
             // optional default is GET
@@ -44,7 +43,7 @@ public class BusManagement implements Serializable {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("\nSending 'GET' request to URL : " + ENV);
             System.out.println("Response Code : " + responseCode);
             
             StringBuffer response;
@@ -99,8 +98,7 @@ public class BusManagement implements Serializable {
     public void addBus(String name, String driver, String route) throws IOException {
         
         try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses/create/" 
-                    + name + "/" + driver + "/" + route;
+            String url = ENV + "/create/" + name + "/" + driver + "/" + route;
             url = url.replace(" ", "%20");
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -151,9 +149,7 @@ public class BusManagement implements Serializable {
                 driver = "none"; // no driver selected
             }
             
-            //String url = "http://localhost:8080/edmond-bus-tracker/api/busservice/buses/edit/"
-            String url = "https://uco-edmond-bus.herokuapp.com/api/busservice/buses/edit/" 
-                    + id + "/" + name + "/" + driver + "/" + route;
+            String url = ENV + id + "/" + name + "/" + driver + "/" + route;
             
             url = url.replace(" ", "%20");
             URL obj = new URL(url);
