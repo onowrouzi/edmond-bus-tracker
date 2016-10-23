@@ -26,7 +26,7 @@
                             <p:column filterBy="#{b.active}" headerText="Active">
                                 <f:facet name="filter">
                                     <p:selectOneMenu onchange="PF('busTable').filter()" >
-                                        <f:selectItem itemLabel="Select" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="All" noSelectionOption="true" />
                                         <f:selectItem itemValue="#{true}" itemLabel="True" />
                                         <f:selectItem itemValue="#{false}" itemLabel="False" />
                                     </p:selectOneMenu>
