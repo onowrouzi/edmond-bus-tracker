@@ -74,7 +74,8 @@ public class BusService extends Service {
             {
                 return bus; //bus found
             }
-        } 
+        }
+            
         return null;
     }
     
@@ -172,14 +173,7 @@ public class BusService extends Service {
     public String delete(@PathParam("name") String name)
     {
         name = name.replace("%20", " ");
-        Bus bus = new Bus(); 
-        for(Bus b : buses)
-        {
-            if(b.getName().equals(name) || b.getDriver().equals(name) || b.getRoute().equals(name))
-            {
-                bus = b; //bus found
-            }
-        }
+        Bus bus = find(name);
         
 //        if(bus == null)
 //            return getGson().toJson(null); //send error message on client --bus does not exist
