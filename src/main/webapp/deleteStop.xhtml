@@ -13,17 +13,18 @@
             <f:viewParam name="stopname" value="#{stopManagementBean.stop.stopName}"/>
         </f:metadata>
     </h:head>
-    <ui:composition template="/template/layout.xhtml">
-        <ui:define name="content">
-            <div class="col-xs-8">
-            <h:form id="frmDeleteStop">
-                <h1>Delete Stop</h1>
-                <h2>Are you sure you want to delete #{param.stopname}?</h2>
-                <br/>
-                <h:commandButton value="Delete" class="btn btn-danger" action="#{stopManagementBean.delete(stopManagementBean.stop.getStopName())}" />
-            </h:form>
-        </div>
-        </ui:define>
-    </ui:composition>
+    <h:body>
+      <ui:composition template="/template/layout.xhtml">
+          <ui:define name="content">
+              <div class="col-xs-8">
+                <h:form id="frmDeleteStop">
+                    <h1>Delete Stop</h1>
+                    <h2>Are you sure you want to delete #{param.stopname}?</h2>
+                    <br/>
+                    <h:commandButton value="Delete" class="btn btn-danger" action="#{stopManagementBean.delete(stopManagementBean.stop.getStopName())}" />
+                </h:form>
+            </div>
+          </ui:define>
+      </ui:composition>
     </h:body>
 </html>

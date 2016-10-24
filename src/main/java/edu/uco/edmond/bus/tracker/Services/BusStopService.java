@@ -33,9 +33,9 @@ public class BusStopService extends Service{
         return busStops;
     }
     
-    private void getAllBusStops() throws SQLException
+    private void getAllBusStops()
     {
-        
+        try{
         Statement stmt = getDatabase().createStatement();
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM tblbusstop");
@@ -46,6 +46,12 @@ public class BusStopService extends Service{
         }
         
         stmt.close();
+        
+        //Close out current SQL connection
+        getDatabase().close();
+        }catch(SQLException s){
+            System.out.println(s.toString()); //SQL error
+        }
     }
     
     public BusStop find(int id)
@@ -103,32 +109,22 @@ public class BusStopService extends Service{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stops/byid/{id}")
-    public String getStop(@PathParam("id") int id) throws SQLException {
+    public String getStop(@PathParam("id") int id){
         return getGson().toJson(find(id));
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stops/{name}")
-    public String getStop(@PathParam("name") String name) throws SQLException {
+    public String getStop(@PathParam("name") String name){
         return getGson().toJson(find(name));
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stops/{latitude}/{longitude}")
-    public String getStop(@PathParam("latitude") float latitude, @PathParam("longitude") float longitude) throws SQLException {
+    public String getStop(@PathParam("latitude") float latitude, @PathParam("longitude") float longitude){
         return getGson().toJson(find(latitude, longitude));
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("stops/edit/{oldName}/{newName}/{oldLatitude}/{newLatitude}/{oldLongitude}/{newLongitude}")
-    public BusStop edit(@PathParam("oldName") String oldName, @PathParam("newName") String newName, 
-            @PathParam("oldLatitude") float oldLatitude, @PathParam("newLatitude") float newLatitude,
-                @PathParam("oldLongitude") float oldLongitude, @PathParam("newLongitude") float newLongitude)
-    {
-        return null;
     }
     
     @GET
@@ -170,6 +166,9 @@ public class BusStopService extends Service{
             
             stmt2.close();
             
+            //Close out current SQL connection
+            getDatabase().close();
+            
         }catch(SQLException s){
             return getGson().toJson(s.toString()); //SQL failed
         }
@@ -209,6 +208,9 @@ public class BusStopService extends Service{
             stmt4.setInt(1, Stop.getId());
             count = stmt4.executeUpdate();
             stmt4.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
             
         }catch(SQLException s){
             return getGson().toJson(s.toString());

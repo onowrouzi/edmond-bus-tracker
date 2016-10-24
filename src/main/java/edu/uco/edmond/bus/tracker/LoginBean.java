@@ -21,6 +21,8 @@ import javax.faces.context.FacesContext;
 public class LoginBean implements Serializable {
     private String username;
     private String password;
+    private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/administrator/"; 
+            
     
     @PostConstruct
     public void init() {
@@ -29,10 +31,7 @@ public class LoginBean implements Serializable {
     
     public String login() {
         try {
-            String url = "https://uco-edmond-bus.herokuapp.com/api/userservice/users/administrator/" + username + "/" + password;
-            //String url = "http://localhost:8080/edmond-bus-tracker/api/userservice/users/administrator/" + username + "/" + password;
-            
-            URL obj = new URL(url);
+            URL obj = new URL(ENV + username + "/" + password);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
             // optional default is GET
@@ -42,7 +41,7 @@ public class LoginBean implements Serializable {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("\nSending 'GET' request to URL : " + ENV);
             System.out.println("Response Code : " + responseCode);
             
             // ToDo: Only use this if/else statement during demo 

@@ -12,6 +12,11 @@ public class DBConnect {
     
     public DBConnect()
     {
+        connect();
+    }
+    
+    public void connect()
+    {
         try{
         String host = "jdbc:mysql://us-cdbr-iron-east-04.cleardb.net:3306/heroku_0d3e98bff6a2c85";
         String username = "b73f7005c851b7";
@@ -30,12 +35,12 @@ public class DBConnect {
         }
     }
     
-    public Connection getDatabase(){
+    public Connection getDatabase() throws SQLException{
         return database;
     }
     
-    public boolean isConnected()
+    public boolean isConnected() throws SQLException
     {
-        return database != null;
+        return (database != null || (!(database.isClosed())));
     }
 }

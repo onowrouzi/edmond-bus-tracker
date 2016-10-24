@@ -32,19 +32,26 @@ public class UserService extends Service{
         return users;
     }
     
-    private void getAllUsers() throws SQLException
+    private void getAllUsers()
     {
-        Statement stmt = getDatabase().createStatement();
-        
-        ResultSet rs = stmt.executeQuery("SELECT * FROM tbluser");
+        try{
+            Statement stmt = getDatabase().createStatement();
 
-        while(rs.next()){
-            User user = new User(rs.getInt("id"), rs.getString("username"), rs.getNString("password"), rs.getString("role"),
-                rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"));
-            users.add(user);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tbluser");
+
+            while(rs.next()){
+                User user = new User(rs.getInt("id"), rs.getString("username"), rs.getNString("password"), rs.getString("role"),
+                    rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"));
+                users.add(user);
+            }
+
+            stmt.close();
+
+            //Close out current SQL connection
+            getDatabase().close();
+        }catch(SQLException s){
+            System.out.println(s.toString()); //SQL error
         }
-        
-        stmt.close();
     }
     
     public User find(int id)
@@ -123,14 +130,14 @@ public class UserService extends Service{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/{id}")
-    public String getUser(@PathParam("id") int id) throws SQLException {
+    public String getUser(@PathParam("id") int id){
         return getGson().toJson(find(id));
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/usertype/{type}")
-    public String getGroupUsers(@PathParam("type") String userType) throws SQLException {
+    public String getGroupUsers(@PathParam("type") String userType){
         List<User> groupUsers = findGroupUsers(userType);
         if (groupUsers == null || groupUsers.isEmpty())
             return getGson().toJson("No users currently registered.");
@@ -141,7 +148,7 @@ public class UserService extends Service{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/usertype/{type1}/{type2}")
-    public String getGroupUsers(@PathParam("type1") String userType1, @PathParam("type2") String userType2) throws SQLException {
+    public String getGroupUsers(@PathParam("type1") String userType1, @PathParam("type2") String userType2){
         List<User> groupUsers = findGroupUsers(userType1); // get first group
         
         if (groupUsers == null) // check if first group exists
@@ -162,7 +169,7 @@ public class UserService extends Service{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/administrator/{username}/{password}") //talk about using optional params ?isadmin=true
-    public String administratorLogin(@PathParam("username") String username, @PathParam("password") String password) throws SQLException
+    public String administratorLogin(@PathParam("username") String username, @PathParam("password") String password)
     {
         User user = find(username, password);
         
@@ -178,7 +185,7 @@ public class UserService extends Service{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/{username}/{password}")//talk about using optional params ?isadmin=false
-    public String clientLogin(@PathParam("username") String username, @PathParam("password") String password) throws SQLException
+    public String clientLogin(@PathParam("username") String username, @PathParam("password") String password)
     {
         //admin should be able to login to both mobile and web systems
         return getGson().toJson(find(username, password));
@@ -223,6 +230,9 @@ public class UserService extends Service{
             
             stmt2.close();
             
+            //Close out current SQL connection
+            getDatabase().close();
+            
         }catch(SQLException s){
             return getGson().toJson(s.toString()); //SQL failed
         }
@@ -250,6 +260,8 @@ public class UserService extends Service{
             
             stmt.close();
             
+            //Close out current SQL connection
+            getDatabase().close();
         }catch(SQLException s){
             return getGson().toJson(s.toString());
         }
@@ -308,6 +320,9 @@ public class UserService extends Service{
 
             int count = stmt.executeUpdate();
             stmt.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
         }catch(SQLException s){
             return getGson().toJson(s.toString());
         }
