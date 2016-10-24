@@ -81,9 +81,10 @@ public class BusService extends Service {
     
     public Bus find(String query)
     {
+        System.out.println("FINDING BUS!");
         for(Bus bus : buses)
         {
-            if(bus.getName().equals(query) || bus.getDriver().equals(query) || bus.getRoute().equals(query))
+            if(bus.getName().equals(query))
             {
                 return bus; //bus found
             }
@@ -172,12 +173,11 @@ public class BusService extends Service {
     @Path("buses/delete/{name}")
     public String delete(@PathParam("name") String name)
     {
-        name = name.replace("%20", " ");
         Bus bus = find(name);
         
-//        if(bus == null)
-//            return getGson().toJson(null); //send error message on client --bus does not exist
-//        
+        if(bus == null)
+            return getGson().toJson(null); //send error message on client --bus does not exist
+        
         try{
             PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblbus WHERE id=?");
             stmt.setInt(1, bus.getId());
