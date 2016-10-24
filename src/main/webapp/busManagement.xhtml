@@ -26,7 +26,7 @@
                             <p:column filterBy="#{b.active}" headerText="Active">
                                 <f:facet name="filter">
                                     <p:selectOneMenu onchange="PF('busTable').filter()" >
-                                        <f:selectItem itemLabel="Select" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="All" noSelectionOption="true" />
                                         <f:selectItem itemValue="#{true}" itemLabel="True" />
                                         <f:selectItem itemValue="#{false}" itemLabel="False" />
                                     </p:selectOneMenu>
@@ -37,7 +37,7 @@
                                 <h:button value="Delete" class="btn btn-danger" outcome="deleteBus">
                                     <f:param name="name" value="#{b.name}" />
                                 </h:button>
-                                <h:button value="Edit" class="btn btn-info" outcome="editBus">
+                                <h:button value="Edit" class="btn btn-info" outcome="editBus" style="margin-left: 5px">
                                     <f:param name="id" value="#{b.id}" />
                                     <f:param name="name" value="#{b.name}" />
                                     <f:param name="driver" value="#{b.driver}" />
