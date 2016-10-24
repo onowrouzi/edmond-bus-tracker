@@ -197,8 +197,6 @@ public class BusManagement implements Serializable {
     
     public String deleteBus(String name) throws IOException {
         try {
-            name = name.replace(" ", "%20");
-            
             //String url = "http://localhost:8080/edmond-bus-tracker/api/busservice/buses/delete/" + name;
             String url = ENV + "/delete/" + name;
             
