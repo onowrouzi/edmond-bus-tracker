@@ -173,7 +173,7 @@ public class BusService extends Service {
     @Path("buses/delete/{name}")
     public String delete(@PathParam("name") String name)
     {
-        name = name.replace("%20", " ");
+        //name = name.replace("%20", " ");
         Bus bus = find(name);
         
         if(bus == null)
