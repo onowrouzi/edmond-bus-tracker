@@ -42,7 +42,11 @@
                         </div>
                         <br />
                         <div class="row">
-                            <h:commandButton action="#{createRouteView.addRoute()}" class="btn btn-default" value="Add Stop"/>
+                            <h:selectOneMenu>
+                                <f:selectItems value="#{stopManagementBean.getStops()}" var="stop"
+                                               itemValue="#{stop}" itemLabel="#{stop.stopName}"/>
+                            </h:selectOneMenu>
+                            <h:commandButton action="#{createRouteView.addRoute(stopToAdd)}" class="btn btn-default" value="Add Stop"/>
                         </div>
                     </h:form>
                     <br />

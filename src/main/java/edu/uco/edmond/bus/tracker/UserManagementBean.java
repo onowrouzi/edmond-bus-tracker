@@ -99,14 +99,14 @@ public class UserManagementBean implements Serializable {
                             JSONObject jsonobject;
                             try {
                                 jsonobject = jsonarray.getJSONObject(i);
-                                String id = jsonobject.getString("id");
+                                int id = jsonobject.getInt("id");
                                 String name = jsonobject.getString("username");
                                 String usertype = jsonobject.getString("type");
                                 String firstname = jsonobject.getString("firstName");
                                 String lastname = jsonobject.getString("lastName");
                                 String email = jsonobject.getString("email");
                                 System.out.println(name);
-                                User user = new User(Integer.valueOf(id), name, "", usertype, firstname, lastname, email);
+                                User user = new User(id, name, "", usertype, firstname, lastname, email);
                                 rolesType.add(user);
                             } catch (JSONException ex) {
                                 Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
