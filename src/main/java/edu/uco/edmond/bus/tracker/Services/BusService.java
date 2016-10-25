@@ -173,21 +173,37 @@ public class BusService extends Service {
     @Path("buses/delete/{name}")
     public String delete(@PathParam("name") String name)
     {
+        name = name.replace("%20", " ");
         Bus bus = find(name);
         
         if(bus == null)
             return getGson().toJson(null); //send error message on client --bus does not exist
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblbus WHERE id=?");
-            stmt.setInt(1, bus.getId());
+            PreparedStatement stmt1 = getDatabase().prepareStatement("DELETE FROM tblbus WHERE id=?");
+            stmt1.setInt(1, bus.getId());
 
-            int count = stmt.executeUpdate();
+            int count1 = stmt1.executeUpdate();
             
-            stmt.close();
+            stmt1.close();
             
             //Close out current SQL connection
             getDatabase().close();
+            
+            try{
+                PreparedStatement stmt2 = getDatabase().prepareStatement("DELETE FROM tblbusroute WHERE busId=?");
+                stmt2.setInt(1, bus.getId());
+
+                int count2 = stmt2.executeUpdate();
+
+                stmt2.close();
+
+                //Close out current SQL connection
+                getDatabase().close();
+
+            }catch(SQLException s){
+                return getGson().toJson(s.toString());
+            }
             
         }catch(SQLException s){
             return getGson().toJson(s.toString());

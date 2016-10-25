@@ -83,7 +83,7 @@ public class StopManagementBean implements Serializable {
                 JSONObject jsonobject;
                 try {
                     jsonobject = jsonarray.getJSONObject(i);
-                    String id = jsonobject.getString("id");
+                    int id = jsonobject.getInt("id");
                     String name = java.net.URLDecoder.decode(jsonobject.getString("name"), "UTF-8");
                     Double lat = jsonobject.getDouble("latitude");
                     Double lng = jsonobject.getDouble("longitude");

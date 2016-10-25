@@ -42,7 +42,15 @@
                         </div>
                         <br />
                         <div class="row">
-                            <h:commandButton action="#{createRouteView.addRoute()}" class="btn btn-default" value="Add Stop"/>
+                            <div class="col-xs-6">
+                                <h:selectOneMenu value="#{stop}" class="form-control">
+                                    <f:selectItems value="#{stopManagementBean.getStops()}" var="s"
+                                                   itemValue="#{s}" itemLabel="#{s.stopName}"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <h:commandButton class="btn btn-default" value="Add Stop">
+                                <f:ajax event="click" listener="#{createRouteView.addStop(stop)}" render="gmap"/>
+                            </h:commandButton>
                         </div>
                     </h:form>
                     <br />

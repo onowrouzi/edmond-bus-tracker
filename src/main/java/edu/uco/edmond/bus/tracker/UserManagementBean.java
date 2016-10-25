@@ -96,7 +96,7 @@ public class UserManagementBean implements Serializable {
                             JSONObject jsonobject;
                             try {
                                 jsonobject = jsonarray.getJSONObject(i);
-                                String id = jsonobject.getString("id");
+                                int id = jsonobject.getInt("id");
                                 String name = jsonobject.getString("username");
                                 String usertype = jsonobject.getString("type");
                                 String firstname = jsonobject.getString("firstName");

@@ -59,7 +59,7 @@ public class RouteStopManagement implements Serializable {
                 JSONObject jsonobject;
                 try {
                     jsonobject = jsonarray.getJSONObject(i);
-                    String id = jsonobject.getString("id");
+                    int id = jsonobject.getInt("id");
                     String name = jsonobject.getString("name");
                     Double lat = jsonobject.getDouble("latitude");
                     Double lng = jsonobject.getDouble("longitude");
