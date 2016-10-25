@@ -7,9 +7,10 @@
     <h:head>
         <title>Edmond Bus Tracker</title>
         <f:metadata>
-            <f:viewParam name="stopname" value="#{stopManagementEditBean.initialName}"/>
-            <f:viewParam name="stoplat" value="#{stopManagementEditBean.initialLat}"/>
-            <f:viewParam name="stoplng" value="#{stopManagementEditBean.initialLng}"/>
+            <f:viewParam name="stopname"/>
+            <f:viewParam name="stoplat"/>
+            <f:viewParam name="stoplng"/>
+            <f:event type="preRenderView" listener="#{stopManagementBean.onEditLoad(stopname, stoplat, stoplng)}" />
             <!--f:viewAction action="#{loginBean.doFilter}" /-->
         </f:metadata>
     </h:head>
@@ -22,13 +23,13 @@
                 #{stoplat}
                 #{stoplng}
                     <h:form>
-                        <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{stopManagementEditBean.draggableModel}" style="width:100%;height:400px">
-                            <p:ajax event="markerDrag" listener="#{stopManagementEditBean.onMarkerDrag}"/>
+                        <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{stopManagementBean.draggableModel}" style="width:100%;height:400px">
+                            <p:ajax event="markerDrag" listener="#{stopManagementBean.onMarkerDrag}"/>
                         </p:gmap>
                         <label>Stop Name</label>
                         <br/>
-                        <h:inputText value="#{stopManagementEditBean.stop.stopName}" class="form-control"></h:inputText>
-                        <h:commandButton action="#{stopManagementEditBean.save()}" class="btn btn-default" value="Save" />
+                        <h:inputText value="#{stopManagementBean.stop.stopName}" class="form-control"></h:inputText>
+                        <h:commandButton action="#{stopManagementBean.save()}" class="btn btn-default" value="Save" />
                     </h:form>
                 </div>
 

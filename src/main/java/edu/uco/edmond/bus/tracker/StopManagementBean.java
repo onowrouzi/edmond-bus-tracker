@@ -32,10 +32,10 @@ public class StopManagementBean implements Serializable {
     private ArrayList<RouteStop> stops = new ArrayList<>();
     private String ENV = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops";
     private MapModel draggableModel;
-    private Marker marker;
-    private final double defaultLat = 35.6526783;
-    private final double defaultLng = -97.4781833;
-    
+   
+    private double defaultLat = 35.6526783;
+    private double defaultLng = -97.4781833;
+    private Marker marker = new Marker(new LatLng(defaultLat, defaultLng), "stop-marker");
     public RouteStop stop = new RouteStop();
     public String mapKey = "https://maps.google.com/maps/api/js?key=AIzaSyAOm_hMAIA4Naz5-FXN7VTmLdMetew_uUE";// + System.getenv("MAP_API");
         
@@ -45,7 +45,9 @@ public class StopManagementBean implements Serializable {
     public void init() {
         
         this.draggableModel = new DefaultMapModel();
-        
+        System.out.println("the real thing");
+        System.out.println(defaultLat);
+        System.out.println(defaultLng);
         Marker newMarker = new Marker(new LatLng(defaultLat, defaultLng), "stop-marker");
         newMarker.setDraggable(true);
         this.draggableModel.addOverlay(newMarker);
@@ -176,6 +178,16 @@ public class StopManagementBean implements Serializable {
         this.getStop().setLocation(coords);
     }
     
+    public void onEditLoad(String name, double lat, double lng) {
+        this.stop.setStopName(name);
+        System.out.println("asdfasdfasd");
+        System.out.println(lat);
+        System.out.println(lng);
+//        this.defaultLat = lat;
+//        this.defaultLng = lng;
+        this.marker.setLatlng(new LatLng(lat, lng));
+        this.stop.setLocation(new LatLng(lat, lng));
+    }
     
     public ArrayList<RouteStop> getStops() {
         return this.stops;
