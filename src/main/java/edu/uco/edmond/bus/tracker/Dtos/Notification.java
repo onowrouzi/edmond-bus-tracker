@@ -11,6 +11,11 @@ public class Notification extends Dto {
         this.text = text;
         this.sender = sender;
     }
+    
+    public Notification(String text)
+    {
+        this.text = text;
+    }
 
     public int getId() {
         return id;
