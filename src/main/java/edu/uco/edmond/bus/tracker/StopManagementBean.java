@@ -132,7 +132,7 @@ public class StopManagementBean implements Serializable {
 
             //print result
         } catch (IOException ex) {
-            Logger.getLogger(CreateRouteView.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StopManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
 
         }
