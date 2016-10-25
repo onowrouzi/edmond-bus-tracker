@@ -28,14 +28,17 @@ public class UserManagementBean implements Serializable {
     private List<User> users;
     private List<User> drivers;
     private List<User> admins;
+    //private ArrayList<User> selectedDrivers = new ArrayList<>();
     
     private String username;
     private String password;
     private String type;
+    private String roleSelection;
+    
     private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/userservice/users";
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
     
-    @PostConstruct
+ @PostConstruct
     public void init() {
         try {
             loadUserGroups("admin", "driver");
@@ -53,7 +56,7 @@ public class UserManagementBean implements Serializable {
         }
     }
     
-    private void loadUserGroups(String userType1, String userType2) {
+     private void loadUserGroups(String userType1, String userType2) {
         try {
             rolesType = new ArrayList<>();
             
@@ -119,7 +122,7 @@ public class UserManagementBean implements Serializable {
         }
     }
     
-    public String deleteUser(String username) throws IOException {
+       public String deleteUser(String username) throws IOException {
         try {
             String url = ENV + "/delete/" + username;
             
@@ -158,8 +161,7 @@ public class UserManagementBean implements Serializable {
         
         return "userManagement";
     }
-    
-    public String addUser(String username, String role, String password, String confirmPassword,
+        public String addUser(String username, String role, String password, String confirmPassword,
                             String firstName, String lastName, String email) throws IOException{
         
         if (!password.equals(confirmPassword)){
@@ -202,7 +204,7 @@ public class UserManagementBean implements Serializable {
         return "User was added!";
     }
     
-    public String editUser(String username, String password, String confirmPassword) throws IOException{
+     public String editUser(String username, String password, String confirmPassword) throws IOException{
         if (!password.equals(confirmPassword) || (password.isEmpty() && confirmPassword.isEmpty())) {
             return "Passwords must match!";
         }
@@ -280,5 +282,13 @@ public class UserManagementBean implements Serializable {
     
     public List<User> getAdmins() {
         return admins;
+    }
+    
+    public String getRoleSelection() {
+        return roleSelection;
+    }
+
+    public void setRoleSelection(String roleSelection) {
+        this.roleSelection = roleSelection;
     }
 }
