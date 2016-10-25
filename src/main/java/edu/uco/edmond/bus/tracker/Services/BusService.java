@@ -180,7 +180,7 @@ public class BusService extends Service {
             return getGson().toJson(null); //send error message on client --bus does not exist
         
         try{
-            PreparedStatement stmt1 = getDatabase().prepareStatement("DELETE FROM tblbus WHERE id=?");
+            PreparedStatement stmt1 = getDatabase().prepareStatement("DELETE FROM tblbusfavorites WHERE busId=?");
             stmt1.setInt(1, bus.getId());
 
             int count1 = stmt1.executeUpdate();
@@ -191,7 +191,7 @@ public class BusService extends Service {
             getDatabase().close();
             
             try{
-                PreparedStatement stmt2 = getDatabase().prepareStatement("DELETE FROM tblbusfavorites WHERE busId=?");
+                PreparedStatement stmt2 = getDatabase().prepareStatement("DELETE FROM tblbus WHERE id=?");
                 stmt2.setInt(1, bus.getId());
 
                 int count2 = stmt2.executeUpdate();
