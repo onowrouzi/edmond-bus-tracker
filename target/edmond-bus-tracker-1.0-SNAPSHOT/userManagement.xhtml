@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Edmond Bus Tracker</title>
@@ -13,6 +14,12 @@
         <ui:composition template="/template/layout.xhtml">
             <ui:define name="content">
                 <div class="col-xs-8">
+                    <h:selectOneMenu class="form-control" value="#{userManagementBean.roleSelection}">
+                        <f:selectItem itemLabel="Select" />
+                        <f:selectItem itemValue="driver" itemLabel="Driver" />
+                        <f:selectItem itemValue="admin" itemLabel="Admin" />
+                        <f:selectItem itemValue="user" itemLabel="User" />
+                    </h:selectOneMenu>                 
                     <div id="user-table">
                         <h:dataTable value="#{userManagementBean.rolesType}" var="user">
                             <h:column>
@@ -33,7 +40,7 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Type</f:facet>
-                                <h:outputText value="#{user.type}" />
+                               <h:outputText value="#{user.type}" />
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Options</f:facet>
