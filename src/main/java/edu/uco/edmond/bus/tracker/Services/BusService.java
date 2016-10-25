@@ -191,7 +191,7 @@ public class BusService extends Service {
             getDatabase().close();
             
             try{
-                PreparedStatement stmt2 = getDatabase().prepareStatement("DELETE FROM tblbusroute WHERE busId=?");
+                PreparedStatement stmt2 = getDatabase().prepareStatement("DELETE FROM tblbusfavorites WHERE busId=?");
                 stmt2.setInt(1, bus.getId());
 
                 int count2 = stmt2.executeUpdate();
