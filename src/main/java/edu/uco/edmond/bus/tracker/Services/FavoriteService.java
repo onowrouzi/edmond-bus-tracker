@@ -4,6 +4,7 @@ package edu.uco.edmond.bus.tracker.Services;
 import edu.uco.edmond.bus.tracker.Dtos.Bus;
 import edu.uco.edmond.bus.tracker.Dtos.BusStop;
 import edu.uco.edmond.bus.tracker.Dtos.Favorite;
+import edu.uco.edmond.bus.tracker.Dtos.Notification;
 import edu.uco.edmond.bus.tracker.Services.UserService;
 import edu.uco.edmond.bus.tracker.Dtos.User;
 import edu.uco.edmond.bus.tracker.Support.UsersFavorites;
@@ -123,7 +124,42 @@ public class FavoriteService extends Service {
             return null; //no user found
         
         return find(user.getId());
-    }  
+    } 
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("favorites/notifications/{username}")
+    public String getNotifications(@PathParam("username") String username)
+    {
+        UsersFavorites usersFavorite = find(username);
+        
+        if(usersFavorite == null)
+            return getGson().toJson(null); //no user found
+        
+        if(usersFavorite.favorites().isEmpty())
+            return getGson().toJson("No favorites saved for this user");
+        
+        List<Bus> myBuses = new ArrayList<>();
+        List<BusStop> myBusStops = new ArrayList<>();
+        List<Notification> notifications = new ArrayList<>();
+        
+        //transfer current favorites into buses and bus stops
+        for(Favorite favorite : usersFavorite.favorites())
+        {
+            if(favorite.getType().equals("Bus"))
+                myBuses.add(busService.find(favorite.getName()));
+            else if(favorite.getType().equals("Bus Stop"))
+                myBusStops.add(busStopService.find(favorite.getName()));
+        }
+        
+        //add notifications involving stops
+        for(Bus bus : myBuses)
+            for(BusStop stop : myBusStops)
+                if(bus.getLastStop() != null && bus.getLastStop().equals(stop.getName()))
+                    notifications.add(new Notification(bus.getName() + " is at stop " + stop.getName()));
+        
+        return getGson().toJson(notifications);
+    }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
