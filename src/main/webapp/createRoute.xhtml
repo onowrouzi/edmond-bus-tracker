@@ -45,18 +45,25 @@
                     <br />
                     <h:form>
                         <ui:repeat value="#{stopManagementBean.getStops()}" var="s">
-                            <h:selectBooleanCheckbox label="#{s.getStopName()}" onclick="addMarker(#{s.getStopLat()}, #{s.getStopLng()})"/>
+                            <h:selectBooleanCheckbox label="#{s.getStopName()}" onclick="setMarker(#{s.getStopLat()}, #{s.getStopLng()})"/>
                             #{s.getStopName()}<br/>
                         </ui:repeat>
                     </h:form>
                 </div>
                 <script src="#{createRouteView.mapKey}" type="text/javascript" ></script>
                 <script>
-                    var checkbox = document.getElementById("j_idt27:0");
-                    
-                    checkbox.addEventListener("change", function(){ alert("AHHHHH!"); });
-                    function addMarker(lat, lng){
+                    var markers = []; 
+                    function setMarker(lat, lng){
                         marker = new google.maps.Marker({position:new google.maps.LatLng(lat, lng)});
+                        for (var i = 0; i &lt; markers.length; i++){
+                            if (markers[i].position.lat() === marker.position.lat()
+                                     &amp;&amp; markers[i].position.lng() === marker.position.lng()) {
+                                markers[i].setMap(null);
+                                markers.splice(i,1);
+                                return;
+                            }
+                        }
+                        markers.push(marker);
                         PF('map').addOverlay(marker);
                     }
                 </script>
