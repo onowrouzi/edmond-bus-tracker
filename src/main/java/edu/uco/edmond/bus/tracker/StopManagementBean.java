@@ -26,7 +26,7 @@ import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class StopManagementBean implements Serializable {
      
     private ArrayList<RouteStop> stops = new ArrayList<>();

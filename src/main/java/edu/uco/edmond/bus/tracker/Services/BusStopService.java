@@ -229,6 +229,7 @@ public class BusStopService extends Service{
         BusStop Stop = null;
         try {
             Stop = find(java.net.URLDecoder.decode(name, "UTF-8"));
+            System.out.println(Stop.getName());
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(BusStopService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -240,10 +241,12 @@ public class BusStopService extends Service{
         Stop.setLongitude(lng);
         
         try{
-            PreparedStatement stmt1 = getDatabase().prepareStatement("UPDATE tblbusstop set lat=? lng=? WHERE id=?");
-            stmt1.setFloat(1, Stop.getLatitude());
-            stmt1.setFloat(2, Stop.getLongitude());
-            stmt1.setInt(2, Stop.getId());
+            PreparedStatement stmt1 = getDatabase().prepareStatement("UPDATE tblbusstop set lat=?, lng=? WHERE id=?");
+            stmt1.setFloat(1, lat);
+            stmt1.setFloat(2, lng);
+            stmt1.setInt(3, Stop.getId());
+            System.out.println(Stop.getId());
+            System.out.println(stmt1);
             int count = stmt1.executeUpdate();
             stmt1.close();
             
