@@ -48,8 +48,6 @@ public class StopManagementBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        
-        draggableModel = new DefaultMapModel();
    
         try {
             URL obj = new URL(ENV);
@@ -97,6 +95,12 @@ public class StopManagementBean implements Serializable {
 
         } catch (IOException ex) {
             Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        draggableModel = new DefaultMapModel();
+        
+        for (BusStop s: stops){
+            draggableModel.addOverlay(new Marker(new LatLng(s.getLat(), s.getLng()), s.getName()));
         }
     }
     
