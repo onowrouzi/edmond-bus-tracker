@@ -14,13 +14,15 @@
     <h:body>
         <ui:composition template="/template/layout.xhtml">
             <ui:define name="content">
-                <br/><br/>
+                <br/>
+                <br/>
                 <div class="col-xs-9">
                     <p:growl id="messages" showDetail="true" />
                     <p:gmap id="gmap" widgetVar="map" center="35.6526783,-97.4781833" zoom="15" type="HYBRID" 
                             onPointClick="handlePointClick(event);" model="#{stopManagementBean.draggableModel}" style="width:90%;height:600px">
                         <p:ajax event="markerDrag" listener="#{stopManagementBean.onMarkerDrag}"/>
                     </p:gmap>
+                    <h3>Click the map to add a new stop.</h3>
                 </div>
             
             <p:dialog widgetVar="dlg" showEffect="fade">

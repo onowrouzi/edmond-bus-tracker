@@ -225,7 +225,7 @@ public class StopManagementBean implements Serializable {
         Marker newMarker = new Marker(new LatLng(lat, lng), name);
         draggableModel.addOverlay(newMarker);
                 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Title: " + name + "\nLat:" + lat + ", Lng:" + lng));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Name: " + name + "\nLat:" + lat + ", Lng:" + lng));
 
         save(name, lat, lng);          
     }
