@@ -21,13 +21,6 @@
                             onPointClick="handlePointClick(event);" model="#{stopManagementBean.draggableModel}" style="width:90%;height:600px">
                         <p:ajax event="markerDrag" listener="#{stopManagementBean.onMarkerDrag}"/>
                     </p:gmap>
-                    <br/><br/>
-                    <h:form>
-                        <label>Stop Name</label>
-                        <br/>
-                        <h:inputText value="#{stopManagementBean.stop.name}" class="form-control" style="width:50%"></h:inputText>
-                        <h:commandButton action="#{stopManagementBean.save()}" class="btn btn-default" value="Save" />
-                    </h:form>
                 </div>
             
             <p:dialog widgetVar="dlg" showEffect="fade">
