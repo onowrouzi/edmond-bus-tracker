@@ -70,7 +70,7 @@ public class RouteManagement implements Serializable {
                     try {
                         jsonobject = jsonarray.getJSONObject(i);
                         int id = jsonobject.getInt("id");
-                        String name = jsonobject.getString("routeName");
+                        String name = jsonobject.getString("name");
                         System.out.println(name);
                         BusRoute temp = new BusRoute(id, name);
                         routes.add(temp);
