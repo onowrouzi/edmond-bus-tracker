@@ -13,6 +13,11 @@ public class RouteStop {
         stopName = name;
         location = new LatLng(lat, lng);
     }
+    
+    public RouteStop(String stopName)
+    {
+        this.stopName = stopName;
+    }
 
     public String getStopName() {
         return stopName;

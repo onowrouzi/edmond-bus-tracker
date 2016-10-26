@@ -6,7 +6,9 @@
 package edu.uco.edmond.bus.tracker.Services;
 
 import edu.uco.edmond.bus.tracker.Dtos.Bus;
+import edu.uco.edmond.bus.tracker.Dtos.BusRouteStop;
 import edu.uco.edmond.bus.tracker.Route;
+import edu.uco.edmond.bus.tracker.RouteStop;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,11 +31,14 @@ import javax.ws.rs.core.MediaType;
 @Path("routeservice")
 public class RouteService extends Service {
      private List<Route> routes;
+     private List<BusRouteStop> busRouteStops;
     
     public RouteService() throws SQLException
     {
         this.routes = new ArrayList<>();
+        this.busRouteStops = new ArrayList<>();
         getAllRoutes();
+        getAllBusRouteStops();
     }
     
     public List<Route> routes()
@@ -51,6 +56,28 @@ public class RouteService extends Service {
             while(rs.next()){
                 Route route = new Route(rs.getInt("id"), rs.getString("name"));
                 routes.add(route);
+            }
+
+            stmt.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
+        }catch(SQLException s){
+            System.out.println(s.toString()); //SQL error
+        }
+    }
+    
+    private void getAllBusRouteStops()
+    {
+        try{
+            Statement stmt = getDatabase().createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tblbusroutestop ORDER BY stoponroute");
+
+            while(rs.next()){
+                BusRouteStop busStopRoute = new BusRouteStop(rs.getInt("id"), 
+                        rs.getString("route"), rs.getString("stop"), rs.getInt("stoponroute"));
+                busRouteStops.add(busStopRoute);
             }
 
             stmt.close();
@@ -97,6 +124,10 @@ public class RouteService extends Service {
         if(routes.isEmpty())
             return getGson().toJson("No routes currently registered."); // no routes in system
         
+        for(BusRouteStop busStopRoute : busRouteStops)
+            for(Route route : routes)
+                if(busStopRoute.getRoute().equals(route.getName()))
+                    route.getRoutes().add((new RouteStop(busStopRoute.getStop())));
         return getGson().toJson(routes);
     }
     
