@@ -28,34 +28,38 @@
 
                 <div class="col-md-6">
                     <br />
-                    <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{createRouteView.draggableModel}" style="width:100%;height:400px">
+                    <p:gmap widgetVar="map" id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{createRouteView.draggableModel}" style="width:100%;height:400px">
                         <p:ajax event="markerDrag" listener="#{createRouteView.onMarkerDrag}"/>
                     </p:gmap>
                     <br></br>
                     <h:form>
                         <div class="row">
-                            <ui:repeat var="r" value="#{createRouteView.route.routes}">
+                            <ui:repeat var="r" value="#{createRouteView.route.stops}">
                             <label>Stop Name</label>
                             <br />
                             <h:inputText value="#{r.stopName}"/>
                         </ui:repeat>
                         </div>
                         <br />
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <h:selectOneMenu value="#{stop}" class="form-control">
-                                    <f:selectItems value="#{stopManagementBean.getStops()}" var="s"
-                                                   itemValue="#{s}" itemLabel="#{s.stopName}"/>
-                                </h:selectOneMenu>
-                            </div>
-                            <h:commandButton class="btn btn-default" value="Add Stop">
-                                <f:ajax event="click" listener="#{createRouteView.addStop(stop)}" render="gmap"/>
-                            </h:commandButton>
-                        </div>
                     </h:form>
                     <br />
+                    <h:form>
+                        <ui:repeat value="#{stopManagementBean.getStops()}" var="s">
+                            <h:selectBooleanCheckbox label="#{s.getStopName()}" onclick="addMarker(#{s.getStopLat()}, #{s.getStopLng()})"/>
+                            #{s.getStopName()}<br/>
+                        </ui:repeat>
+                    </h:form>
                 </div>
                 <script src="#{createRouteView.mapKey}" type="text/javascript" ></script>
+                <script>
+                    var checkbox = document.getElementById("j_idt27:0");
+                    
+                    checkbox.addEventListener("change", function(){ alert("AHHHHH!"); });
+                    function addMarker(lat, lng){
+                        marker = new google.maps.Marker({position:new google.maps.LatLng(lat, lng)});
+                        PF('map').addOverlay(marker);
+                    }
+                </script>
             </ui:define>
         </ui:composition>
     </h:body>

@@ -8,6 +8,7 @@ package edu.uco.edmond.bus.tracker;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import org.primefaces.json.JSONObject;
  */
 @ManagedBean
 @ViewScoped
-public class RouteManagement {
+public class RouteManagement implements Serializable {
     private ArrayList<Route> routes = new ArrayList<>();
     private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/routeservice/routes";
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();

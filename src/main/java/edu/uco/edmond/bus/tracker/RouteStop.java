@@ -7,7 +7,11 @@ public class RouteStop {
     private String stopName;
     private LatLng location;
     
-    public RouteStop() {
+    public RouteStop() {}
+    
+    public RouteStop(String name, double lat, double lng){
+        stopName = name;
+        location = new LatLng(lat, lng);
     }
 
     public String getStopName() {
@@ -32,5 +36,9 @@ public class RouteStop {
     
      public double getStopLng() {
         return this.location.getLng();
+    }
+     
+    public String getLocationString(){
+        return location.getLat() + ", " + location.getLng();
     }
 }

@@ -17,7 +17,10 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.html.HtmlCommandButton;
+import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
   
 import org.primefaces.event.map.MarkerDragEvent;
 import org.primefaces.model.map.DefaultMapModel;
@@ -32,6 +35,7 @@ public class CreateRouteView implements Serializable {
     /**
      * THIS WILL NOT WORK SINCE WE DID THE DATABASE STUFF
      */
+    public HtmlPanelGroup buttonHolder;
     
     private MapModel draggableModel;
     private Marker marker;
@@ -44,7 +48,7 @@ public class CreateRouteView implements Serializable {
         
     private int currentRouteOrderNumber = 1;
     
-    public String mapKey = "https://maps.google.com/maps/api/js?key=" + System.getenv("MAP_API");
+    public String mapKey = "https://maps.google.com/maps/api/js?key=AIzaSyDJCxt0cW1Pqy-RiS84LpVvCQRF04f9C9E";// + System.getenv("MAP_API");
         
     HttpURLConnection connection = null;
     
@@ -59,7 +63,6 @@ public class CreateRouteView implements Serializable {
     public MapModel getDraggableModel() {
         return draggableModel;
     }
-      
     public void onMarkerDrag(MarkerDragEvent event) {
         marker = event.getMarker();
         LatLng coords = new LatLng(marker.getLatlng().getLat(), marker.getLatlng().getLng());
@@ -77,7 +80,7 @@ public class CreateRouteView implements Serializable {
     
     public void save() {
         
-        for (RouteStop r : this.route.getRoutes()) {
+        for (RouteStop r : this.route.getStops()) {
             System.out.println(r.getStopName());
             DataOutputStream wr = null;
             try {
@@ -124,10 +127,10 @@ public class CreateRouteView implements Serializable {
         this.route = route;
     }
     
-    public void addStop(RouteStop stop) {
+    public void addStop(double lat, double lng, String name) {
         System.out.println("ADDING MARKER");
-        LatLng coords = new LatLng(stop.getStopLat(), stop.getStopLng());
-        Marker newMarker = new Marker(coords, stop.getStopName());
+        LatLng coords = new LatLng(lat, lng);
+        Marker newMarker = new Marker(coords, name);
         //newMarker.setDraggable(true);
         draggableModel.addOverlay(newMarker);
     }
@@ -147,5 +150,20 @@ public class CreateRouteView implements Serializable {
     
     public String getMapKey() {
         return this.mapKey;
+    }
+    
+    public HtmlPanelGroup getButtonHolder() {
+	return buttonHolder;
+    }
+    
+    public void setButtonHolder(HtmlPanelGroup buttonHolder) {
+	this.buttonHolder = buttonHolder;
+    }
+    
+    public void addButton(ValueChangeEvent e){
+        RouteStop stop = new RouteStop();
+        HtmlCommandButton commandButton=new HtmlCommandButton();
+        commandButton.setOnclick("addMarker(" + stop.getStopLat() + "," + stop.getStopLng() +"");
+        buttonHolder.getChildren().add(commandButton);
     }
 }

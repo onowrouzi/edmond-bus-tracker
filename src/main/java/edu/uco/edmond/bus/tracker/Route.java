@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Route {
     
-    private ArrayList<RouteStop> routes = new ArrayList<>();
+    private ArrayList<RouteStop> stops = new ArrayList<>();
     private User driver;
     private int id;
     private String routeName;
@@ -18,12 +18,12 @@ public class Route {
         this.routeName = routeName;
     }
 
-    public ArrayList<RouteStop> getRoutes() {
-        return routes;
+    public ArrayList<RouteStop> getStops() {
+        return stops;
     }
 
-    public void setRoutes(ArrayList<RouteStop> routes) {
-        this.routes = routes;
+    public void setRoutes(ArrayList<RouteStop> stops) {
+        this.stops = stops;
     }
 
     public User getDriver() {
@@ -34,8 +34,8 @@ public class Route {
         this.driver = driver;
     }
     
-    public void addRoute(RouteStop route) {
-        this.routes.add(route);
+    public void addStop(RouteStop stop) {
+        this.stops.add(stop);
     }
 
     public String getRouteName() {
@@ -47,7 +47,7 @@ public class Route {
     }
     
     public void removeStop(int stopNumber) {
-        this.routes.remove(stopNumber);
+        this.stops.remove(stopNumber);
     }
 
     public String getIdentifier() {
