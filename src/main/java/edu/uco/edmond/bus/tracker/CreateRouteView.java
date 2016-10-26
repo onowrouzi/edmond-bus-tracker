@@ -20,6 +20,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
   
 import org.primefaces.event.map.MarkerDragEvent;
@@ -54,7 +55,8 @@ public class CreateRouteView implements Serializable {
     
     // temp since we don't have users implemented yet
     private ArrayList<User> possibleDrivers = new ArrayList<>();
-        
+    private ArrayList<RouteStop> selectedStops = new ArrayList<>();
+    
     @PostConstruct
     public void init() {
         this.draggableModel = new DefaultMapModel();
@@ -127,13 +129,13 @@ public class CreateRouteView implements Serializable {
         this.route = route;
     }
     
-    public void addStop(double lat, double lng, String name) {
-        System.out.println("ADDING MARKER");
-        LatLng coords = new LatLng(lat, lng);
-        Marker newMarker = new Marker(coords, name);
-        //newMarker.setDraggable(true);
-        draggableModel.addOverlay(newMarker);
-    }
+//    public void addStop(double lat, double lng, String name) {
+//        System.out.println("ADDING MARKER");
+//        LatLng coords = new LatLng(lat, lng);
+//        Marker newMarker = new Marker(coords, name);
+//        //newMarker.setDraggable(true);
+//        draggableModel.addOverlay(newMarker);
+//    }
     
     private void showMessage(String heading, String message) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -160,10 +162,22 @@ public class CreateRouteView implements Serializable {
 	this.buttonHolder = buttonHolder;
     }
     
-    public void addButton(ValueChangeEvent e){
-        RouteStop stop = new RouteStop();
-        HtmlCommandButton commandButton=new HtmlCommandButton();
-        commandButton.setOnclick("addMarker(" + stop.getStopLat() + "," + stop.getStopLng() +"");
-        buttonHolder.getChildren().add(commandButton);
+    public ArrayList<RouteStop> getSelectedStops(){
+        return selectedStops;
+    }
+    
+    public void setSelectedStops(ArrayList<RouteStop> stops){
+        selectedStops = stops;
+    }
+    
+    public void addStop(RouteStop s){
+        for (int i = 0; i < selectedStops.size(); i++){
+            if (selectedStops.get(i).getStopName().equals(s.getStopName())){
+                selectedStops.remove(i);
+                return;
+            }
+        }
+        
+        selectedStops.add(s);
     }
 }

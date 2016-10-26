@@ -45,10 +45,14 @@
                     <br />
                     <h:form>
                         <ui:repeat value="#{stopManagementBean.getStops()}" var="s">
-                            <h:selectBooleanCheckbox label="#{s.getStopName()}" onclick="setMarker(#{s.getStopLat()}, #{s.getStopLng()})"/>
+                            <h:selectBooleanCheckbox label="#{s.getStopName()}"  
+                                onclick="setMarker(#{s.getStopLat()}, #{s.getStopLng()})">
+                                <f:ajax execute="@this" listener="#{createRouteView.addStop(s)}"/>
+                            </h:selectBooleanCheckbox>
                             #{s.getStopName()}<br/>
                         </ui:repeat>
                     </h:form>
+                    
                 </div>
                 <script src="#{createRouteView.mapKey}" type="text/javascript" ></script>
                 <script>
