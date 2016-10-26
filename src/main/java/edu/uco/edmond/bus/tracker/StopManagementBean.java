@@ -100,14 +100,12 @@ public class StopManagementBean implements Serializable {
         }
     }
     
-    public void save() {
+    public void save(String name, double lat, double lng) {
         
         DataOutputStream wr = null;
         try {
-            String routeStopName = stop.getName();
-            String lat = String.valueOf(stop.getLat());
-            String lng = String.valueOf(stop.getLng());
-            String route = ENV + "/create/" + java.net.URLEncoder.encode(routeStopName, "UTF-8") + "/" + lat + "/" + lng;
+            String route = ENV + "/create/" + java.net.URLEncoder.encode(name, "UTF-8") 
+                    + "/" + String.valueOf(lat) + "/" + String.valueOf(lng);
             
             URL url = new URL(route);
             connection = (HttpURLConnection) url.openConnection();
@@ -163,6 +161,8 @@ public class StopManagementBean implements Serializable {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
+        
         return "stopManagement";
     }
 
@@ -217,10 +217,12 @@ public class StopManagementBean implements Serializable {
         this.lng = lng;
     }
       
-    public void addMarker() {
+    public void addMarker(String name) {
         Marker newMarker = new Marker(new LatLng(lat, lng), name);
         draggableModel.addOverlay(newMarker);
-          
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
+                
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Title: " + name + "\nLat:" + lat + ", Lng:" + lng));
+
+        save(name, lat, lng);          
     }
 }
