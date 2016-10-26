@@ -18,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.map.MarkerDragEvent;
 import org.primefaces.json.JSONArray;
@@ -45,6 +46,7 @@ public class StopManagementBean implements Serializable {
     public String mapKey = "https://maps.google.com/maps/api/js?key=AIzaSyAOm_hMAIA4Naz5-FXN7VTmLdMetew_uUE";// + System.getenv("MAP_API");
         
     HttpURLConnection connection = null;
+    ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
     
     @PostConstruct
     public void init() {
@@ -136,7 +138,9 @@ public class StopManagementBean implements Serializable {
         }
     }
     
-    public String delete(String stopName) {
+    public String delete(String stopName) throws IOException {
+        System.out.println("Name: " + stopName);
+        
         try {
             String url = ENV + "/delete/" + java.net.URLEncoder.encode(stopName, "UTF-8");
             
@@ -165,9 +169,11 @@ public class StopManagementBean implements Serializable {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
+        init();
         
-        return "stopManagement";
+        context.redirect("stopManagement.xhtml");
+        
+        return "Stop was deleted!";
     }
 
 //    public void onMarkerDrag(MarkerDragEvent event) {

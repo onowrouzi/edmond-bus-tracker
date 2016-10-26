@@ -21,7 +21,7 @@
                     <h1>Delete Stop</h1>
                     <h2>Are you sure you want to delete #{param.stopname}?</h2>
                     <br/>
-                    <h:commandButton value="Delete" class="btn btn-danger" action="#{stopManagementBean.delete(stopManagementBean.stop.getName())}" />
+                    <h:commandButton value="Delete" class="btn btn-danger" action="#{stopManagementBean.delete(stopManagementBean.name)}" />
                 </h:form>
             </div>
           </ui:define>
