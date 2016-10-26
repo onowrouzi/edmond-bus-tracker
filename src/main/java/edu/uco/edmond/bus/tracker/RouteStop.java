@@ -9,6 +9,11 @@ public class RouteStop {
     
     public RouteStop() {
     }
+    
+    public RouteStop(String stopName)
+    {
+        this.stopName = stopName;
+    }
 
     public String getStopName() {
         return stopName;
