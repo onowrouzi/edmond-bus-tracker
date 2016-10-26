@@ -1,14 +1,24 @@
 
 package edu.uco.edmond.bus.tracker.Dtos;
 
+import org.primefaces.model.map.LatLng;
+
 public class BusStop extends Dto{
     
     int id;
     String name;
-    float latitude;
-    float longitude;
+    double latitude;
+    double longitude;
     
-    public BusStop(int id, String name, float latitude, float longitude)
+    public BusStop(){}
+    
+    public BusStop(String name, double latitude, double longitude){
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+    
+    public BusStop(int id, String name, double latitude, double longitude)
     {
         this.id = id;
         this.name = name;
@@ -26,13 +36,12 @@ public class BusStop extends Dto{
         return name;
     }
     
-    public float getLatitude()
-    {
+    public double getLat() {
         return latitude;
     }
     
-    public float getLongitude()
-    {
+     public double getLng() {
         return longitude;
     }
+
 }

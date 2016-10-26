@@ -85,7 +85,7 @@ public class BusStopService extends Service{
     {
         for(BusStop stop : busStops)
         {
-            if(stop.getLatitude() == latitude && stop.getLongitude() == longitude)
+            if(stop.getLat() == latitude && stop.getLng() == longitude)
             {
                 return stop; //stop found
             }

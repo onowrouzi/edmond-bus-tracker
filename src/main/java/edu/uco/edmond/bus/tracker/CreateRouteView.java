@@ -1,5 +1,6 @@
 package edu.uco.edmond.bus.tracker;
 
+import edu.uco.edmond.bus.tracker.Dtos.BusRoute;
 import edu.uco.edmond.bus.tracker.Dtos.BusStop;
 import edu.uco.edmond.bus.tracker.Dtos.User;
 import java.io.BufferedReader;
@@ -41,7 +42,7 @@ public class CreateRouteView implements Serializable {
     private MapModel draggableModel;
     private Marker marker;
     
-    private Route route = new Route();
+    private BusRoute route;
     
     private final double defaultLat = 35.6526783;
     private final double defaultLng = -97.4781833;
@@ -55,7 +56,7 @@ public class CreateRouteView implements Serializable {
     
     // temp since we don't have users implemented yet
     private ArrayList<User> possibleDrivers = new ArrayList<>();
-    private ArrayList<RouteStop> selectedStops = new ArrayList<>();
+    private ArrayList<BusStop> selectedStops = new ArrayList<>();
     
     @PostConstruct
     public void init() {
@@ -82,13 +83,13 @@ public class CreateRouteView implements Serializable {
     
     public void save() {
         
-        for (RouteStop r : this.route.getStops()) {
-            System.out.println(r.getStopName());
+        for (BusStop s : route.getBusStops()) {
+            System.out.println(s.getName());
             DataOutputStream wr = null;
             try {
-                String routeStopName = r.getStopName();
-                String lat = String.valueOf(r.getLocation().getLat());
-                String lng = String.valueOf(r.getLocation().getLng());
+                String routeStopName = s.getName();
+                String lat = String.valueOf(s.getLat());
+                String lng = String.valueOf(s.getLng());
                 String route = "https://uco-edmond-bus.herokuapp.com/api/busservice/stops/create/" + routeStopName + "/" + lat + "/" + lng;
                 System.out.println(route);
                 URL url = new URL(route);
@@ -121,11 +122,11 @@ public class CreateRouteView implements Serializable {
         }
     }
     
-    public Route getRoute() {
+    public BusRoute getRoute() {
         return route;
     }
 
-    public void setRoute(Route route) {
+    public void setRoute(BusRoute route) {
         this.route = route;
     }
     
@@ -162,17 +163,17 @@ public class CreateRouteView implements Serializable {
 	this.buttonHolder = buttonHolder;
     }
     
-    public ArrayList<RouteStop> getSelectedStops(){
+    public ArrayList<BusStop> getSelectedStops(){
         return selectedStops;
     }
     
-    public void setSelectedStops(ArrayList<RouteStop> stops){
+    public void setSelectedStops(ArrayList<BusStop> stops){
         selectedStops = stops;
     }
     
-    public void addStop(RouteStop s){
+    public void addStop(BusStop s){
         for (int i = 0; i < selectedStops.size(); i++){
-            if (selectedStops.get(i).getStopName().equals(s.getStopName())){
+            if (selectedStops.get(i).getName().equals(s.getName())){
                 selectedStops.remove(i);
                 return;
             }

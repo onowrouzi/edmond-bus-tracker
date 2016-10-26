@@ -6,9 +6,8 @@
 package edu.uco.edmond.bus.tracker.Services;
 
 import edu.uco.edmond.bus.tracker.Dtos.Bus;
+import edu.uco.edmond.bus.tracker.Dtos.BusRoute;
 import edu.uco.edmond.bus.tracker.Dtos.BusRouteStop;
-import edu.uco.edmond.bus.tracker.Route;
-import edu.uco.edmond.bus.tracker.RouteStop;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +29,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("routeservice")
 public class RouteService extends Service {
-     private List<Route> routes;
+     private List<BusRoute> routes;
      private List<BusRouteStop> busRouteStops;
     
     public RouteService() throws SQLException
@@ -41,7 +40,7 @@ public class RouteService extends Service {
         getAllBusRouteStops();
     }
     
-    public List<Route> routes()
+    public List<BusRoute> routes()
     {
         return routes;
     }
@@ -54,7 +53,7 @@ public class RouteService extends Service {
             ResultSet rs = stmt.executeQuery("SELECT * FROM tblbusroute");
 
             while(rs.next()){
-                Route route = new Route(rs.getInt("id"), rs.getString("name"));
+                BusRoute route = new BusRoute(rs.getInt("id"), rs.getString("name"));
                 routes.add(route);
             }
 
@@ -89,9 +88,9 @@ public class RouteService extends Service {
         }
     }
     
-    public Route find(int id)
+    public BusRoute find(int id)
     {
-        for(Route route : routes)
+        for(BusRoute route : routes)
         {
             if(route.getId() == id)
             {
@@ -102,9 +101,9 @@ public class RouteService extends Service {
         return null;
     }
     
-    public Route find(String query)
+    public BusRoute find(String query)
     {
-        for(Route route : routes)
+        for(BusRoute route : routes)
         {
             if(route.getName().equals(query))
             {
@@ -125,9 +124,10 @@ public class RouteService extends Service {
             return getGson().toJson("No routes currently registered."); // no routes in system
         
         for(BusRouteStop busStopRoute : busRouteStops)
-            for(Route route : routes)
-                if(busStopRoute.getRoute().equals(route.getName()))
-                    route.getStops().add((new RouteStop(busStopRoute.getStop())));
+            for(BusRoute route : routes)
+                if(busStopRoute.getRoute().equals(route.getName())){
+//                    route.getStops().add((new RouteStop(busStopRoute.getStop())));
+                }
         return getGson().toJson(routes);
     }
     
@@ -150,7 +150,7 @@ public class RouteService extends Service {
     @Path("routes/create/{name}")
     public String create(@PathParam("name") String name)
     {
-        Route route = find(name);
+        BusRoute route = find(name);
         
         if(route != null)
             return getGson().toJson(null); //send error message on client --route exists
@@ -176,7 +176,7 @@ public class RouteService extends Service {
                 rs.first();
                 
                 int id = rs.getInt("id");
-                route = new Route(id,name);
+                route = new BusRoute(id,name);
                 routes.add(route);
             }
             
@@ -195,7 +195,7 @@ public class RouteService extends Service {
     @Path("routes/delete/{name}")
     public String delete(@PathParam("name") String name)
     {
-        Route route = find(name);
+        BusRoute route = find(name);
         
         if(route == null)
             return getGson().toJson(null); //send error message on client --route does not exist

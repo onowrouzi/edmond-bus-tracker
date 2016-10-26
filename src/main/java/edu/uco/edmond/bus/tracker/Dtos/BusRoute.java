@@ -8,6 +8,11 @@ public class BusRoute extends Dto {
     private String name;
     private ArrayList<BusStop> busStops;
     
+    public BusRoute(int id, String name){
+        this.id = id;
+        this.name = name;
+    }
+    
     public BusRoute(int id, String name, ArrayList<BusStop> stops) {
         this.name = name;
         this.id = id;

@@ -18,20 +18,20 @@
                         <h:dataTable value="#{stopManagementBean.getStops()}" var="r">
                             <h:column>
                                 <f:facet name="header">Name</f:facet>
-                                    #{r.getStopName()}
+                                    #{r.getName()}
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Latitude</f:facet>
-                                    #{r.getStopLat()}
+                                    #{r.getLat()}
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Longitude</f:facet>
-                                    #{r.getStopLng()}
+                                    #{r.getLng()}
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Delete</f:facet>
                                 <h:button value="Delete" class="btn btn-danger pull-right" outcome="deleteStop">
-                                    <f:param name="stopname" value="#{r.getStopName()}" />
+                                    <f:param name="stopname" value="#{r.getName()}" />
                                 </h:button>
                             </h:column>
                         </h:dataTable>

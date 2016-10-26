@@ -1,5 +1,6 @@
 package edu.uco.edmond.bus.tracker;
 
+import edu.uco.edmond.bus.tracker.Dtos.BusStop;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,7 +22,7 @@ import org.primefaces.model.map.LatLng;
 @ViewScoped
 public class RouteStopManagement implements Serializable {
     
-    private ArrayList<RouteStop> stops = new ArrayList<>();
+    private ArrayList<BusStop> stops = new ArrayList<>();
     private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops";
     
     @PostConstruct
@@ -64,9 +65,7 @@ public class RouteStopManagement implements Serializable {
                     Double lat = jsonobject.getDouble("latitude");
                     Double lng = jsonobject.getDouble("longitude");
                     System.out.println(name);
-                    RouteStop temp = new RouteStop();
-                    temp.setStopName(name);
-                    temp.setLocation(new LatLng(lat, lng));
+                    BusStop temp = new BusStop(id, name, lat, lng);
                     stops.add(temp);
                 } catch (JSONException ex) {
                     Logger.getLogger(RouteStopManagement.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,8 +80,8 @@ public class RouteStopManagement implements Serializable {
         }
     }
     
-    public ArrayList<RouteStop> getStops() {
-        return this.stops;
+    public ArrayList<BusStop> getStops() {
+        return stops;
     }
     
 }

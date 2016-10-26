@@ -5,6 +5,7 @@
  */
 package edu.uco.edmond.bus.tracker;
 
+import edu.uco.edmond.bus.tracker.Dtos.BusRoute;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,7 +31,7 @@ import org.primefaces.json.JSONObject;
 @ManagedBean
 @ViewScoped
 public class RouteManagement implements Serializable {
-    private ArrayList<Route> routes = new ArrayList<>();
+    private ArrayList<BusRoute> routes = new ArrayList<>();
     private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/routeservice/routes";
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -71,7 +72,7 @@ public class RouteManagement implements Serializable {
                         int id = jsonobject.getInt("id");
                         String name = jsonobject.getString("routeName");
                         System.out.println(name);
-                        Route temp = new Route(id, name);
+                        BusRoute temp = new BusRoute(id, name);
                         routes.add(temp);
                     } catch (JSONException ex) {
                         Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,7 +87,7 @@ public class RouteManagement implements Serializable {
         }
     }
 
-    public ArrayList<Route> getRoutes() {
+    public ArrayList<BusRoute> getRoutes() {
         return this.routes;
     }
 
