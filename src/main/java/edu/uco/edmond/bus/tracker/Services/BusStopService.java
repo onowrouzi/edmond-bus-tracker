@@ -24,7 +24,7 @@ public class BusStopService extends Service{
     
     public BusStopService() throws SQLException
     {
-        this.busStops = new ArrayList<>();
+        busStops = new ArrayList<>();
         getAllBusStops();
     }
     

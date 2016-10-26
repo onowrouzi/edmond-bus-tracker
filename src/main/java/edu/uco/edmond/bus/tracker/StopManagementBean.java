@@ -14,9 +14,11 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.event.map.MarkerDragEvent;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
@@ -31,11 +33,13 @@ import org.primefaces.model.map.Marker;
 public class StopManagementBean implements Serializable {
      
     private ArrayList<BusStop> stops = new ArrayList<>();
+    private String name;
     private String ENV = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops";
     private MapModel draggableModel;
     private Marker marker;
     private final double defaultLat = 35.6526783;
     private final double defaultLng = -97.4781833;
+    private double lat, lng;
     
     public BusStop stop;
     public String mapKey = "https://maps.google.com/maps/api/js?key=AIzaSyAOm_hMAIA4Naz5-FXN7VTmLdMetew_uUE";// + System.getenv("MAP_API");
@@ -187,5 +191,36 @@ public class StopManagementBean implements Serializable {
 
     public void setStop(BusStop stop) {
         this.stop = stop;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public void setName(String name){
+        this.name = name;
+    }
+  
+    public double getLat() {
+        return lat;
+    }
+  
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+  
+    public double getLng() {
+        return lng;
+    }
+  
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+      
+    public void addMarker() {
+        Marker newMarker = new Marker(new LatLng(lat, lng), name);
+        draggableModel.addOverlay(newMarker);
+          
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
     }
 }

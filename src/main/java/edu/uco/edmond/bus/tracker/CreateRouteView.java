@@ -60,7 +60,7 @@ public class CreateRouteView implements Serializable {
     
     @PostConstruct
     public void init() {
-        this.draggableModel = new DefaultMapModel();
+        draggableModel = new DefaultMapModel();
     }
       
     public MapModel getDraggableModel() {
@@ -70,7 +70,7 @@ public class CreateRouteView implements Serializable {
         marker = event.getMarker();
         LatLng coords = new LatLng(marker.getLatlng().getLat(), marker.getLatlng().getLng());
 
-        this.showMessage("Marker Moved","Lat:" + marker.getLatlng().getLat() + ", Lng:" + marker.getLatlng().getLng());
+        showMessage("Marker Moved","Lat:" + marker.getLatlng().getLat() + ", Lng:" + marker.getLatlng().getLng());
     }
     
     public void addRoute() {
@@ -152,7 +152,7 @@ public class CreateRouteView implements Serializable {
     }
     
     public String getMapKey() {
-        return this.mapKey;
+        return mapKey;
     }
     
     public HtmlPanelGroup getButtonHolder() {
