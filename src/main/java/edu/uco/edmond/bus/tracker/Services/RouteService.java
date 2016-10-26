@@ -127,7 +127,7 @@ public class RouteService extends Service {
         for(BusRouteStop busStopRoute : busRouteStops)
             for(Route route : routes)
                 if(busStopRoute.getRoute().equals(route.getName()))
-                    route.getRoutes().add((new RouteStop(busStopRoute.getStop())));
+                    route.getStops().add((new RouteStop(busStopRoute.getStop())));
         return getGson().toJson(routes);
     }
     
