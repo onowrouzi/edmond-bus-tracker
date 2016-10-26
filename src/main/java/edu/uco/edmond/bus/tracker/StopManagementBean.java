@@ -45,9 +45,10 @@ public class StopManagementBean implements Serializable {
     public void init() {
         
         this.draggableModel = new DefaultMapModel();
-        System.out.println("the real thing");
-        System.out.println(defaultLat);
-        System.out.println(defaultLng);
+//        System.out.println("the real thing");
+//        System.out.println(this.stop.getStopName());
+//        System.out.println(defaultLat);
+//        System.out.println(defaultLng);
         Marker newMarker = new Marker(new LatLng(defaultLat, defaultLng), "stop-marker");
         newMarker.setDraggable(true);
         this.draggableModel.addOverlay(newMarker);
