@@ -7,9 +7,6 @@
     <h:head>
         <title>Edmond Bus Tracker</title>
         <f:metadata>
-            <f:viewParam name="stopname"/>
-            <f:viewParam name="stoplat"/>
-            <f:viewParam name="stoplng"/>
             <!--f:viewAction action="#{loginBean.doFilter}" /-->
         </f:metadata>
     </h:head>
@@ -22,16 +19,13 @@
                          <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{stopManagementEditBean.draggableModel}" style="width:100%;height:400px">
                             <p:ajax event="markerDrag" listener="#{stopManagementEditBean.onMarkerDrag}"/>
                         </p:gmap>
-                        <label>Stop Name</label>
-                        <br/>
-                        #{stopManagementEditBean.stop.stopName}
-                        <h:commandButton action="#{stopManagementEditBean.save()}" class="btn btn-default" value="Save" />
+                        <br />
+                        <h:commandButton action="#{stopManagementEditBean.save()}" class="btn btn-default" value="Save #{stopManagementEditBean.stop.stopName}" />
                     </h:form>
                 </div>
 
                 <div class="col-xs-9">
                     <br />
-
                 </div>
             </ui:define>
         </ui:composition>

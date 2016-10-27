@@ -11,8 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.map.MarkerDragEvent;
@@ -26,12 +24,11 @@ import org.primefaces.model.map.Marker;
 public class StopManagementEditBean implements Serializable{
     
     public String mapKey = "https://maps.google.com/maps/api/js?key=AIzaSyAOm_hMAIA4Naz5-FXN7VTmLdMetew_uUE";
-    private String ENV = "http://localhost:8080/edmond-bus-tracker/api/busstopservice/stops/update/";
+    private String ENV = "https://uco-edmond-bus.herokuapp.comr/api/busstopservice/stops/update/";
     HttpURLConnection connection = null;
     public MapModel draggableModel;
     public RouteStop stop = new RouteStop();
     private Marker marker;
-    
     private String initialName;
     private double initialLat;
     private double initialLng;
@@ -41,70 +38,51 @@ public class StopManagementEditBean implements Serializable{
         initialName = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("stopname"));
         initialLat = Double.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("stoplat"));
         initialLng = Double.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("stoplng"));
-        this.draggableModel = new DefaultMapModel();
-        Marker newMarker = new Marker(new LatLng(this.getInitialLat(), this.getInitialLng()), "stop-marker");
+        draggableModel = new DefaultMapModel();
+        Marker newMarker = new Marker(new LatLng(initialLat, initialLng), "stop-marker");
         newMarker.setDraggable(true);
-        this.draggableModel.addOverlay(newMarker);
-        this.getStop().setStopName(this.getInitialName());
-        this.getStop().setLocation(new LatLng(this.getInitialLat(), this.getInitialLng()));
-    }
-    
-    public void setInitialState(String name, double lat, double lng) {
-        this.setInitialName(name);
-        this.setInitialLat(lat);
-        this.setInitialLng(lng);
+        draggableModel.addOverlay(newMarker);
+        stop.setStopName(getInitialName());
+        stop.setLocation(new LatLng(initialLat, initialLng));
     }
     
     public void save() {
         DataOutputStream wr = null;
         try {
-            String routeStopName = this.getStop().getStopName();
-            String lat = String.valueOf(this.getStop().getLocation().getLat());
-            String lng = String.valueOf(this.getStop().getLocation().getLng());
-            String route = ENV + java.net.URLEncoder.encode(routeStopName, "UTF-8") + "/" + lat + "/" + lng;
-            System.out.println(route);
-            
+            String routeStopName = stop.getStopName();
+            String lat = String.valueOf(stop.getLocation().getLat());
+            String lng = String.valueOf(stop.getLocation().getLng());
+            String route = ENV + java.net.URLEncoder.encode(routeStopName, "UTF-8") + "/" + lat + "/" + lng;            
             URL url = new URL(route);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            System.out.println("1111111111111111111");
-
             int responseCode = connection.getResponseCode();
-
             BufferedReader in = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream()));
+                new InputStreamReader(connection.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
-            System.out.println("22222222222222");
-
             while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
             }
-            System.out.println("333333333333333333333333");
             in.close();
-            System.out.println("44444444444444444444444444444444");
-
-            //print result
         } catch (IOException ex) {
             Logger.getLogger(CreateRouteView.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-
         }
     }
     
     public void onMarkerDrag(MarkerDragEvent event) {
-        this.marker = event.getMarker();
-        LatLng coords = new LatLng(this.marker.getLatlng().getLat(), this.marker.getLatlng().getLng());
-        this.getStop().setLocation(coords);
+        marker = event.getMarker();
+        LatLng coords = new LatLng(marker.getLatlng().getLat(), marker.getLatlng().getLng());
+        stop.setLocation(coords);
     }
     
     public RouteStop getStop() {
-        return this.stop;
+        return stop;
     }
     
     public String getMapKey() {
-        return this.mapKey;
+        return mapKey;
     }
 
     public MapModel getDraggableModel() {
@@ -112,7 +90,7 @@ public class StopManagementEditBean implements Serializable{
     }
     
     public void setStop(RouteStop stop) {
-        this.stop = stop;
+        stop = stop;
     }
 
     public String getInitialName() {
@@ -120,7 +98,7 @@ public class StopManagementEditBean implements Serializable{
     }
 
     public void setInitialName(String initialName) {
-        this.initialName = initialName;
+        initialName = initialName;
     }
 
     public double getInitialLat() {
@@ -128,7 +106,7 @@ public class StopManagementEditBean implements Serializable{
     }
 
     public void setInitialLat(double initialLat) {
-        this.initialLat = initialLat;
+        initialLat = initialLat;
     }
 
     public double getInitialLng() {
@@ -136,6 +114,6 @@ public class StopManagementEditBean implements Serializable{
     }
 
     public void setInitialLng(double initialLng) {
-        this.initialLng = initialLng;
+        initialLng = initialLng;
     }
 }
