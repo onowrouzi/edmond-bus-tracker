@@ -28,14 +28,14 @@
 
                 <div class="col-md-6">
                     <br />
-                    <p:gmap widgetVar="map" id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{createRouteView.draggableModel}" style="width:100%;height:400px">
+                    <p:gmap widgetVar="map" id="gmap" center="35.6526783,-97.4781833" zoom="13" type="HYBRID"  model="#{createRouteView.draggableModel}" style="width:100%;height:400px">
                         <p:ajax event="markerDrag" listener="#{createRouteView.onMarkerDrag}"/>
                     </p:gmap>
                     <br />
                     <br />
                     <h:form>
                         <ui:repeat value="#{stopManagementBean.getStops()}" var="s">
-                            <h:selectBooleanCheckbox label="#{s.getStopName()}"  
+                            <h:selectBooleanCheckbox label="#{s.getName()}"  
                                 onclick="setMarker(#{s.getLat()}, #{s.getLng()})">
                                 <f:ajax execute="@this" listener="#{createRouteView.addStop(s)}"/>
                             </h:selectBooleanCheckbox>
