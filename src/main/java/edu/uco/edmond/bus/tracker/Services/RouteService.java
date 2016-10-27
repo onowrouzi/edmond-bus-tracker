@@ -8,6 +8,7 @@ package edu.uco.edmond.bus.tracker.Services;
 import edu.uco.edmond.bus.tracker.Dtos.Bus;
 import edu.uco.edmond.bus.tracker.Dtos.BusRoute;
 import edu.uco.edmond.bus.tracker.Dtos.BusRouteStop;
+import edu.uco.edmond.bus.tracker.Dtos.BusStop;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -125,9 +126,9 @@ public class RouteService extends Service {
         
         for(BusRouteStop busStopRoute : busRouteStops)
             for(BusRoute route : routes)
-                if(busStopRoute.getRoute().equals(route.getName())){
-//                    route.getStops().add((new RouteStop(busStopRoute.getStop())));
-                }
+                if(busStopRoute.getRoute().equals(route.getName()))
+                    route.getBusStops().add((new BusStop(busStopRoute.getStop())));
+                
         return getGson().toJson(routes);
     }
     

@@ -12,6 +12,10 @@ public class BusStop extends Dto{
     
     public BusStop(){}
     
+    public BusStop(String name){
+        this.name = name;
+    }
+    
     public BusStop(String name, double latitude, double longitude){
         this.name = name;
         this.latitude = latitude;
