@@ -6,7 +6,7 @@ public class BusRoute extends Dto {
     
     private int id;
     private String name;
-    private ArrayList<BusStop> busStops;
+    private ArrayList<BusStop> busStops = new ArrayList<>();
     
     public BusRoute(int id, String name){
         this.id = id;
@@ -16,7 +16,7 @@ public class BusRoute extends Dto {
     public BusRoute(int id, String name, ArrayList<BusStop> stops) {
         this.name = name;
         this.id = id;
-        this.busStops = new ArrayList<>(stops);
+        this.busStops = stops;
     }
 
     public int getId() {

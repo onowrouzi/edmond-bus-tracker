@@ -124,11 +124,10 @@ public class RouteService extends Service {
         if(routes.isEmpty())
             return getGson().toJson("No routes currently registered."); // no routes in system
         
-        if (busRouteStops.size() > 0)
-            for(BusRouteStop busStopRoute : busRouteStops)
-                for(BusRoute route : routes)
-                    if(busStopRoute.getRoute().equals(route.getName()))
-                        route.getBusStops().add((new BusStop(busStopRoute.getStop())));
+        for(BusRouteStop busStopRoute : busRouteStops)
+            for(BusRoute route : routes)
+                if(busStopRoute.getRoute().equals(route.getName()))
+                    route.getBusStops().add((new BusStop(busStopRoute.getStop())));
                 
         return getGson().toJson(routes);
     }
