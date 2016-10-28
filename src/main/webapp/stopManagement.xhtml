@@ -29,6 +29,14 @@
                                     #{r.getLng()}
                             </h:column>
                             <h:column>
+                                <f:facet name="header">Edit</f:facet>
+                                <h:button value="Edit" class="btn btn-default pull-right" outcome="editStop">
+                                    <f:param name="stopname" value="#{r.getName()}" />
+                                    <f:param name="stoplat" value="#{r.getLat()}" />
+                                    <f:param name="stoplng" value="#{r.getLng()}" />
+                                </h:button>
+                            </h:column>
+                            <h:column>
                                 <f:facet name="header">Delete</f:facet>
                                 <h:button value="Delete" class="btn btn-danger pull-right" outcome="deleteStop">
                                     <f:param name="stopname" value="#{r.name}" />

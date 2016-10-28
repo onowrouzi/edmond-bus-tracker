@@ -48,4 +48,16 @@ public class BusStop extends Dto{
         return longitude;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLat(double lat) {
+        this.latitude = lat;
+    }
+
+    public void setLng(double lng) {
+        this.longitude = lng;
+    }
+
 }
