@@ -275,7 +275,7 @@ public class BusService extends Service {
         double busLat = Double.parseDouble(lat);
         double busLng = Double.parseDouble(lng);
         
-        String query = "UPDATE tblbus SET lastlong=?, lastlatitude=? WHERE id=?";
+        String query = "UPDATE tblbus SET lastlong=?, lastlat=? WHERE id=?";
         
         try {
             try (PreparedStatement stmt = getDatabase().prepareStatement(query)) {
