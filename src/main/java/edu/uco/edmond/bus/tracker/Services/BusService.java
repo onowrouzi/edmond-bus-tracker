@@ -294,6 +294,6 @@ public class BusService extends Service {
             return getGson().toJson(s.toString()); //SQL failed
         }
         
-        return "Bus location updaed!";
+        return "Bus location updated! Lat: " + busLat + " Lng: " + busLng;
     }
 }
