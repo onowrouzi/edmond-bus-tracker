@@ -220,4 +220,43 @@ public class BusStopService extends Service{
         
         return getGson().toJson(Stop);
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("stops/update/{name}/{lat}/{lng}")
+    public String update(@PathParam("name") String name,@PathParam("lat") float lat, @PathParam("lng") float lng)
+    {
+        BusStop Stop = null;
+        try {
+            Stop = find(java.net.URLDecoder.decode(name, "UTF-8"));
+            System.out.println(Stop.getName());
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(BusStopService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(Stop == null)
+            return getGson().toJson(null); //send error message on client --stop does not exist
+        
+        Stop.setLat(lat);
+        Stop.setLng(lng);
+        
+        try{
+            PreparedStatement stmt1 = getDatabase().prepareStatement("UPDATE tblbusstop set lat=?, lng=? WHERE id=?");
+            stmt1.setFloat(1, lat);
+            stmt1.setFloat(2, lng);
+            stmt1.setInt(3, Stop.getId());
+            int count = stmt1.executeUpdate();
+            stmt1.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
+            
+        }catch(SQLException s){
+            return getGson().toJson(s.toString());
+        }
+        
+        busStops.remove(Stop);
+        
+        return getGson().toJson(Stop);
+    }
 }
