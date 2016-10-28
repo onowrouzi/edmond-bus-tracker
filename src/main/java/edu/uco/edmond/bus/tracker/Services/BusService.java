@@ -266,4 +266,34 @@ public class BusService extends Service {
         
         return getGson().toJson(bus); // show new bus info
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("buses/edit/location/{id}/{lat}/{lng}")
+    public String edit(@PathParam("id") int id, @PathParam("lat") String lat, @PathParam("lng") String lng)
+    {
+        double busLat = Double.parseDouble(lat);
+        double busLng = Double.parseDouble(lng);
+        
+        String query = "UPDATE tblbus SET lastlong=?, lastlatitude=? WHERE id=?";
+        
+        try {
+            try (PreparedStatement stmt = getDatabase().prepareStatement(query)) {
+                stmt.setDouble(1, busLat);
+                stmt.setDouble(2, busLng);
+                stmt.setInt(3, id);
+                
+                System.out.println("STATEMENT 1: " + stmt);
+                
+                int count = stmt.executeUpdate();
+            }
+            
+            //Close out current SQL connection
+            getDatabase().close();
+        } catch(SQLException s) {
+            return getGson().toJson(s.toString()); //SQL failed
+        }
+        
+        return "Bus location updaed!";
+    }
 }
