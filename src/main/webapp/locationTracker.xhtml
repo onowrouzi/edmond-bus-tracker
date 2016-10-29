@@ -24,21 +24,6 @@
                     <br />
                 </div>
                 <script>
-                    var markers = []; 
-                    function setMarker(lat, lng){
-                        marker = new google.maps.Marker({position:new google.maps.LatLng(lat, lng)});
-                        for (var i = 0; i &lt; markers.length; i++){
-                            if (markers[i].position.lat() === marker.position.lat()
-                                     &amp;&amp; markers[i].position.lng() === marker.position.lng()) {
-                                markers[i].setMap(null);
-                                markers.splice(i,1);
-                                return;
-                            }
-                        }
-                        markers.push(marker);
-                        PF('map').addOverlay(marker);
-                    }
-                    
                     function initialize() {
                         var map = new google.maps.Map(document.getElementById("gmap"), {
                           center: {lat: 35.6526783, lng: -97.4781833},
@@ -69,7 +54,7 @@
                             setTimeout(function(coords) {
                                 route.getPath().push(coords);
                                 map.panTo(coords);
-                            }, 200 * i, pathCoords[i]);
+                            }, 1000*i, pathCoords[i]);
                         }
                     }
 
