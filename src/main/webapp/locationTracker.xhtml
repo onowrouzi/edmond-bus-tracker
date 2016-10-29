@@ -48,11 +48,6 @@
 
                         getDirections(map);
                     }
-                    
-                    function moveMarker(map, marker, latlng) {
-                        marker.setPosition(latlng);
-                        map.panTo(latlng);
-                    }
 
                     function autoRefresh(map, pathCoords) {
                         var i, route, marker;
@@ -73,7 +68,7 @@
                         for (i = 0; i &lt; pathCoords.length; i++) {                
                             setTimeout(function(coords) {
                                 route.getPath().push(coords);
-                                //moveMarker(map, marker, coords);
+                                map.panTo(coords);
                             }, 200 * i, pathCoords[i]);
                         }
                     }
