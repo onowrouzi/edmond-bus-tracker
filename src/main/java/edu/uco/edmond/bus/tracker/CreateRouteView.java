@@ -43,6 +43,7 @@ public class CreateRouteView implements Serializable {
     private Marker marker;
     
     private BusRoute route;
+    private BusStop selectedStop;
     
     private final double defaultLat = 35.6526783;
     private final double defaultLng = -97.4781833;
@@ -180,5 +181,13 @@ public class CreateRouteView implements Serializable {
         }
         
         selectedStops.add(s);
+    }
+    
+    public void setSelectedStop(BusStop s){
+        selectedStop = s;
+    }
+    
+    public BusStop getSelectedStop(){
+        return selectedStop;
     }
 }
