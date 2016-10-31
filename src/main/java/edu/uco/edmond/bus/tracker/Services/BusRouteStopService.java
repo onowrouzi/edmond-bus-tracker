@@ -240,7 +240,7 @@ public class BusRouteStopService extends Service{
         bsr.setStopOnRoute(stopOnRoute);
         
         try{
-            PreparedStatement stmt1 = getDatabase().prepareStatement("UPDATE tblbusroutestop set route=?, stop=?, stoponroute WHERE id=?");
+            PreparedStatement stmt1 = getDatabase().prepareStatement("UPDATE tblbusroutestop set route=?, stop=?, stoponroute=? WHERE id=?");
             stmt1.setString(1, route);
             stmt1.setString(2, stop);
             stmt1.setInt(3, stopOnRoute);
