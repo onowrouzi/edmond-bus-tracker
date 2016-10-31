@@ -13,7 +13,7 @@
     <h:body>
         <ui:composition template="/template/layout.xhtml">
             <ui:define name="content">
-                <div span="9" class="col-xs-8">
+                <div span="9" class="col-xs-9">
                     <h:form id="user-table">
                         <p:dataTable value="#{busManagement.buses}" var="b" widgetVar="busTable" 
                                      filteredValue="#{busManagement.filteredBuses}" 
@@ -34,15 +34,17 @@
                                 <h:outputText value="#{b.active}" />
                             </p:column>
                             <p:column class="form-group"> <f:facet name="header">Options</f:facet>
-                                <h:button value="Delete" class="btn btn-danger" outcome="deleteBus">
-                                    <f:param name="name" value="#{b.name}" />
-                                </h:button>
-                                <h:button value="Edit" class="btn btn-info" outcome="editBus" style="margin-left: 5px">
-                                    <f:param name="id" value="#{b.id}" />
-                                    <f:param name="name" value="#{b.name}" />
-                                    <f:param name="driver" value="#{b.driver}" />
-                                    <f:param name="route" value="#{b.route}" />
-                                </h:button>
+                                <div class="row">
+                                    <h:button value="Delete" class="btn btn-danger text-center col-md-5 col-md-offset-1" outcome="deleteBus">
+                                        <f:param name="name" value="#{b.name}" />
+                                    </h:button>
+                                    <h:button value="Edit" class="btn btn-info col-md-5" outcome="editBus" style="margin-left: 5px">
+                                        <f:param name="id" value="#{b.id}" />
+                                        <f:param name="name" value="#{b.name}" />
+                                        <f:param name="driver" value="#{b.driver}" />
+                                        <f:param name="route" value="#{b.route}" />
+                                    </h:button>
+                                </div>
                             </p:column>
                         </p:dataTable>
                     </h:form>

@@ -16,7 +16,7 @@
             <ui:define name="content">
                 <div class="col-xs-9">
                     <h:form>
-                         <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="15" type="HYBRID"  model="#{stopManagementEditBean.draggableModel}" style="width:100%;height:400px">
+                         <p:gmap id="gmap" center="35.6526783,-97.4781833" zoom="13" type="ROADMAP"  model="#{stopManagementEditBean.draggableModel}" style="width:100%;height:700px">
                             <p:ajax event="markerDrag" listener="#{stopManagementEditBean.onMarkerDrag}"/>
                         </p:gmap>
                         <br />
