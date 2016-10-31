@@ -20,9 +20,31 @@
                         <br/><br/>
                         <label>Route Name</label>
                         <br/>
-                        <h:inputText class="form-control"/>
+                        <h:inputText value="#{routeName}" class="form-control"/>
                         <br/>
-                        <h:commandButton action="#{createRouteView.save()}" class="btn btn-default" value="Save" />
+                        <h:commandButton action="#{createRouteView.addRoute(routeName)}" class="btn btn-default" value="Save" />
+                        <br/><br/>
+                        <label>Route Stops</label>
+                        <label class="pull-right">Stop #</label>
+                        <br/>
+                        <div style="border: 1px solid grey; padding: 20px; height: 500px; overflow: auto">
+                        <ui:repeat value="#{stopManagementBean.getStops()}" var="s">
+                            <div class="row" style="border-bottom: 1px solid gray; padding-bottom: 5px">
+                            <h:selectBooleanCheckbox label="#{s.getName()}" style="margin-top:10px"
+                                onclick="setMarker(#{s.getLat()}, #{s.getLng()})">
+                                <f:ajax execute="@this" listener="#{createRouteView.addStop(s)}"/>
+                            </h:selectBooleanCheckbox>
+                            #{s.getName()}  
+                            <h:selectOneMenu value="#{index}" class="pull-right">
+                                <f:selectItems value="#{stopManagementBean.getStops()}" var="i"
+                                    itemLabel="#{stopManagementBean.getStops().indexOf(i)}"
+                                    itemValue="#{stopManagementBean.getStops().indexOf(i)}"/>
+                                <f:ajax event="valueChange" listener="#{createRouteView.setStopOnRoute(s, index)}"/>
+                            </h:selectOneMenu>
+                            </div>
+                            <br/>
+                        </ui:repeat>
+                        </div>
                     </h:form>
                 </div>
 
@@ -34,15 +56,7 @@
                     <br />
                     <br />
                     <h:form>
-                        <ui:repeat value="#{stopManagementBean.getStops()}" var="s">
-                            <h:selectBooleanCheckbox label="#{s.getName()}"  
-                                onclick="setMarker(#{s.getLat()}, #{s.getLng()})">
-                                <f:ajax execute="@this" listener="#{createRouteView.addStop(s)}"/>
-                            </h:selectBooleanCheckbox>
-                            #{s.getName()}<br/>
-                        </ui:repeat>
                     </h:form>
-                    
                 </div>
                 <script>
                     var markers = []; 

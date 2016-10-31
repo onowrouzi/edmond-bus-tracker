@@ -7,6 +7,17 @@ public class BusRouteStop {
     private String stop;
     private int stopOnRoute;
     
+    public BusRouteStop() {}
+    
+    public BusRouteStop(String stop){
+        this.stop = stop;
+    }
+    
+    public BusRouteStop(String route, String stop){
+        this.route = route;
+        this.stop = stop;
+    }
+    
     public BusRouteStop(int id, String route, String stop, int stopOnRoute)
     {
         this.id = id;
@@ -23,5 +34,21 @@ public class BusRouteStop {
     public String getStop()
     {
         return stop;
+    }
+    
+    public int getStopOnRoute(){
+        return stopOnRoute;
+    }
+    
+    public void setRoute(String route){
+        this.route = route;
+    }
+    
+    public void setStop(String stop){
+        this.stop = stop;
+    }
+    
+    public void setStopOnRoute(int stopOnRoute){
+        this.stopOnRoute = stopOnRoute;
     }
 }

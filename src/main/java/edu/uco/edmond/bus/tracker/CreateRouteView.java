@@ -1,6 +1,7 @@
 package edu.uco.edmond.bus.tracker;
 
 import edu.uco.edmond.bus.tracker.Dtos.BusRoute;
+import edu.uco.edmond.bus.tracker.Dtos.BusRouteStop;
 import edu.uco.edmond.bus.tracker.Dtos.BusStop;
 import edu.uco.edmond.bus.tracker.Dtos.User;
 import java.io.BufferedReader;
@@ -57,7 +58,7 @@ public class CreateRouteView implements Serializable {
     
     // temp since we don't have users implemented yet
     private ArrayList<User> possibleDrivers = new ArrayList<>();
-    private ArrayList<BusStop> selectedStops = new ArrayList<>();
+    private ArrayList<BusRouteStop> selectedStops = new ArrayList<>();
     
     @PostConstruct
     public void init() {
@@ -81,46 +82,49 @@ public class CreateRouteView implements Serializable {
     public void delete() {
         // delete logic
     }
-    
-    public void save() {
-        
-        for (BusStop s : route.getBusStops()) {
-            System.out.println(s.getName());
-            DataOutputStream wr = null;
-            try {
-                String routeStopName = s.getName();
-                String lat = String.valueOf(s.getLat());
-                String lng = String.valueOf(s.getLng());
-                String route = "https://uco-edmond-bus.herokuapp.com/api/busservice/stops/create/" + routeStopName + "/" + lat + "/" + lng;
-                System.out.println(route);
-                URL url = new URL(route);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-                
-                int responseCode = connection.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
 
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(connection.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
+    public String addRoute(String name) throws IOException {
 
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
+        try {
+            String url = "https://uco-edmond-bus.herokuapp.com/api/routeservice/routes/create/" + name;
+            url = url.replace(" ", "%20");
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-		//print result
-		System.out.println(response.toString());
- 
-            } catch (IOException ex) {
-                Logger.getLogger(CreateRouteView.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
+            // optional default is GET
+            con.setRequestMethod("POST");
 
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'POST' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+
+            if (responseCode != 200) {
+                System.out.println("CONNECTION ERROR: " + con.getErrorStream());
             }
+
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()))) {
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                System.out.println("INPUT STREAM: " + response);
+            }
+            con.disconnect();
+        } catch (IOException ex) {
+            Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        for (BusRouteStop brs: selectedStops){
+            //Make call to busroutestopservice/busroutestops/create/{route}/{stop}/{stopOnRoute}
+        }
+
+        return "routeManagement";
     }
     
     public BusRoute getRoute() {
@@ -130,14 +134,6 @@ public class CreateRouteView implements Serializable {
     public void setRoute(BusRoute route) {
         this.route = route;
     }
-    
-//    public void addStop(double lat, double lng, String name) {
-//        System.out.println("ADDING MARKER");
-//        LatLng coords = new LatLng(lat, lng);
-//        Marker newMarker = new Marker(coords, name);
-//        //newMarker.setDraggable(true);
-//        draggableModel.addOverlay(newMarker);
-//    }
     
     private void showMessage(String heading, String message) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -164,23 +160,34 @@ public class CreateRouteView implements Serializable {
 	this.buttonHolder = buttonHolder;
     }
     
-    public ArrayList<BusStop> getSelectedStops(){
+    public ArrayList<BusRouteStop> getSelectedStops(){
         return selectedStops;
     }
     
-    public void setSelectedStops(ArrayList<BusStop> stops){
+    public void setSelectedStops(ArrayList<BusRouteStop> stops){
         selectedStops = stops;
     }
     
     public void addStop(BusStop s){
         for (int i = 0; i < selectedStops.size(); i++){
-            if (selectedStops.get(i).getName().equals(s.getName())){
+            if (selectedStops.get(i).getStop().equals(s.getName())){
                 selectedStops.remove(i);
                 return;
             }
         }
         
-        selectedStops.add(s);
+        selectedStops.add(new BusRouteStop(s.getName()));
+    }
+    
+    public void setStopOnRoute(BusStop s, int index){
+        for (int i = 0; i < selectedStops.size(); i++){
+            if (selectedStops.get(i).getStop().equals(s.getName())){
+                selectedStops.get(i).setStopOnRoute(index);
+                System.out.println(selectedStops.get(i).getStop() + " stopOnRoute = " + 
+                        selectedStops.get(i).getStopOnRoute());
+                return;
+            }
+        }
     }
     
     public void setSelectedStop(BusStop s){
