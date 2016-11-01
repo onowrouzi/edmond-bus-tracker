@@ -138,7 +138,7 @@ public class BusRouteStopService extends Service{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stops/create/{route}/{stop}/{stopOnRoute}")
-    public String create(@PathParam("route") String route, @PathParam("stop") String stop, @PathParam("stopOnRoute") int stopOnRoute)
+    public String create(@PathParam("route") String route, @PathParam("stop") String stop, @PathParam("stopOnRoute") String stopOnRoute)
     {
         try {
             route = java.net.URLDecoder.decode(route, "UTF-8");
@@ -156,7 +156,7 @@ public class BusRouteStopService extends Service{
             PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tblbusroutestop (route, stop, stoponroute) VALUES(?,?,?)");
             stmt.setString(1, route);
             stmt.setString(2, stop);
-            stmt.setInt(3, stopOnRoute);
+            stmt.setInt(3, Integer.parseInt(stopOnRoute));
 
             int count = stmt.executeUpdate();
             
@@ -172,7 +172,7 @@ public class BusRouteStopService extends Service{
             rs.first();
 
             int id = rs.getInt("id");
-            bsr = new BusRouteStop(id,route,stop,stopOnRoute);
+            bsr = new BusRouteStop(id,route,stop,Integer.parseInt(stopOnRoute));
             busRouteStops.add(bsr);  
             
             stmt2.close();
