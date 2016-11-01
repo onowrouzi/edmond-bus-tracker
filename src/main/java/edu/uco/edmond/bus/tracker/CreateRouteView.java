@@ -126,7 +126,7 @@ public class CreateRouteView implements Serializable {
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
             // optional default is GET
-            con.setRequestMethod("POST");
+            con.setRequestMethod("GET");
 
             //add request header
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
