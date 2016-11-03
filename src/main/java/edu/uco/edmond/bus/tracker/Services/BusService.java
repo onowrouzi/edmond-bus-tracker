@@ -296,4 +296,34 @@ public class BusService extends Service {
         
         return "Bus location updated! Lat: " + busLat + " Lng: " + busLng;
     }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("buses/changeStatus/{name}")
+    public String changeStatus(@PathParam("name") String name)
+    {      
+        Bus bus;
+        
+
+        bus = find(name);
+        
+        String query = "UPDATE tblbus SET active=? WHERE name=?";
+        
+        try {
+            try (PreparedStatement stmt = getDatabase().prepareStatement(query)) {
+                stmt.setInt(1, bus.getActive() ? 0 : 1); //reverse values
+                stmt.setString(2, name);
+                
+                int count = stmt.executeUpdate();
+                
+                bus.changeStatus(); // swap active value
+            }
+            
+            //Close out current SQL connection
+            getDatabase().close();
+        } catch(SQLException s) {
+            return getGson().toJson(s.toString()); //SQL failed
+        }
+        
+        return getGson().toJson(bus); // show new bus info
+    }
 }
