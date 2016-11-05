@@ -31,7 +31,9 @@
                                         <f:selectItem itemValue="#{false}" itemLabel="False" />
                                     </p:selectOneMenu>
                                 </f:facet>
-                                <h:outputText value="#{b.active}" />
+                                <h:commandButton value="#{b.active == true ? 'Running' : 'Not Running'}" class="#{b.active == true ? 'btn btn-success text-center col-md-10 col-md-offset-1' : 'btn btn-danger text-center col-md-10 col-md-offset-1'}" action="#{busManagement.changeStatus(b.name)}">
+                                    <f:param name="name" value="#{b.name}" />
+                                </h:commandButton>
                             </p:column>
                             <p:column class="form-group"> <f:facet name="header">Options</f:facet>
                                 <div class="row">
