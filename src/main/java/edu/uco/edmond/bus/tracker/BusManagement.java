@@ -239,7 +239,7 @@ public class BusManagement implements Serializable {
         return "busManagement";
     }
     
-    public void changeStatus(String name) throws IOException{
+    public String changeStatus(String name) throws IOException{
         try {
             name = name.replace(" ", "%20");
 
@@ -275,8 +275,7 @@ public class BusManagement implements Serializable {
         } catch (IOException ex) {
             Logger.getLogger(BusManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        //loadUserGroups("admin", "driver");
+        return "busManagement";
     }
     
     public String getName() {
