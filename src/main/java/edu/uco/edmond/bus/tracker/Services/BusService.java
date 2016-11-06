@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -305,13 +307,14 @@ public class BusService extends Service {
         
 
         bus = find(name);
-        
-        String query = "UPDATE tblbus SET active=? WHERE name=?";
-        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String query = "UPDATE tblbus SET active=?, lastActive=? WHERE name=?";
+        Date date = new Date();
         try {
             try (PreparedStatement stmt = getDatabase().prepareStatement(query)) {
                 stmt.setInt(1, bus.getActive() ? 0 : 1); //reverse values
-                stmt.setString(2, name);
+                stmt.setString(2, dateFormat.format(date));
+                stmt.setString(3, name);
                 
                 int count = stmt.executeUpdate();
                 
