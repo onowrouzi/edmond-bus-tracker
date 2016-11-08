@@ -73,4 +73,9 @@ public class Bus extends Dto {
     {
         return lastLat;
     }
+    
+    public void changeStatus()
+    {
+        active = !active;
+    }
 }
