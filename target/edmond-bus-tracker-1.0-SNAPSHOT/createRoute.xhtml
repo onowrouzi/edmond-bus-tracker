@@ -15,35 +15,40 @@
         <ui:composition template="/template/layout.xhtml">
             <ui:define name="content">
                 <div class="col-md-3">
+                    <h1>Create Route</h1>
+                    <br/><br/>
+                    <label>Route Name</label>
+                    <br/>
                     <h:form>
-                        <h1>Create Route</h1>
-                        <br/><br/>
-                        <label>Route Name</label>
-                        <br/>
                         <h:inputText value="#{routeName}" class="form-control"/>
                         <br/>
                         <h:commandButton action="#{createRouteView.addRoute(routeName)}" class="btn btn-default" value="Save" />
+                        <div class="pull-right">
+                            <button onclick="clearRoute()" class="btn btn-default">Clear</button>
+                        </div>
                         <br/><br/>
                         <label>Route Stops</label>
                         <label class="pull-right">Stop #</label>
                         <br/>
                         <div style="border: 1px solid grey; padding: 20px; height: 500px; overflow: auto">
-                        <ui:repeat value="#{stopManagementBean.getStops()}" var="s">
-                            <div class="row" style="border-bottom: 1px solid gray; padding-bottom: 5px">
-                            <h:selectBooleanCheckbox label="#{s.getName()}" style="margin-top:10px"
-                                onclick="setMarker(#{s.getLat()}, #{s.getLng()})">
-                                <f:ajax execute="@this" listener="#{createRouteView.addStop(s)}"/>
-                            </h:selectBooleanCheckbox>
-                            #{s.getName()}  
-                            <h:selectOneMenu value="#{index}" class="pull-right">
-                                <f:selectItems value="#{stopManagementBean.getStops()}" var="i"
-                                    itemLabel="#{stopManagementBean.getStops().indexOf(i)}"
-                                    itemValue="#{stopManagementBean.getStops().indexOf(i)}"/>
-                                <f:ajax event="valueChange" listener="#{createRouteView.setStopOnRoute(s, index)}"/>
-                            </h:selectOneMenu>
-                            </div>
-                            <br/>
-                        </ui:repeat>
+                            <ui:repeat value="#{stopManagementBean.getStops()}" var="s">
+                                <div class="row" style="border-bottom: 1px solid gray; padding-bottom: 5px">
+                                <h:selectBooleanCheckbox label="#{s.getName()}" style="margin-top:10px"
+                                    onclick="setMarker(#{s.getLat()}, #{s.getLng()}, #{s.getId()})">
+                                    <f:ajax execute="@this" listener="#{createRouteView.addStop(s)}"/>
+                                </h:selectBooleanCheckbox>
+                                #{s.getName()}  
+                                <h:selectOneMenu value="#{index}" class="pull-right #{s.getId()}" 
+                                        onfocus="getOrder(this)" onchange="changeOrder(#{s.getId()}, this)">
+                                    <f:selectItem noSelectionOption="" itemLabel=" "/>
+                                    <f:selectItems value="#{stopManagementBean.getStops()}" var="i"
+                                        itemLabel="#{stopManagementBean.getStops().indexOf(i) + 1}"
+                                        itemValue="#{stopManagementBean.getStops().indexOf(i)}"/>
+                                    <f:ajax event="change" listener="#{createRouteView.setStopOnRoute(s, index)}"/>
+                                </h:selectOneMenu>
+                                </div>
+                                <br/>
+                            </ui:repeat>
                         </div>
                     </h:form>
                 </div>
@@ -60,19 +65,111 @@
                     </h:form>
                 </div>
                 <script>
-                    var markers = []; 
-                    function setMarker(lat, lng){
-                        marker = new google.maps.Marker({position:new google.maps.LatLng(lat, lng)});
+                    var markers = [];
+                    var paths = [];
+                    var map;
+                    var prevIndex;
+                    
+                    function getOrder(sel){
+                        prevIndex = sel.value;
+                    }
+                    
+                    function changeOrder(id, sel){
+                        var changedMarker = $.grep(markers, function(m){ return m.id == id; });
+                        changedMarker.ordinal = sel.value; //Set marker/stop's stop number.
+                             
+                        $('select').each(function(){ //Update other markers/stops' stop numbers.
+                            if (this != sel &amp;&amp; this.value &gt;= '0'){
+                                if (sel.value &lt; prevIndex &amp;&amp; this.value &lt;= prevIndex 
+                                        &amp;&amp; this.value &gt;= sel.value) { 
+                                    this.value++; 
+                                } else if (sel.value &gt; prevIndex &amp;&amp; this.value &gt;= prevIndex 
+                                        &amp;&amp; this.value &lt;= sel.value) {
+                                    this.value--; 
+                                } 
+                            }
+                        });
+                        
+                        $.each(markers, function(i, v){
+                           v.ordinal = $('.'+v.id).val(); 
+                        });
+                        markers.sort(function (a,b){ return a.ordinal &gt; b.ordinal ? 1 : -1; }); //Sort markers/stops by stop number.
+                        drawRoute(); //Redraw route.
+                    }
+                    
+                    function setMarker(lat, lng, id){
+                        map = map || new google.maps.Map(document.getElementById("gmap"), {
+                          center: {lat: 35.6526783, lng: -97.4781833},
+                          zoom: 13,
+                          mapTypeId: google.maps.MapTypeId.ROADMAP
+                        });
+                        
                         for (var i = 0; i &lt; markers.length; i++){
-                            if (markers[i].position.lat() === marker.position.lat()
-                                     &amp;&amp; markers[i].position.lng() === marker.position.lng()) {
+                            if (markers[i].position.lat() === lat &amp;&amp; markers[i].position.lng() === lng) {
                                 markers[i].setMap(null);
+                                markers[i] = null;
                                 markers.splice(i,1);
+                                drawRoute();
+                                $('select').each(function(){ if (this.value >= i) this.value--; });
+                                $('.'+id).val(' ');
                                 return;
                             }
                         }
-                        markers.push(marker);
-                        PF('map').addOverlay(marker);
+                        $('.'+id).val((markers.length).toString());
+                        markers.push(new google.maps.Marker({map:map, position:new google.maps.LatLng(lat, lng), 
+                                                            id: id, ordinal: markers.length}));
+                        drawRoute();
+                    }
+                    
+                    function drawRoute(){
+                        markers.sort(function (a,b){ return a &gt; b ? 1 : -1; }); //Sort markers/stops by stop number.
+                        
+                        for (var i = 0; i &lt; paths.length; i++) {
+                            paths[i].setMap(null);
+                            paths[i] = null;
+                        } //Reset polylines.
+                        paths = []; 
+                        
+                        for (var i = 0; markers[i+1]; i++){ //Gather
+                            getDirections(markers[i].position, markers[i+1].position);
+                        }
+                    }
+                    
+                    function getDirections(origin, destination) {
+                        var directionsService = new google.maps.DirectionsService();
+
+                        var request = {
+                            origin: origin,
+                            destination: destination,
+                            travelMode: google.maps.TravelMode.DRIVING
+                        };
+                        
+                        directionsService.route(request, function(result, status) {
+                            if (status == google.maps.DirectionsStatus.OK) {
+                                paths.push(new google.maps.Polyline({
+                                            path: result.routes[0].overview_path,
+                                            geodesic : true,
+                                            strokeColor: '#FF0000',
+                                            strokeOpacity: 1.0,
+                                            strokeWeight: 2,
+                                            editable: false,
+                                            map:map
+                                }));
+                            }
+                        });
+                    }
+                    
+                    function clearRoute(){
+                        map = new google.maps.Map(document.getElementById("gmap"), { //Declare new map
+                          center: {lat: 35.6526783, lng: -97.4781833},
+                          zoom: 13,
+                          mapTypeId: google.maps.MapTypeId.ROADMAP
+                        });
+                        
+                        $(':checkbox').each(function() { $(this).prop('checked', false); }); //Uncheck boxes
+                        $('select').each(function(){ $(this).val(' '); }); //Set all dropdowns to empty.
+                        
+                        markers = paths = []; //Empty the markers and polylines arrays.
                     }
                 </script>
             </ui:define>

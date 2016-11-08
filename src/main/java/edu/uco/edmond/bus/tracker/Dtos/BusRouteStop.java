@@ -13,6 +13,11 @@ public class BusRouteStop {
         this.stop = stop;
     }
     
+    public BusRouteStop(String stop, int stopOnRoute){
+        this.stop = stop;
+        this.stopOnRoute = stopOnRoute;
+    }
+    
     public BusRouteStop(String route, String stop){
         this.route = route;
         this.stop = stop;

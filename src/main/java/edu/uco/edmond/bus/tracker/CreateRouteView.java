@@ -26,6 +26,9 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
   
 import org.primefaces.event.map.MarkerDragEvent;
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -45,12 +48,6 @@ public class CreateRouteView implements Serializable {
     
     private BusRoute route;
     private BusStop selectedStop;
-    
-    private final double defaultLat = 35.6526783;
-    private final double defaultLng = -97.4781833;
-    private final String defaultStopName = "Route";
-        
-    private int currentRouteOrderNumber = 1;
     
     public String mapKey = "https://maps.google.com/maps/api/js?key=AIzaSyDJCxt0cW1Pqy-RiS84LpVvCQRF04f9C9E";// + System.getenv("MAP_API");
         
@@ -80,7 +77,6 @@ public class CreateRouteView implements Serializable {
     }
 
     public String addRoute(String name) throws IOException {
-
         try {
             String url = "https://uco-edmond-bus.herokuapp.com/api/routeservice/routes/create/" + name;
             url = url.replace(" ", "%20");
@@ -116,7 +112,6 @@ public class CreateRouteView implements Serializable {
             Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        System.out.println("SIZE OF SELECTED STOPS: " + selectedStops.size());
         for (BusRouteStop brs: selectedStops){
             try {
             String url = "https://uco-edmond-bus.herokuapp.com/api/busroutestopservice/stops/create/" 
@@ -203,22 +198,39 @@ public class CreateRouteView implements Serializable {
         for (int i = 0; i < selectedStops.size(); i++){
             if (selectedStops.get(i).getStop().equals(s.getName())){
                 selectedStops.remove(i);
+                for (int j = i; j < selectedStops.size(); j++){
+                    selectedStops.get(j).setStopOnRoute(selectedStops.get(j).getStopOnRoute()-1);
+                }
                 return;
             }
         }
         
-        selectedStops.add(new BusRouteStop(s.getName()));
+        selectedStops.add(new BusRouteStop(s.getName(), selectedStops.size()));
     }
     
     public void setStopOnRoute(BusStop s, int index){
-        for (int i = 0; i < selectedStops.size(); i++){
-            if (selectedStops.get(i).getStop().equals(s.getName())){
-                selectedStops.get(i).setStopOnRoute(index);
-                System.out.println(selectedStops.get(i).getStop() + " stopOnRoute = " + 
-                        selectedStops.get(i).getStopOnRoute());
-                return;
+        int i = 0;
+        index++;
+        BusRouteStop brs = null;
+        for (BusRouteStop ss: selectedStops){
+            if (ss.getStop().equals(s.getName())){
+                i = selectedStops.indexOf(ss)+1;
+                brs = ss;
+                break;
             }
         }
+        
+        if (brs != null) {
+            for (BusRouteStop ss: selectedStops){
+                if (ss.equals(brs))
+                    brs.setStopOnRoute(index);
+                else if (index < i && ss.getStopOnRoute() <= i && ss.getStopOnRoute() >= index) 
+                    ss.setStopOnRoute(ss.getStopOnRoute()+1);
+                else if (index > i && ss.getStopOnRoute() >= i && ss.getStopOnRoute() <= index)
+                    ss.setStopOnRoute(ss.getStopOnRoute()-1);
+            }
+        }
+
     }
     
     public void setSelectedStop(BusStop s){
