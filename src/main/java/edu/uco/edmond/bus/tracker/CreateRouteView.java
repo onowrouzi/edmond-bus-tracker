@@ -50,7 +50,7 @@ public class CreateRouteView implements Serializable {
     private BusStop selectedStop;
     
     public String mapKey = "https://maps.google.com/maps/api/js?key=AIzaSyDJCxt0cW1Pqy-RiS84LpVvCQRF04f9C9E";// + System.getenv("MAP_API");
-        
+    private String name;   
     HttpURLConnection connection = null;
     
     // temp since we don't have users implemented yet
@@ -239,5 +239,17 @@ public class CreateRouteView implements Serializable {
     
     public BusStop getSelectedStop(){
         return selectedStop;
+    }
+    
+    public void clearSelectedStops(){
+        selectedStops.clear();
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

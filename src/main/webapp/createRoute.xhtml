@@ -24,7 +24,9 @@
                         <br/>
                         <h:commandButton action="#{createRouteView.addRoute(routeName)}" class="btn btn-default" value="Save" />
                         <div class="pull-right">
-                            <button onclick="clearRoute()" class="btn btn-default">Clear</button>
+                            <h:commandButton onclick="clearRoute()" class="btn btn-default" value="Clear">
+                                <f:ajax listener="#{createRouteView.clearSelectedStops}"/>
+                            </h:commandButton>
                         </div>
                         <br/><br/>
                         <label>Route Stops</label>
