@@ -36,8 +36,11 @@
                                 <h:button value="Delete" class="btn btn-danger" outcome="deleteUser">
                                     <f:param name="username" value="#{d.username}" /> 
                                 </h:button>
-                                <h:button value="Edit" style="margin-left: 5px" class="btn btn-info" outcome="editUser">
+                                <h:button value="Edit" style="margin-left: 5px" class="btn btn-info" outcome="editDriver">
                                     <f:param name="username" value="#{d.username}" />
+                                    <f:param name="firstName" value="#{d.firstName}" />
+                                    <f:param name="lastName" value="#{d.lastName}" />
+                                    <f:param name="email" value="#{d.email}" />
                                 </h:button>
                             </h:column>
                         </h:dataTable>

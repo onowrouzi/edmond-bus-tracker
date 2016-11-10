@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Edmond Bus Tracker</title>
+        <f:metadata>
+            <f:viewParam name="username" />
+            <f:viewParam name="firstName" />
+            <f:viewParam name="lastName" />
+            <f:viewParam name="email" />
+            <!--f:viewAction action="#{loginBean.doFilter}" /-->
+        </f:metadata>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <div class="col-md-2 visible-md visible-lg"></div>
+                <div class="col-xs-9">
+                    <h1 id="user-header">Edit Driver</h1>
+                    <h:form id="user-form">
+                        <br/><br/>
+                        <label>User Name</label>
+                        <br/>
+                        <h:inputText class="form-control" value="#{username}" disabled="true"/>
+                        <br/>
+                        <label>First Name</label>
+                        <br/>
+                        <h:inputText class="form-control" value="#{firstName}"/>
+                        <br/>
+                        <label>Last Name</label>
+                        <br/>
+                        <h:inputText class="form-control" value="#{lastName}"/>
+                        <br/>
+                        <label>Email</label>
+                        <br/>
+                        <h:inputText class="form-control" value="#{email}"/>
+                        <br/>
+                        <label>Password</label>
+                        <br/>
+                        <h:inputSecret class="form-control" id="inputPassword" value="#{password}"/>
+                        <br/>
+                        <label>Confirm Password</label>
+                        <br/>
+                        <h:inputSecret class="form-control" id="inputConfirmPassword" value="#{confirmPassword}"/>
+                        <br/>
+                        <h:commandButton value="Edit" class="btn btn-default form-control" 
+                            action="#{driverManagementBean.editDriver(username, firstName, lastName, email, password, confirmPassword)}"/>
+                        <br/><br/>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
