@@ -20,47 +20,47 @@
                                          widgetVar="usersTable" rows="10" paginator="true" 
                                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="5,10,15">
-                            <f:facet name="header">
-                                <p:outputPanel>
-                                    <h:outputText value="Search all fields:" />
-                                    <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" placeholder="Enter keyword"/>
-                                </p:outputPanel>
-                            </f:facet>
-                            <p:column headerText="Username" sortBy="#{user.username}" filterBy="#{user.username}"
-                                      filterMatchMode="contains">
-                                <h:outputText value="#{user.username}" />
-                            </p:column>
-                            <p:column headerText="First Name" sortBy="#{user.firstName}" filterBy="#{user.firstName}"
-                                      filterMatchMode="contains">
-                                <h:outputText value="#{user.firstName}" />
-                            </p:column>
-                            <p:column headerText="Last Name" sortBy="#{user.lastName}" filterBy="#{user.lastName}"
-                                      filterMatchMode="contains">
-                                <h:outputText value="#{user.lastName}" />
-                            </p:column>
-                            <p:column headerText="Email" sortBy="#{user.email}" filterBy="#{user.email}"
-                                      filterMatchMode="contains">
-                                <h:outputText value="#{user.email}" />
-                            </p:column>
-                            <p:column headerText="Role" sortBy="#{user.type}" filterBy="#{user.type}"
-                                      filterMatchMode="equals">
-                                <f:facet name="filter">
-                                    <p:selectOneButton onchange="PF('usersTable').filter()">
-                                        <f:selectItem itemLabel="All" itemValue=""/>
-                                        <f:selectItem itemLabel="Admin" itemValue="admin"/>
-                                    </p:selectOneButton>
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <h:outputText value="Search all fields:" />
+                                        <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" placeholder="Enter keyword"/>
+                                    </p:outputPanel>
                                 </f:facet>
-                                <h:outputText value="#{user.type}" />
-                            </p:column>
-                            <p:column headerText="Options">
-                                <h:button value="Delete" class="btn btn-danger" outcome="deleteUser">
-                                    <f:param name="username" value="#{user.username}" /> 
-                                </h:button>
-                                <h:button value="Edit" style="margin-left: 5px" class="btn btn-info" outcome="editUser">
-                                    <f:param name="username" value="#{user.username}" />
-                                </h:button>
-                            </p:column>
-                        </p:dataTable>
+                                <p:column headerText="Username" sortBy="#{user.username}" filterBy="#{user.username}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{user.username}" />
+                                </p:column>
+                                <p:column headerText="First Name" sortBy="#{user.firstName}" filterBy="#{user.firstName}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{user.firstName}" />
+                                </p:column>
+                                <p:column headerText="Last Name" sortBy="#{user.lastName}" filterBy="#{user.lastName}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{user.lastName}" />
+                                </p:column>
+                                <p:column headerText="Email" sortBy="#{user.email}" filterBy="#{user.email}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{user.email}" />
+                                </p:column>
+                                <p:column headerText="Role" sortBy="#{user.type}" filterBy="#{user.type}"
+                                          filterMatchMode="equals">
+                                    <f:facet name="filter">
+                                        <p:selectOneButton onchange="PF('usersTable').filter()">
+                                            <f:selectItem itemLabel="All" itemValue=""/>
+                                            <f:selectItem itemLabel="Admin" itemValue="admin"/>
+                                        </p:selectOneButton>
+                                    </f:facet>
+                                    <h:outputText value="#{user.type}" />
+                                </p:column>
+                                <p:column headerText="Options">
+                                    <h:button value="Delete" class="btn btn-danger" outcome="deleteUser">
+                                        <f:param name="username" value="#{user.username}" /> 
+                                    </h:button>
+                                    <h:button value="Edit" style="margin-left: 5px" class="btn btn-info" outcome="editUser">
+                                        <f:param name="username" value="#{user.username}" />
+                                    </h:button>
+                                </p:column>
+                            </p:dataTable>
                         </h:form>
                     </div>
                     <br/>
