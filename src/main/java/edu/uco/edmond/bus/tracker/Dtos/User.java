@@ -24,6 +24,8 @@ public class User extends Dto{
         this.email = email;
     }
     
+    public User() {}
+    
     public int getId(){
         return id;
     }
