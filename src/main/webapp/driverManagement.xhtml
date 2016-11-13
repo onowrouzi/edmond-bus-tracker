@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Edmond Bus Tracker</title>
         <!--<f:metadata>
@@ -14,25 +15,34 @@
             <ui:define name="content">
                 <div class="col-xs-8">
                     <div id="user-table">
-                        <h:dataTable value="#{driverManagementBean.getSelectedDrivers()}" var="d">
-                            <h:column>
-                                <f:facet name="header">Username</f:facet>
+                        <h:form>
+                            <p:dataTable value="#{driverManagementBean.selectedDrivers}" var="d" filteredValue="#{driverManagementBean.filteredDrivers}"
+                                         widgetVar="driversTable" rows="10" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15">
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('driversTable').filter()" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column headerText="Username" sortBy="#{d.username}" filterBy="#{d.username}"
+                                      filterMatchMode="contains">
                                 <h:outputText value="#{d.username}" />
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">First Name</f:facet>
+                            </p:column>
+                            <p:column headerText="First Name" sortBy="#{d.firstName}" filterBy="#{d.firstName}"
+                                      filterMatchMode="contains">
                                 <h:outputText value="#{d.firstName}" />
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">Last Name</f:facet>
+                            </p:column>
+                            <p:column headerText="Last Name" sortBy="#{d.lastName}" filterBy="#{d.lastName}"
+                                      filterMatchMode="contains">
                                 <h:outputText value="#{d.lastName}" />
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">Email</f:facet>
+                            </p:column>
+                            <p:column headerText="Email" sortBy="#{d.email}" filterBy="#{d.email}"
+                                      filterMatchMode="contains">
                                 <h:outputText value="#{d.email}" />
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">Options</f:facet>
+                            </p:column>
+                            <p:column headerText="Options">
                                 <h:button value="Delete" class="btn btn-danger" outcome="deleteUser">
                                     <f:param name="username" value="#{d.username}" /> 
                                 </h:button>
@@ -42,8 +52,9 @@
                                     <f:param name="lastName" value="#{d.lastName}" />
                                     <f:param name="email" value="#{d.email}" />
                                 </h:button>
-                            </h:column>
-                        </h:dataTable>
+                            </p:column>
+                        </p:dataTable>
+                        </h:form>
                     </div>
                     <br/>
                     <h:button value="Add" class="btn btn-default pull-right" outcome="createUser"/>
