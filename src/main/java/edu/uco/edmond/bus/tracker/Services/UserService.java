@@ -193,6 +193,51 @@ public class UserService extends Service{
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/create/{username}/{password}/{type}")
+    public String register(@PathParam("username") String username, @PathParam("password") String password, @PathParam("type") String type)
+    {
+        User user = find(username);
+        
+        if(user != null)
+            return getGson().toJson(null); //send error message on client --user exists
+        
+        try{
+            PreparedStatement stmt = getDatabase().prepareStatement("INSERT INTO tbluser (username, password, role, email) VALUES(?,?,?,?)");
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            stmt.setString(3, type);
+            stmt.setString(4, username);
+            
+            int count = stmt.executeUpdate();
+            
+            stmt.close();
+            
+            //get id of new user
+            PreparedStatement stmt2 = getDatabase().prepareStatement("SELECT id FROM tbluser WHERE username=?");
+            stmt2.setString(1, username);
+
+            ResultSet rs = stmt2.executeQuery();
+            
+            rs.first();
+
+            int id = rs.getInt("id");
+            user = new User(id,username,password,type,username);
+            users.add(user);  
+            
+            stmt2.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
+            
+        }catch(SQLException s){
+            return getGson().toJson(s.toString()); //SQL failed
+        }
+        
+        return getGson().toJson(user);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("users/create/{username}/{password}/{type}/{firstname}/{lastname}/{email}")
     public String register(@PathParam("username") String username, @PathParam("password") String password, 
             @PathParam("type") String type, @PathParam("firstname") String firstname, 
@@ -255,6 +300,44 @@ public class UserService extends Service{
             PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tbluser SET password=? WHERE id=?");
             stmt.setString(1, newPassword);
             stmt.setInt(2, user.getId());
+
+            int count = stmt.executeUpdate();
+            
+            stmt.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
+        }catch(SQLException s){
+            return getGson().toJson(s.toString());
+        }
+        
+        user.setPassword(newPassword); //update instance
+        
+        return getGson().toJson(user);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/edit/{username}/{firstName}/{lastName}/{email}/{oldPassword}/{newPassword}")
+    public String edit(@PathParam("username") String username,
+            @PathParam("firstName") String firstName, 
+            @PathParam("lastName") String lastName, 
+            @PathParam("email") String email, 
+            @PathParam("oldPassword") String oldPassword, 
+            @PathParam("newPassword") String newPassword)
+    {
+        User user = find(username);
+        
+        if(user == null)
+            return getGson().toJson(null); //send error message on client --user does not exist, due to the way the client is set up this should never happen
+        
+        try{
+            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tbluser SET firstName=?, lastName=?, email=?, password=? WHERE id=?");
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+            stmt.setString(3, email);
+            stmt.setString(4, newPassword);
+            stmt.setInt(5, user.getId());
 
             int count = stmt.executeUpdate();
             
