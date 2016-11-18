@@ -44,7 +44,7 @@
                         stops = [];
                         var temp = [];
                         var tasks = [];
-                        //Get selected route from list of BusRouteStops & get each stop.
+                        //Get selected route from list of BusRouteStops and get each stop.
                         for (var i = 0; i &lt; routes.length; i++){
                             if (routes[i].route == route){
                                 selectedRoute.push(routes[i]);
@@ -53,7 +53,7 @@
                                 }));
                             }
                         }
-                        //Wait for stops to be received & sort them.
+                        //Wait for stops to be received and sort them.
                         $.when.apply($, tasks).done(function(){
                             for (var i = 0; i &lt; selectedRoute.length; i++){
                                 for (var j = 0; j &lt; temp.length; j++){
