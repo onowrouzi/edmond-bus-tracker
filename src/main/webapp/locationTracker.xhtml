@@ -24,6 +24,7 @@
                     <br />
                     <h3>Route</h3>
                     <h:selectOneMenu onchange="changeRoute(this.value)">
+                        <f:selectItem noSelectionOption="" itemLabel="Select a route"/>
                         <f:selectItems value="#{routeManagement.getRoutes()}" var="r"
                             itemValue="#{r.name}" itemLabel="#{r.name}"></f:selectItems>
                     </h:selectOneMenu>
