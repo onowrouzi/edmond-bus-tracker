@@ -14,6 +14,16 @@ public class User extends Dto{
     private String lastName;
     private String email;
     
+    public User(int id, String username, String password, String type, String email){
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.type = type != null ? type : "client";
+        this.email = email;
+        this.firstName = "";
+        this.lastName = "";
+    }
+    
     public User(int id, String username, String password, String type, String firstName, String lastName, String email){
         this.id = id;
         this.username = username;
