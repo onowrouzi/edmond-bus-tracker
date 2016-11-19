@@ -17,6 +17,7 @@
                     <div id="user-table">
                         <h:form>
                             <p:dataTable value="#{userManagementBean.rolesType}" var="user" filteredValue="#{userManagementBean.filteredUsers}"
+                                         emptyMessage="No users found with filtered criteria."
                                          widgetVar="usersTable" rows="10" paginator="true" 
                                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="5,10,15">

@@ -17,12 +17,41 @@
                     <h:form id="user-table">
                         <p:dataTable value="#{busManagement.buses}" var="b" widgetVar="busTable" 
                                      filteredValue="#{busManagement.filteredBuses}" 
-                                     emptyMessage="No buses found with filtered criteria. Please either use the 'Active' filter or insert a new bus" >
-                            <p:column class="form-group"> <f:facet name="header">Name</f:facet>#{b.name}</p:column>
-                            <p:column class="form-group"> <f:facet name="header">Driver</f:facet>#{b.driver}</p:column>
-                            <p:column class="form-group"> <f:facet name="header">Route</f:facet>#{b.route}</p:column>
-                            <p:column class="form-group"> <f:facet name="header">Last Stop</f:facet>#{b.lastStop}</p:column>
-                            <p:column class="form-group"> <f:facet name="header">Last Active</f:facet>#{b.lastActive}</p:column>
+                                     rows="10" paginator="true" 
+                                     emptyMessage="No buses found with filtered criteria. Please either use the 'Active' filter or insert a new bus" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('busTable').filter()" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column class="form-group" headerText="Name"
+                                      sortBy="#{b.name}" filterBy="#{b.name}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{b.name}" />
+                            </p:column>
+                            <p:column class="form-group" headerText="Driver"
+                                      sortBy="#{b.driver}" filterBy="#{b.driver}"
+                                      filterMatchMode="contains"> 
+                                <h:outputText value="#{b.driver}" />
+                            </p:column>
+                            <p:column class="form-group" headerText="Route"
+                                      sortBy="#{b.route}" filterBy="#{b.route}"
+                                      filterMatchMode="contains"> 
+                                #{b.route}
+                            </p:column>
+                            <p:column class="form-group" headerText="Last Stop"
+                                      sortBy="#{b.lastStop}" filterBy="#{b.lastStop}"
+                                      filterMatchMode="contains"> 
+                                <h:outputText value="#{b.lastStop}" />
+                            </p:column>
+                            <p:column class="form-group" headerText="Last Active"
+                                      sortBy="#{b.lastActive}" filterBy="#{b.lastActive}"
+                                      filterMatchMode="contains"> 
+                                <h:outputText value="#{b.lastActive}" />
+                            </p:column>
                             <p:column filterBy="#{b.active}" headerText="Active">
                                 <f:facet name="filter">
                                     <p:selectOneMenu onchange="PF('busTable').filter()" >
