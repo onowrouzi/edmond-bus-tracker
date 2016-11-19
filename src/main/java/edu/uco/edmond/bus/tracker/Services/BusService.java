@@ -95,8 +95,28 @@ public class BusService extends Service {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("buses/active")
+    public String getActiveBuses()
+    {
+        if(buses.isEmpty())
+            return getGson().toJson("No buses currently registered."); // no buses in system
+        
+        List<Bus> tempBuses = new ArrayList<>();
+        
+        for(Bus bus : buses)
+            if(bus.getActive())
+                tempBuses.add(bus);
+        
+        if(tempBuses.isEmpty())
+            return getGson().toJson("There are no active buses in the system."); // no active buses
+        
+        return getGson().toJson(tempBuses);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("buses")
-    public String getBusess()
+    public String getBuses()
     {
         if(buses.isEmpty())
             return getGson().toJson("No buses currently registered."); // no buses in system
