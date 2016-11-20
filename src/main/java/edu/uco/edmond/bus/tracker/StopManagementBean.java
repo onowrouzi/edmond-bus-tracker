@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,10 +31,11 @@ import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class StopManagementBean implements Serializable {
      
-    private ArrayList<BusStop> stops = new ArrayList<>();
+    private ArrayList<BusStop> stops;
+    public ArrayList<BusStop> filteredStops;
     private String name;
     private String ENV = "https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops";
     private MapModel draggableModel;
@@ -50,7 +52,7 @@ public class StopManagementBean implements Serializable {
     
     @PostConstruct
     public void init() {
-   
+        stops = new ArrayList();
         try {
             URL obj = new URL(ENV);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -104,6 +106,8 @@ public class StopManagementBean implements Serializable {
         for (BusStop s: stops){
             draggableModel.addOverlay(new Marker(new LatLng(s.getLat(), s.getLng()), s.getName()));
         }
+        
+        filteredStops = stops;
     }
     
     public void save(String name, double lat, double lng) {
@@ -234,5 +238,13 @@ public class StopManagementBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Name: " + name + "\nLat:" + lat + ", Lng:" + lng));
 
         save(name, lat, lng);          
+    }
+
+    public ArrayList<BusStop> getFilteredStops() {
+        return filteredStops;
+    }
+
+    public void setFilteredStops(ArrayList<BusStop> filteredStops) {
+        this.filteredStops = filteredStops;
     }
 }
