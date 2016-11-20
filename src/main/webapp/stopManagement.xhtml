@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Stop Management - Edmond Bus Tracker</title>
         <!-- <f:metadata>
@@ -15,34 +16,42 @@
             <ui:define name="content">
                 <div class="col-xs-8">
                     <div id="stop-table">
-                        <h:dataTable value="#{stopManagementBean.getStops()}" var="r">
-                            <h:column>
-                                <f:facet name="header">Name</f:facet>
-                                    #{r.name}
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">Latitude</f:facet>
-                                    #{r.getLat()}
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">Longitude</f:facet>
-                                    #{r.getLng()}
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">Edit</f:facet>
+                        <p:dataTable value="#{stopManagementBean.stops}" var="r" filteredValue="#{stopManagementBean.filteredStops}"
+                                         widgetVar="stopsTable" rows="10" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15">
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('stopsTable').filter()" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column headerText="Stop Name" sortBy="#{r.name}" filterBy="#{r.name}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{r.name}" />
+                            </p:column>
+                            <p:column headerText="Latitude" sortBy="#{r.lat}" filterBy="#{r.lat}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{r.lat}" />
+                            </p:column>
+                            <p:column headerText="Longitude" sortBy="#{r.lng}" filterBy="#{r.lng}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{r.lng}" />
+                            </p:column>
+                            <p:column headerText="Edit">
                                 <h:button value="Edit" class="btn btn-default pull-right" outcome="editStop">
-                                    <f:param name="stopname" value="#{r.getName()}" />
-                                    <f:param name="stoplat" value="#{r.getLat()}" />
-                                    <f:param name="stoplng" value="#{r.getLng()}" />
+                                    <f:param name="stopname" value="#{r.name}" />
+                                    <f:param name="stoplat" value="#{r.lat}" />
+                                    <f:param name="stoplng" value="#{r.lng}" />
                                 </h:button>
-                            </h:column>
-                            <h:column>
+                            </p:column>
+                            <p:column headerText="Delete">
                                 <f:facet name="header">Delete</f:facet>
                                 <h:button value="Delete" class="btn btn-danger pull-right" outcome="deleteStop">
                                     <f:param name="stopname" value="#{r.name}" />
                                 </h:button>
-                            </h:column>
-                        </h:dataTable>
+                            </p:column>
+                        </p:dataTable>
                     </div>
                     <h:button value="Add" class="btn pull-right" outcome="createStop"></h:button>
                 </div>
