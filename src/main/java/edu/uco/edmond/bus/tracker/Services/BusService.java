@@ -289,8 +289,32 @@ public class BusService extends Service {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("buses/edit/laststop/{id}/{lastStop}")
+    public String editLastStop(@PathParam("id") int id, @PathParam("lastStop") String lastStop)
+    {
+        String query = "UPDATE tblbus SET laststop=? WHERE id=?";
+        
+        try {
+            try (PreparedStatement stmt = getDatabase().prepareStatement(query)) {
+                stmt.setString(1, lastStop);
+                stmt.setInt(2, id);
+                
+                int count = stmt.executeUpdate();
+            }
+            
+            //Close out current SQL connection
+            getDatabase().close();
+        } catch(SQLException s) {
+            return getGson().toJson(s.toString()); //SQL failed
+        }
+        
+        return "Buses last stop updated! last stop: " + lastStop;
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("buses/edit/location/{id}/{lat}/{lng}")
-    public String edit(@PathParam("id") int id, @PathParam("lat") String lat, @PathParam("lng") String lng)
+    public String editLocation(@PathParam("id") int id, @PathParam("lat") String lat, @PathParam("lng") String lng)
     {
         double busLat = Double.parseDouble(lat);
         double busLng = Double.parseDouble(lng);
@@ -316,6 +340,38 @@ public class BusService extends Service {
         
         return "Bus location updated! Lat: " + busLat + " Lng: " + busLng;
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("buses/edit/location/wait/{id}/{lat}/{lng}/{time}")
+    public String editLocationWithWait(@PathParam("id") int id, @PathParam("lat") String lat, @PathParam("lng") String lng, @PathParam("time") int time) throws InterruptedException
+    {
+        Thread.sleep(3000 + (time*1000));
+        double busLat = Double.parseDouble(lat);
+        double busLng = Double.parseDouble(lng);
+        
+        String query = "UPDATE tblbus SET lastlong=?, lastlat=? WHERE id=?";
+        
+        try {
+            try (PreparedStatement stmt = getDatabase().prepareStatement(query)) {
+                stmt.setDouble(1, busLat);
+                stmt.setDouble(2, busLng);
+                stmt.setInt(3, id);
+                
+                System.out.println("STATEMENT 1: " + stmt);
+                
+                int count = stmt.executeUpdate();
+            }
+            
+            //Close out current SQL connection
+            getDatabase().close();
+        } catch(SQLException s) {
+            return getGson().toJson(s.toString()); //SQL failed
+        }
+        
+        return "Bus location updated! Lat: " + busLat + " Lng: " + busLng;
+    }
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("buses/changeStatus/{name}")
