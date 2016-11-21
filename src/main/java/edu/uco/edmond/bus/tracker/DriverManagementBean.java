@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -23,6 +24,7 @@ import org.primefaces.json.JSONObject;
 public class DriverManagementBean implements Serializable {
     private ArrayList<User> selectedDrivers;
     private ArrayList<User> drivers;
+    private List<User> filteredDrivers;
     
     private String username;
     private String password;
@@ -165,6 +167,14 @@ public class DriverManagementBean implements Serializable {
 
     public ArrayList<User> getDrivers() {
         return this.drivers;
+    }
+
+    public List<User> getFilteredDrivers() {
+        return filteredDrivers;
+    }
+
+    public void setFilteredDrivers(List<User> filteredDrivers) {
+        this.filteredDrivers = filteredDrivers;
     }
     
 }

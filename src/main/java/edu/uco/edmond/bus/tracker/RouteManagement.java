@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -32,6 +33,7 @@ import org.primefaces.json.JSONObject;
 @ViewScoped
 public class RouteManagement implements Serializable {
     private ArrayList<BusRoute> routes = new ArrayList<>();
+    private List<BusRoute> filteredRoutes;
     private final String ENV = "https://uco-edmond-bus.herokuapp.com/api/routeservice/routes";
     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -129,6 +131,20 @@ public class RouteManagement implements Serializable {
         }
 
         return "routeManagement";
+    }
+
+    /**
+     * @return the filteredRoutes
+     */
+    public List<BusRoute> getFilteredRoutes() {
+        return filteredRoutes;
+    }
+
+    /**
+     * @param filteredRoutes the filteredRoutes to set
+     */
+    public void setFilteredRoutes(List<BusRoute> filteredRoutes) {
+        this.filteredRoutes = filteredRoutes;
     }
 
 }
