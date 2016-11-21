@@ -16,7 +16,8 @@
             <ui:define name="content">
                 <div class="col-xs-8">
                     <div id="stop-table">
-                        <p:dataTable value="#{stopManagementBean.stops}" var="r" filteredValue="#{stopManagementBean.filteredStops}"
+                        <h:form>
+                             <p:dataTable value="#{stopManagementBean.stops}" var="r" filteredValue="#{stopManagementBean.filteredStops}"
                                          widgetVar="stopsTable" rows="10" paginator="true" 
                                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="5,10,15">
@@ -52,8 +53,10 @@
                                 </h:button>
                             </p:column>
                         </p:dataTable>
+                            </h:form>
                     </div>
                     <h:button value="Add" class="btn pull-right" outcome="createStop"></h:button>
+                                             
                 </div>
             </ui:define>
         </ui:composition>

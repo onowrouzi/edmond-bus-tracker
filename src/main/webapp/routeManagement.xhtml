@@ -15,31 +15,33 @@
             <ui:define name="content">
                 <div class="col-xs-8">
                     <div id="route-table">
-                        <p:dataTable value="#{routeManagement.routes}" var="r" filteredValue="#{routeManagement.filteredRoutes}"
+                        <h:form>
+                            <p:dataTable value="#{routeManagement.routes}" var="r" filteredValue="#{routeManagement.filteredRoutes}"
                                          emptyMessage="No routes found with filtered criteria."
                                          widgetVar="routesTable" rows="10" paginator="true" 
                                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="5,10,15">
-                            <f:facet name="header">
-                                <p:outputPanel>
-                                    <h:outputText value="Search all fields:" />
-                                    <p:inputText id="globalFilter" onkeyup="PF('routesTable').filter()" placeholder="Enter keyword"/>
-                                </p:outputPanel>
-                            </f:facet>
-                            <p:column headerText="Name" sortBy="#{r.name}" filterBy="#{r.name}"
-                                      filterMatchMode="contains"> 
-                                <h:outputText value="#{r.name}" />
-                            </p:column>
-                            <p:column class="form-group" headerText="Options"> 
-                                <h:button value="Delete" class="btn btn-danger" outcome="deleteBus">
-                                    <f:param name="name" value="#{r.name}" />
-                                </h:button>
-                                <h:button value="Edit" class="btn btn-info" outcome="editRoute" style="margin-left: 5px">
-                                    <f:param name="id" value="#{r.id}" />
-                                    <f:param name="name" value="#{r.name}" />
-                                </h:button>
-                            </p:column>
-                        </p:dataTable>
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <h:outputText value="Search all fields:" />
+                                        <p:inputText id="globalFilter" onkeyup="PF('routesTable').filter()" placeholder="Enter keyword"/>
+                                    </p:outputPanel>
+                                </f:facet>
+                                <p:column headerText="Name" sortBy="#{r.name}" filterBy="#{r.name}"
+                                          filterMatchMode="contains"> 
+                                    <h:outputText value="#{r.name}" />
+                                </p:column>
+                                <p:column class="form-group" headerText="Options"> 
+                                    <h:button value="Delete" class="btn btn-danger" outcome="deleteBus">
+                                        <f:param name="name" value="#{r.name}" />
+                                    </h:button>
+                                    <h:button value="Edit" class="btn btn-info" outcome="editRoute" style="margin-left: 5px">
+                                        <f:param name="id" value="#{r.id}" />
+                                        <f:param name="name" value="#{r.name}" />
+                                    </h:button>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>                                               
                     </div>
                     <br/>
                     <h:button value="Add" class="btn btn-default pull-right" outcome="createRoute"/>
