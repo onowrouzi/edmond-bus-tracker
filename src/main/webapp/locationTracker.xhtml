@@ -40,12 +40,12 @@
                     var routesAndStops = [];
                     
                     //Get list of active buses
-                    $.get("http://localhost:8080/edmond-bus-tracker/api/busservice/buses/active", function(data, status){
+                    $.get("https://uco-edmond-bus.herokuapp.com/api/busservice/buses/active", function(data, status){
                         activeBuses = data;
                     });
                     
                     //Create list of routes with stops
-                    $.get("http://localhost:8080/edmond-bus-tracker/api/routeservice/routes/active", function(data, status){
+                    $.get("https://uco-edmond-bus.herokuapp.com/api/routeservice/routes/active", function(data, status){
                         routes = data;
                     });
                     
@@ -57,7 +57,7 @@
                         for (var i = 0; i &lt; routes.length; i++){
                             if (routes[i].route == route){
                                 selectedRoute.push(routes[i]);
-                                tasks.push($.get("http://localhost:8080/edmond-bus-tracker/api/busstopservice/stops/" + routes[i].stop, function(data, status){
+                                tasks.push($.get("https://uco-edmond-bus.herokuapp.com/api/busstopservice/stops/" + routes[i].stop, function(data, status){
                                    temp.push(data);
                                 }));
                             }
@@ -113,7 +113,7 @@
                     }
 
                     function trackRoute(map,stops,n,busId) { //Get directions and draw the path incrementally.
-                        $.get("http://localhost:8080/edmond-bus-tracker/api/busservice/buses/edit/laststop/" + busId + "/" + stops[n].name, function(data, status){
+                        $.get("https://uco-edmond-bus.herokuapp.com/api/busservice/buses/edit/laststop/" + busId + "/" + stops[n].name, function(data, status){
                         });
                         var directionsService = new google.maps.DirectionsService();
 
@@ -155,14 +155,14 @@
                                             trackRoute(map, stops, n+1, busId);
                                         }else if(index == pathCoords.length-1 &amp;&amp; n &lt; stops.length-1){
                                             //arrived at last stop
-                                            $.get("http://localhost:8080/edmond-bus-tracker/api/busservice/buses/edit/laststop/" + busId + "/" + stops[n+1].name, function(data, status){
+                                            $.get("https://uco-edmond-bus.herokuapp.com/api/busservice/buses/edit/laststop/" + busId + "/" + stops[n+1].name, function(data, status){
                                             });
                                         }
                                     }, 3000*i, pathCoords[i]);
                                     var tempString = pathCoords[i].toString().substring(1,pathCoords[i].toString().length-1);
                                     var tempLatLng = tempString.split(", ");
 
-                                    $.get("http://localhost:8080/edmond-bus-tracker/api/busservice/buses/edit/location/wait/" + busId + "/" + tempLatLng[0] + "/" + tempLatLng[1] + "/" + i, function(data, status){
+                                    $.get("https://uco-edmond-bus.herokuapp.com/api/busservice/buses/edit/location/wait/" + busId + "/" + tempLatLng[0] + "/" + tempLatLng[1] + "/" + i, function(data, status){
                                     });
                                 }
                             }
