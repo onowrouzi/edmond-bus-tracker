@@ -28,6 +28,7 @@ public class UserManagementBean implements Serializable {
     private List<User> users;
     private List<User> drivers;
     private List<User> admins;
+    private List<User> filteredUsers;
     
     private String username;
     private String password;
@@ -69,8 +70,6 @@ public class UserManagementBean implements Serializable {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
             
             if (responseCode != 200) {
                 con.disconnect(); // disconnect on error
@@ -102,7 +101,6 @@ public class UserManagementBean implements Serializable {
                                 String firstname = jsonobject.getString("firstName");
                                 String lastname = jsonobject.getString("lastName");
                                 String email = jsonobject.getString("email");
-                                System.out.println(name);
                                 User user = new User(Integer.valueOf(id), name, "", usertype, firstname, lastname, email);
                                 rolesType.add(user);
                             } catch (JSONException ex) {
@@ -133,8 +131,6 @@ public class UserManagementBean implements Serializable {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
             
             if (responseCode != 200) {
                 con.disconnect(); // disconnect on error
@@ -179,8 +175,6 @@ public class UserManagementBean implements Serializable {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
             
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
@@ -219,8 +213,6 @@ public class UserManagementBean implements Serializable {
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
             
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
@@ -280,5 +272,13 @@ public class UserManagementBean implements Serializable {
     
     public List<User> getAdmins() {
         return admins;
+    }
+
+    public List<User> getFilteredUsers() {
+        return filteredUsers;
+    }
+
+    public void setFilteredUsers(List<User> filteredUsers) {
+        this.filteredUsers = filteredUsers;
     }
 }

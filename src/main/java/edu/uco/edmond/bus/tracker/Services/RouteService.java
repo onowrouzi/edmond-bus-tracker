@@ -32,11 +32,13 @@ import javax.ws.rs.core.MediaType;
 public class RouteService extends Service {
      private List<BusRoute> routes;
      private List<BusRouteStop> busRouteStops;
+     private List<BusStop> busStops;
     
     public RouteService() throws SQLException
     {
         this.routes = new ArrayList<>();
         this.busRouteStops = new ArrayList<>();
+        this.busStops = new BusStopService().busStops();
         getAllRoutes();
         getAllBusRouteStops();
     }
@@ -127,9 +129,47 @@ public class RouteService extends Service {
         for(BusRouteStop busStopRoute : busRouteStops)
             for(BusRoute route : routes)
                 if(busStopRoute.getRoute().equals(route.getName()))
-                    route.getBusStops().add((new BusStop(busStopRoute.getStop())));
+                {
+                    for(BusStop busStop : busStops)
+                        if(busStop.getName().equals(busStopRoute.getStop()))
+                            route.getBusStops().add((new BusStop(busStopRoute.getStop(), busStop.getLat(), busStop.getLng())));
+                }
                 
         return getGson().toJson(routes);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("routes/active")
+    public String getActiveRoutes() throws SQLException
+    {
+        if(routes.isEmpty())
+            return getGson().toJson("No routes currently registered."); // no routes in system
+        
+        List<Bus> buses = new BusService().buses();
+        List<BusRoute> tempRoute = new ArrayList<>();
+        
+        for(BusRouteStop busStopRoute : busRouteStops)
+            for(BusRoute route : routes)
+            {
+                if(busStopRoute.getRoute().equals(route.getName()))
+                {
+                    for(BusStop busStop : busStops)
+                        if(busStop.getName().equals(busStopRoute.getStop()))
+                            route.getBusStops().add((new BusStop(busStopRoute.getStop(), busStop.getLat(), busStop.getLng())));
+                }
+            }
+        
+        for(BusRoute route : routes)
+            for(Bus bus : buses)
+                if(bus.getRoute().equals(route.getName()) && bus.getActive()){
+                    route.setBusName(bus.getName());
+                    route.setBusId(bus.getId());
+                    tempRoute.add(route);
+                    break;
+                }
+                
+        return getGson().toJson(tempRoute);
     }
     
     @GET
@@ -141,9 +181,23 @@ public class RouteService extends Service {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("routes/{query}")
-    public String getRoute(@PathParam("query") String query){
-        return getGson().toJson(find(query));
+    @Path("routes/{name}")
+    public String getRoute(@PathParam("name") String name){
+        
+        for(BusRouteStop busStopRoute : busRouteStops)
+            for(BusRoute route : routes)
+                if(busStopRoute.getRoute().equals(route.getName()))
+                {
+                    for(BusStop busStop : busStops)
+                        if(busStop.getName().equals(busStopRoute.getStop()))
+                            route.getBusStops().add((new BusStop(busStopRoute.getStop(), busStop.getLat(), busStop.getLng())));
+                }
+        
+        for(BusRoute route : routes)
+            if(route.getName().equals(name))
+                    return getGson().toJson(route);
+        
+        return getGson().toJson("No Route exists with that name."); //no route found with that name
     }
    
     @POST
@@ -191,7 +245,7 @@ public class RouteService extends Service {
         return getGson().toJson(route);
     }
     
-    @DELETE
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("routes/delete/{name}")
     public String delete(@PathParam("name") String name)
@@ -207,15 +261,17 @@ public class RouteService extends Service {
             
             int count = stmt1.executeUpdate();
             
-            PreparedStatement stmt2 = getDatabase().prepareStatement("DELETE FROM tblbusroute WHERE id=?");
-            stmt2.setInt(1, route.getId());
-
-            count = stmt2.executeUpdate();
-            
-            stmt2.close();
-            
             //Close out current SQL connection
             getDatabase().close();
+            
+            try (PreparedStatement stmt2 = getDatabase().prepareStatement("DELETE FROM tblbusroute WHERE id=?")) {
+                stmt2.setInt(1, route.getId());
+                
+                count = stmt2.executeUpdate();
+                
+                //Close out current SQL connection
+                getDatabase().close();
+            }
         }catch(SQLException s){
             return getGson().toJson(s.toString());
         }
