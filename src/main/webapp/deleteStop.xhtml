@@ -6,11 +6,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Stop Management - Edmond Bus Tracker</title>
-<!--        <f:metadata>
-            <f:viewAction action="#{loginBean.doFilter}" />
-        </f:metadata>-->
         <f:metadata>
             <f:viewParam name="stopname" value="#{stopManagementBean.name}"/>
+            <f:viewAction action="#{loginBean.doFilter}" />
         </f:metadata>
     </h:head>
     <h:body>
