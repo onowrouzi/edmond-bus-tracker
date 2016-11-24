@@ -202,12 +202,17 @@ public class RouteService extends Service {
             return getGson().toJson(null); //send error message on client --route does not exist
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblbusroute WHERE id=?");
-            stmt.setInt(1, route.getId());
-
-            int count = stmt.executeUpdate();
+            PreparedStatement stmt1 = getDatabase().prepareStatement("DELETE FROM tblbusroutestop WHERE route=?");
+            stmt1.setString(1, name);
             
-            stmt.close();
+            int count = stmt1.executeUpdate();
+            
+            PreparedStatement stmt2 = getDatabase().prepareStatement("DELETE FROM tblbusroute WHERE id=?");
+            stmt2.setInt(1, route.getId());
+
+            count = stmt2.executeUpdate();
+            
+            stmt2.close();
             
             //Close out current SQL connection
             getDatabase().close();

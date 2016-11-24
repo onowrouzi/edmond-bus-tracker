@@ -17,7 +17,7 @@
                         <h:dataTable value="#{routeManagement.getRoutes()}" var="r">
                             <h:column> <f:facet name="header">Name</f:facet>#{r.getName()}</h:column>
                             <h:column class="form-group"> <f:facet name="header">Options</f:facet>
-                                <h:button value="Delete" class="btn btn-danger" outcome="deleteBus">
+                                <h:button value="Delete" class="btn btn-danger" outcome="deleteRoute">
                                     <f:param name="name" value="#{r.name}" />
                                 </h:button>
                                 <h:button value="Edit" class="btn btn-info" outcome="editRoute" style="margin-left: 5px">

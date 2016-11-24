@@ -24,10 +24,6 @@ import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 
-/**
- *
- * @author omidnowrouzi
- */
 @ManagedBean
 @ViewScoped
 public class RouteManagement implements Serializable {
@@ -95,6 +91,46 @@ public class RouteManagement implements Serializable {
 
         try {
             String url = ENV + name;
+            url = url.replace(" ", "%20");
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+            // optional default is GET
+            con.setRequestMethod("POST");
+
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'POST' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+
+            if (responseCode != 200) {
+                System.out.println("CONNECTION ERROR: " + con.getErrorStream());
+            }
+
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()))) {
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                System.out.println("INPUT STREAM: " + response);
+            }
+            con.disconnect();
+        } catch (IOException ex) {
+            Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return "routeManagement";
+    }
+    
+    public String deleteRoute(String name) throws IOException {
+
+        try {
+            String url = ENV + "/delete/" + name;
             url = url.replace(" ", "%20");
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
