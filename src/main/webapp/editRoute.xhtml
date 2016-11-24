@@ -25,7 +25,7 @@
                     <br/> <h4>#{name}</h4>
                     <h:form>
                         <br/>
-                        <h:commandButton action="#{editRouteBean.addRoute(routeName)}" class="btn btn-default" value="Save" />
+                        <h:commandButton action="#{editRouteBean.addRoute(name)}" class="btn btn-default" value="Save" />
                         <div class="pull-right">
                             <h:commandButton onclick="clearRoute()" class="btn btn-default" value="Clear">
                                 <f:ajax listener="#{editRouteBean.clearSelectedStops}"/>

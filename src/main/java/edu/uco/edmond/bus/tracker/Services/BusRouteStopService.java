@@ -203,7 +203,7 @@ public class BusRouteStopService extends Service{
             return getGson().toJson(null); //send error message on client --stop does not exist
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblbusroutestop WHERE id=?");
+            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblbusroutestop WHERE route=?");
             stmt.setInt(1, bsr.getId());
             int count = stmt.executeUpdate();
             stmt.close();
@@ -218,6 +218,40 @@ public class BusRouteStopService extends Service{
         busRouteStops.remove(bsr);
         
         return getGson().toJson(bsr);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("stops/delete/{route}")
+    public String deleteForRoute(@PathParam("route") String route)
+    {
+        ArrayList<BusRouteStop> brs = null;
+        try {
+            brs = findAllForRoute(java.net.URLDecoder.decode(route, "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(BusRouteStopService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(brs == null)
+            return getGson().toJson(null); //send error message on client --stop does not exist
+        
+        try{
+            PreparedStatement stmt = getDatabase().prepareStatement("DELETE FROM tblbusroutestop WHERE route=?");
+            stmt.setString(1, route);
+            int count = stmt.executeUpdate();
+            stmt.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
+            
+        }catch(SQLException s){
+            return getGson().toJson(s.toString());
+        }
+        
+        for (int i = 0; i < brs.size(); i++) 
+            busRouteStops.remove(brs.get(i));
+        
+        return getGson().toJson(brs);
     }
     
     @GET

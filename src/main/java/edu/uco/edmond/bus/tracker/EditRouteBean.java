@@ -60,6 +60,7 @@ public class EditRouteBean implements Serializable {
     @PostConstruct
     public void init() {
         draggableModel = new DefaultMapModel();
+        clearSelectedStops();
     }
       
     public MapModel getDraggableModel() {
@@ -111,44 +112,44 @@ public class EditRouteBean implements Serializable {
         } catch (IOException ex) {
             Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //DELETE
+        try {
+            String url = "https://uco-edmond-bus.herokuapp.com/api/busroutestopservice/stops/delete/" + name;
+            url = url.replace(" ", "%20");
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+            // optional default is GET
+            con.setRequestMethod("GET");
+
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'POST' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+
+            if (responseCode != 200) {
+                System.out.println("CONNECTION ERROR: " + con.getErrorStream());
+            }
+
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()))) {
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                System.out.println("INPUT STREAM: " + response);
+            }
+
+            con.disconnect();
+        } catch (IOException ex) {
+            Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         for (BusRouteStop brs: selectedStops){
-            //DELETE
-            try {
-                String url = "https://uco-edmond-bus.herokuapp.com/api/busroutestopservice/stops/delete/" + name + "/" + brs.getStop();
-                url = url.replace(" ", "%20");
-                URL obj = new URL(url);
-                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-                // optional default is GET
-                con.setRequestMethod("GET");
-
-                //add request header
-                con.setRequestProperty("User-Agent", "Mozilla/5.0");
-
-                int responseCode = con.getResponseCode();
-                System.out.println("\nSending 'POST' request to URL : " + url);
-                System.out.println("Response Code : " + responseCode);
-
-                if (responseCode != 200) {
-                    System.out.println("CONNECTION ERROR: " + con.getErrorStream());
-                }
-
-                try (BufferedReader in = new BufferedReader(
-                        new InputStreamReader(con.getInputStream()))) {
-                    String inputLine;
-                    StringBuilder response = new StringBuilder();
-
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                    }
-                    System.out.println("INPUT STREAM: " + response);
-                }
-                
-                con.disconnect();
-            } catch (IOException ex) {
-                Logger.getLogger(RouteManagement.class.getName()).log(Level.SEVERE, null, ex);
-            }
             //(RE)CREATE
             try {
                 String url = "https://uco-edmond-bus.herokuapp.com/api/busroutestopservice/stops/create/" 
