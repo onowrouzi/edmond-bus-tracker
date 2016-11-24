@@ -261,9 +261,6 @@ public class RouteService extends Service {
             
             int count = stmt1.executeUpdate();
             
-            //Close out current SQL connection
-            getDatabase().close();
-            
             try (PreparedStatement stmt2 = getDatabase().prepareStatement("DELETE FROM tblbusroute WHERE id=?")) {
                 stmt2.setInt(1, route.getId());
                 

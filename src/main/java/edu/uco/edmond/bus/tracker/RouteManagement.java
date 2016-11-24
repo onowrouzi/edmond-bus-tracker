@@ -134,7 +134,7 @@ public class RouteManagement implements Serializable {
     public String deleteRoute(String name) throws IOException {
 
         try {
-            String url = "http://localhost:8080/edmond-bus-tracker/api/routeservice/routes/delete/" + name; //ENV + "/delete/" + name;
+            String url = ENV + "/delete/" + name;
             url = url.replace(" ", "%20");
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
