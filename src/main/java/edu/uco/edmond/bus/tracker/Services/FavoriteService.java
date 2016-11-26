@@ -164,7 +164,7 @@ public class FavoriteService extends Service {
         for(BusStop busStop : myBusStops)
         {
             for(Bus bus: busService.buses())
-                if(bus.getLastStop() != null && busStop.getName() != null && bus.getLastStop().equals(busStop.getName()))
+                if(bus.getActive() && bus.getLastStop() != null && busStop.getName() != null && bus.getLastStop().equals(busStop.getName()))
                     notifications.add(new Notification(bus.getName() + " is at one of your favorite stops, " + busStop.getName()));
         }
         
