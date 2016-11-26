@@ -161,6 +161,13 @@ public class FavoriteService extends Service {
                     notifications.add(new Notification(bus.getName() + " is at stop " + stop.getName()));
         }
         
+        for(BusStop busStop : myBusStops)
+        {
+            for(Bus bus: busService.buses())
+                if(bus.getLastStop() != null && busStop.getName() != null && bus.getLastStop().equals(busStop.getName()))
+                    notifications.add(new Notification(bus.getName() + " is at one of your favorite stops, " + busStop.getName()));
+        }
+        
         return getGson().toJson(notifications);
     }
     
