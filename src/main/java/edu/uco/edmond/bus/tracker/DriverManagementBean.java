@@ -1,12 +1,15 @@
 package edu.uco.edmond.bus.tracker;
 
+import edu.uco.edmond.bus.tracker.Dtos.Bus;
 import edu.uco.edmond.bus.tracker.Dtos.User;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -35,8 +38,8 @@ public class DriverManagementBean implements Serializable {
         try {
             selectedDrivers = new ArrayList<>();
             drivers = new ArrayList<>();
-            String url = ENV + "/usertype/driver";
             
+            String url = ENV + "/usertype/driver";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
@@ -98,9 +101,8 @@ public class DriverManagementBean implements Serializable {
         if (!password.equals(confirmPassword) || (password.isEmpty() && confirmPassword.isEmpty())) {
             return "Passwords must match!";
         }
-        
         try {
-            String url = ENV + "/edit/" + username + "/" + firstName + "/" + lastName + "/" + email + "/"+ password + "/" + confirmPassword + "/";
+            String url = ENV + "/editDriver/" + username + "/" + firstName + "/" + lastName + "/" + email + "/"+ password + "/" + confirmPassword + "/";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
@@ -126,13 +128,53 @@ public class DriverManagementBean implements Serializable {
             con.disconnect();
             
         } catch (Exception ex) {
+            Logger.getLogger(DriverManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         context.redirect("driverManagement.xhtml");
         
         return "Driver was edited!";
     }
+    
+    
+    public String deleteDriver(String username) throws IOException {
+     
+        try {
+            String url = ENV + "/delete/" + username;
+            
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            
+            if (responseCode != 200) {
+                con.disconnect(); // disconnect on error
+            } else {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
 
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                con.disconnect();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(DriverManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "driverManagement";
+    }
     
     public String getUsername() {
         return username;
@@ -165,5 +207,4 @@ public class DriverManagementBean implements Serializable {
     public ArrayList<User> getDrivers() {
         return this.drivers;
     }
-    
 }
