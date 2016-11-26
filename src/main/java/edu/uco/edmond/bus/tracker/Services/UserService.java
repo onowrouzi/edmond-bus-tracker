@@ -139,10 +139,22 @@ public class UserService extends Service{
     @Path("users/usertype/{type}")
     public String getGroupUsers(@PathParam("type") String userType){
         List<User> groupUsers = findGroupUsers(userType);
+        
         if (groupUsers == null || groupUsers.isEmpty())
             return getGson().toJson("No users currently registered.");
         
+        try {
+            if (userType.equals("driver")){
+            PreparedStatement stmt = getDatabase().prepareStatement("SELECT * FROM tblbus");
+            ResultSet rs = stmt.executeQuery();
+            
+            }
+        } catch(SQLException s){
+            return getGson().toJson(s.toString()); //SQL failed
+        }
+        
         return getGson().toJson(groupUsers);
+        
     }
     
     @GET
@@ -243,8 +255,14 @@ public class UserService extends Service{
     //TODO change route to oldusername/newusername/newpassword, update mobile client as well
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/edit/{username}/{oldPassword}/{newPassword}")
-    public String edit(@PathParam("username") String username, @PathParam("oldPassword")String oldPassword, @PathParam("newPassword") String newPassword)
+    @Path("users/edit/{username}/{firstName}/{lastName}/{email}/{oldPassword}/{newPassword}")
+    public String edit(
+        @PathParam("username") String username, 
+        @PathParam("firstname") String firstName,
+        @PathParam("lastname") String lastName,
+        @PathParam("email") String email, 
+        @PathParam("oldPassword")String oldPassword, 
+        @PathParam("newPassword") String newPassword)
     {
         User user = find(username);
         
@@ -252,9 +270,12 @@ public class UserService extends Service{
             return getGson().toJson(null); //send error message on client --user does not exist, due to the way the client is set up this should never happen
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tbluser SET password=? WHERE id=?");
-            stmt.setString(1, newPassword);
-            stmt.setInt(2, user.getId());
+            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tbluser SET firstName=?, lastName=?, email=?, password=? WHERE id=?");
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+            stmt.setString(3, email);
+            stmt.setString(4, newPassword);
+            stmt.setInt(5, user.getId());
 
             int count = stmt.executeUpdate();
             
@@ -273,8 +294,9 @@ public class UserService extends Service{
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/edit/{username}/{firstName}/{lastName}/{email}/{oldPassword}/{newPassword}")
-    public String edit(@PathParam("username") String username,
+    @Path("users/editDriver/{username}/{firstName}/{lastName}/{email}/{oldPassword}/{newPassword}")
+    public String editDriver(
+            @PathParam("username") String username,
             @PathParam("firstName") String firstName, 
             @PathParam("lastName") String lastName, 
             @PathParam("email") String email, 
@@ -293,8 +315,12 @@ public class UserService extends Service{
             stmt.setString(3, email);
             stmt.setString(4, newPassword);
             stmt.setInt(5, user.getId());
-
+            
             int count = stmt.executeUpdate();
+            
+            stmt.close();
+            
+            count = stmt.executeUpdate();
             
             stmt.close();
             

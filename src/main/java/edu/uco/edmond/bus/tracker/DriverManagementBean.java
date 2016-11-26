@@ -126,7 +126,6 @@ public class DriverManagementBean implements Serializable {
             con.disconnect();
             
         } catch (Exception ex) {
-            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         context.redirect("driverManagement.xhtml");

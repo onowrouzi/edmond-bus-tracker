@@ -202,13 +202,12 @@ public class UserManagementBean implements Serializable {
         return "User was added!";
     }
     
-    public String editUser(String username, String password, String confirmPassword) throws IOException{
+    public String editUser(String username, String firstName, String lastName, String password, String confirmPassword) throws IOException{
         if (!password.equals(confirmPassword) || (password.isEmpty() && confirmPassword.isEmpty())) {
             return "Passwords must match!";
         }
-        
         try {
-            String url = ENV + "/edit/" + username + "/" + password + "/" + confirmPassword + "/";
+            String url = ENV + "/edit/" + username + "/" + firstName + "/" + lastName + "/" + password + "/" + confirmPassword + "/";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             

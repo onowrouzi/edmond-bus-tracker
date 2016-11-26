@@ -33,7 +33,7 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Options</f:facet>
-                                <h:button value="Delete" class="btn btn-danger" outcome="deleteUser">
+                                <h:button value="Delete" class="btn btn-danger" outcome="deleteDriver">
                                     <f:param name="username" value="#{d.username}" /> 
                                 </h:button>
                                 <h:button value="Edit" style="margin-left: 5px" class="btn btn-info" outcome="editDriver">
@@ -45,9 +45,11 @@
                             </h:column>
                         </h:dataTable>
                     </div>
+                    <!--
                     <br/>
                     <h:button value="Add" class="btn btn-default pull-right" outcome="createUser"/>
-                </div>
+                    -->
+                    </div>
             </ui:define>
         </ui:composition>
     </h:body>

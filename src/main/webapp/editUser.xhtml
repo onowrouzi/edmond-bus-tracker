@@ -7,6 +7,9 @@
         <title>Edmond Bus Tracker</title>
         <f:metadata>
             <f:viewParam name="username" value="#{userManagementBean.username}" />
+            <f:viewParam name="firstName" />
+            <f:viewParam name="lastName" />
+            <f:viewParam name="email" />
             <!--f:viewAction action="#{loginBean.doFilter}" /-->
         </f:metadata>
     </h:head>
@@ -22,6 +25,18 @@
                         <br/>
                         <h:inputText class="form-control" value="#{userManagementBean.username}" disabled="true"/>
                         <br/>
+                        <label>First Name</label>
+                        <br/>
+                        <h:inputText class="form-control" value="#{firstName}"/>
+                        <br/>
+                        <label>Last Name</label>
+                        <br/>
+                        <h:inputText class="form-control" value="#{lastName}"/>
+                        <br/>
+                        <label>Email</label>
+                        <br/>
+                        <h:inputText class="form-control" value="#{email}"/>
+                        <br/>
                         <label>Password</label>
                         <br/>
                         <h:inputSecret class="form-control" id="inputPassword" value="#{password}"/>
@@ -31,7 +46,7 @@
                         <h:inputSecret class="form-control" id="inputConfirmPassword" value="#{confirmPassword}"/>
                         <br/>
                         <h:commandButton value="Edit" class="btn btn-default form-control" 
-                            action="#{userManagementBean.editUser(userManagementBean.username, password, confirmPassword)}"/>
+                            action="#{userManagementBean.editUser(userManagementBean.username, firstName, lastName, password, confirmPassword)}"/>
                         <br/><br/>
                     </h:form>
                 </div>
