@@ -288,7 +288,7 @@ public class UserService extends Service{
     //TODO change route to oldusername/newusername/newpassword, update mobile client as well
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/edit/{username}/{firstName}/{lastName}/{oldPassword}/{newPassword}")
+    @Path("users/edit/{username}/{firstName}/{lastName}/{email}/{oldPassword}/{newPassword}")
     public String edit(
             @PathParam("username") String username,
             @PathParam("firstName") String firstName, 
