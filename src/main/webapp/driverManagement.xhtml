@@ -43,7 +43,7 @@
                                 <h:outputText value="#{d.email}" />
                             </p:column>
                             <p:column headerText="Options">
-                                <h:button value="Delete" class="btn btn-danger" outcome="deleteUser">
+                                <h:button value="Delete" class="btn btn-danger" outcome="deleteDriver">
                                     <f:param name="username" value="#{d.username}" /> 
                                 </h:button>
                                 <h:button value="Edit" style="margin-left: 5px" class="btn btn-info" outcome="editDriver">
@@ -56,8 +56,6 @@
                         </p:dataTable>
                         </h:form>
                     </div>
-                    <br/>
-                    <h:button value="Add" class="btn btn-default pull-right" outcome="createUser"/>
                 </div>
             </ui:define>
         </ui:composition>

@@ -102,7 +102,7 @@ public class DriverManagementBean implements Serializable {
         }
         
         try {
-            String url = ENV + "/edit/" + username + "/" + firstName + "/" + lastName + "/" + email + "/"+ password + "/" + confirmPassword + "/";
+            String url = ENV + "/editDriver/" + username + "/" + firstName + "/" + lastName + "/" + email + "/"+ password + "/" + confirmPassword + "/";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
@@ -135,7 +135,42 @@ public class DriverManagementBean implements Serializable {
         
         return "Driver was edited!";
     }
+    
+    public String deleteDriver(String username) throws Exception {
+        try {
+            String url = ENV + "/delete/" + username;
+            
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            
+            // optional default is GET
+            con.setRequestMethod("GET");
+            
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            
+            int responseCode = con.getResponseCode();
+            
+            if (responseCode != 200) {
+                con.disconnect(); // disconnect on error
+            } else {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
 
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                con.disconnect();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(DriverManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "driverManagement";
+    }
     
     public String getUsername() {
         return username;
