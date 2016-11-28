@@ -289,12 +289,11 @@ public class UserService extends Service{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/edit/{username}/{firstName}/{lastName}/{email}/{oldPassword}/{newPassword}")
-    public String edit(
-            @PathParam("username") String username,
+    public String edit(@PathParam("username") String username,
             @PathParam("firstName") String firstName, 
             @PathParam("lastName") String lastName, 
             @PathParam("email") String email, 
-            @PathParam("oldPassword")String oldPassword, 
+            @PathParam("oldPassword") String oldPassword, 
             @PathParam("newPassword") String newPassword)
     {
         User user = find(username);
@@ -303,7 +302,7 @@ public class UserService extends Service{
             return getGson().toJson(null); //send error message on client --user does not exist, due to the way the client is set up this should never happen
         
         try{
-            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tbluser SET firstName=? lastName=? email=? password=? WHERE id=?");
+            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tbluser SET firstName=?, lastName=?, email=?, password=? WHERE id=?");
             stmt.setString(1, firstName);
             stmt.setString(2, lastName);
             stmt.setString(3, email);
