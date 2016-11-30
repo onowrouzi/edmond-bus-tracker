@@ -6,9 +6,9 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Edmond Bus Tracker</title>
-        <!--<f:metadata>
+        <f:metadata>
             <f:viewAction action="#{loginBean.doFilter}" />
-        </f:metadata>-->
+        </f:metadata>
     </h:head>
     <h:body>
         <ui:composition template="/template/layout.xhtml">
@@ -59,6 +59,9 @@
                                     </h:button>
                                     <h:button value="Edit" style="margin-left: 5px" class="btn btn-info" outcome="editUser">
                                         <f:param name="username" value="#{user.username}" />
+                                        <f:param name="firstName" value="#{user.firstName}" />
+                                        <f:param name="lastName" value="#{user.lastName}" />
+                                        <f:param name="email" value="#{user.email}" />
                                     </h:button>
                                 </p:column>
                             </p:dataTable>

@@ -6,7 +6,7 @@
     <h:head>
         <title>Edmond Bus Tracker</title>
         <f:metadata>
-            <f:viewParam name="name" value="#{busManagement.name}" />
+            <f:viewParam name="username" value="#{driverManagementBean.username}" />
             <f:viewAction action="#{loginBean.doFilter}" />
         </f:metadata>
     </h:head>
@@ -14,11 +14,11 @@
         <ui:composition template="/template/layout.xhtml">
             <ui:define name="content">
                 <div class="col-xs-8">
-                    <h:form id="frmDeleteBus">
-                        <h1>Delete User</h1>
-                        <h2>Are you sure you want to delete #{param.name}?</h2>
+                    <h:form id="frmDeleteUser">
+                        <h1>Delete Driver</h1>
+                        <h2>Are you sure you want to delete driver #{param.username}?</h2>
                         <br/>
-                        <h:commandButton value="Delete" class="btn btn-danger" action="#{busManagement.deleteBus(busManagement.name)}" />
+                        <h:commandButton value="Delete" class="btn btn-danger" action="#{driverManagementBean.deleteDriver(driverManagementBean.username)}" />
                     </h:form>
                 </div>
             </ui:define>
