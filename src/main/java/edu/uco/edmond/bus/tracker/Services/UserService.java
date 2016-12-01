@@ -285,7 +285,36 @@ public class UserService extends Service{
         return getGson().toJson(user);
     }
     
-    //TODO change route to oldusername/newusername/newpassword, update mobile client as well
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/editClient/{username}/{newPassword}")
+    public String editClient(@PathParam("username") String username, @PathParam("newPassword") String newPassword)
+    {
+        User user = find(username);
+        
+        if(user == null)
+            return getGson().toJson(null); //send error message on client --user does not exist, due to the way the client is set up this should never happen
+        
+        try{
+            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tbluser SET password=? WHERE id=?");
+            stmt.setString(1, newPassword);
+            stmt.setInt(2, user.getId());
+
+            int count = stmt.executeUpdate();
+            
+            stmt.close();
+            
+            //Close out current SQL connection
+            getDatabase().close();
+        }catch(SQLException s){
+            return getGson().toJson(s.toString());
+        }
+        
+        user.setPassword(newPassword); //update instance
+        
+        return getGson().toJson(user);
+    }
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/edit/{username}/{firstName}/{lastName}/{email}/{oldPassword}/{newPassword}")
