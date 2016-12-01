@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -102,25 +103,18 @@ public class DriverManagementBean implements Serializable {
         }
         
         try {
-            String url = ENV + "/editDriver/" + username + "/" + firstName + "/" + lastName + "/" + email + "/"+ password + "/" + confirmPassword + "/";
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            
-            // optional default is GET
+            String url = ENV + "/edit/" + username + "/" + firstName + "/" + lastName + "/" + email + "/"+ password + "/" + confirmPassword + "/";
+            HttpURLConnection con = (HttpURLConnection) (new URL(url)).openConnection();
             con.setRequestMethod("GET");
-            
-            //add request header
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
             
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
-            String inputLine;
             StringBuffer response = new StringBuffer();
             
+            String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
@@ -128,7 +122,7 @@ public class DriverManagementBean implements Serializable {
             con.disconnect();
             
         } catch (Exception ex) {
-            Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DriverManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         context.redirect("driverManagement.xhtml");
@@ -138,8 +132,9 @@ public class DriverManagementBean implements Serializable {
     
     public String deleteDriver(String username) throws Exception {
         try {
-            String url = ENV + "/delete/" + username;
+            String url;
             
+            url = ENV + "/delete/" + username;
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             
@@ -164,6 +159,13 @@ public class DriverManagementBean implements Serializable {
                 }
                 in.close();
                 con.disconnect();
+                
+                ListIterator<User> iter = selectedDrivers.listIterator();
+                while(iter.hasNext()){
+                    if(iter.next().getUsername().equals(username)){
+                    iter.remove();
+                    }
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(DriverManagementBean.class.getName()).log(Level.SEVERE, null, ex);
