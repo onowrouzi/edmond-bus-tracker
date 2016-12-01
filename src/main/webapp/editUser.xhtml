@@ -6,7 +6,7 @@
     <h:head>
         <title>Edmond Bus Tracker</title>
         <f:metadata>
-            <f:viewParam name="username" value="#{userManagementBean.username}" />
+            <f:viewParam name="username" />
             <f:viewParam name="firstName" />
             <f:viewParam name="lastName" />
             <f:viewParam name="email" />
@@ -23,7 +23,7 @@
                         <br/><br/>
                         <label>User Name</label>
                         <br/>
-                        <h:inputText class="form-control" value="#{userManagementBean.username}" disabled="true"/>
+                        <h:inputText class="form-control" value="#{username}" disabled="true"/>
                         <br/>
                         <label>First Name</label>
                         <br/>

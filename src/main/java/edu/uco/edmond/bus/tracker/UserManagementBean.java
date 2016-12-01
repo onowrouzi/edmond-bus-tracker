@@ -25,8 +25,6 @@ import org.primefaces.json.JSONObject;
 @RequestScoped
 public class UserManagementBean implements Serializable {
     private ArrayList<User> rolesType;
-    private List<User> users;
-    private List<User> drivers;
     private List<User> admins;
     private List<User> filteredUsers;
     
@@ -39,13 +37,7 @@ public class UserManagementBean implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            loadUserGroups("admin", "driver");
-            drivers = rolesType.stream()
-                    .filter(user -> user.getType().equals("driver"))
-                    .collect(Collectors.toList());
-            users = rolesType.stream()
-                    .filter(user -> user.getType().equals("user"))
-                    .collect(Collectors.toList());
+            loadUserGroups("admin");
             admins = rolesType.stream()
                     .filter(user -> user.getType().equals("admin"))
                     .collect(Collectors.toList());
@@ -54,11 +46,11 @@ public class UserManagementBean implements Serializable {
         }
     }
     
-    private void loadUserGroups(String userType1, String userType2) {
+    private void loadUserGroups(String userType1) {
         try {
             rolesType = new ArrayList<>();
             
-            String url = ENV + "/usertype/" + userType1 + "/" + userType2;
+            String url = ENV + "/usertype/" + userType1;
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -101,7 +93,7 @@ public class UserManagementBean implements Serializable {
                                 String firstname = jsonobject.getString("firstName");
                                 String lastname = jsonobject.getString("lastName");
                                 String email = jsonobject.getString("email");
-                                User user = new User(Integer.valueOf(id), name, "", usertype, firstname, lastname, email);
+                                User user = new User(id, name, "", usertype, firstname, lastname, email);
                                 rolesType.add(user);
                             } catch (JSONException ex) {
                                 Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -150,7 +142,7 @@ public class UserManagementBean implements Serializable {
             Logger.getLogger(UserManagementBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        loadUserGroups("admin", "driver");
+        loadUserGroups("admin");
         
         return "userManagement";
     }
@@ -260,14 +252,6 @@ public class UserManagementBean implements Serializable {
 
     public ArrayList<User> getRolesType() {
         return this.rolesType;
-    }
-
-    public List<User> getDrivers() {
-        return drivers;
-    }
-    
-    public List<User> getUsers() {
-        return users;
     }
     
     public List<User> getAdmins() {
