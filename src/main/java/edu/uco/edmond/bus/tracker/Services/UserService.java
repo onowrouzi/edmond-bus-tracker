@@ -355,44 +355,6 @@ public class UserService extends Service{
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/editDriver/{username}/{firstName}/{lastName}/{email}/{oldPassword}/{newPassword}")
-    public String editDriver(@PathParam("username") String username,
-            @PathParam("firstName") String firstName, 
-            @PathParam("lastName") String lastName, 
-            @PathParam("email") String email, 
-            @PathParam("oldPassword") String oldPassword, 
-            @PathParam("newPassword") String newPassword)
-    {
-        User user = find(username);
-        
-        if(user == null)
-            return getGson().toJson(null); //send error message on client --user does not exist, due to the way the client is set up this should never happen
-        
-        try{
-            PreparedStatement stmt = getDatabase().prepareStatement("UPDATE tbluser SET firstName=?, lastName=?, email=?, password=? WHERE id=?");
-            stmt.setString(1, firstName);
-            stmt.setString(2, lastName);
-            stmt.setString(3, email);
-            stmt.setString(4, newPassword);
-            stmt.setInt(5, user.getId());
-
-            int count = stmt.executeUpdate();
-            
-            stmt.close();
-            
-            //Close out current SQL connection
-            getDatabase().close();
-        }catch(SQLException s){
-            return getGson().toJson(s.toString());
-        }
-        
-        user.setPassword(newPassword); //update instance
-        
-        return getGson().toJson(user);
-    }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("users/delete/{username}")
     public String delete(@PathParam("username") String username)
     {
