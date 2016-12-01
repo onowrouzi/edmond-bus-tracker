@@ -44,21 +44,20 @@
                                     <h:outputText value="#{user.email}" />
                                 </p:column>
                                 <p:column headerText="Role" sortBy="#{user.type}" filterBy="#{user.type}"
-                                          filterMatchMode="equals">
-                                    <f:facet name="filter">
-                                        <p:selectOneButton onchange="PF('usersTable').filter()">
-                                            <f:selectItem itemLabel="All" itemValue=""/>
-                                            <f:selectItem itemLabel="Admin" itemValue="admin"/>
-                                        </p:selectOneButton>
-                                    </f:facet>
-                                    <h:outputText value="#{user.type}" />
+                                           filterMatchMode="equals">
+                                     <f:facet name="filter">
+                                         <p:selectOneButton onchange="PF('usersTable').filter()">
+                                             <f:selectItem itemLabel="All" itemValue=""/>
+                                             <f:selectItem itemLabel="Admin" itemValue="admin"/>
+                                         </p:selectOneButton>
+                                     </f:facet>
+                                     <h:outputText value="#{user.type}" />
                                 </p:column>
                                 <p:column headerText="Options">
                                     <h:button value="Delete" class="btn btn-danger" outcome="deleteUser">
                                         <f:param name="username" value="#{user.username}" /> 
                                     </h:button>
                                     <h:button value="Edit" style="margin-left: 5px" class="btn btn-info" outcome="editUser">
-                                        <f:param name="username" value="#{user.username}" />
                                         <f:param name="username" value="#{user.username}" />
                                         <f:param name="firstName" value="#{user.firstName}" />
                                         <f:param name="lastName" value="#{user.lastName}" />
