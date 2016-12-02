@@ -27,7 +27,7 @@
                                 <h:inputText class="form-control" value="#{name}"/>
                                 <br/>
                                 <h:selectOneMenu class="form-control" value="#{driver}">
-                                    <f:selectItems value="#{userManagementBean.drivers}" var="driver" 
+                                    <f:selectItems value="#{driverManagementBean.selectedDrivers}" var="driver" 
                                         itemLabel="#{driver.username}" itemValue="#{driver.username}"/>
                                     <f:selectItem itemValue="#{null}" itemLabel="--- No Driver ---" />
                                 </h:selectOneMenu>
